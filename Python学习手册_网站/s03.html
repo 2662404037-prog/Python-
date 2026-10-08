@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03_Python自带的7件算法神器 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#先建立一个直觉-数据规模决定你该怎么写">先建立一个直觉：数据规模决定你该怎么写</a>
+<a class="toc-h2" href="#神器-1-Counter-一行统计-出现了几次">神器 1：Counter —— 一行统计"出现了几次"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#神器-2-deque-两头都能快速进出的-队列">神器 2：deque —— 两头都能快速进出的"队列"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#神器-3-defaultdict-不会报-KeyError-的字典">神器 3：defaultdict —— 不会报 KeyError 的字典</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#神器-4-heapq-每次都想要-最小的那个">神器 4：heapq —— 每次都想要"最小的那个"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#神器-5-bisect-有序列表里的二分查找">神器 5：bisect —— 有序列表里的二分查找</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#神器-6-itertools-排列组合一行搞定">神器 6：itertools —— 排列组合一行搞定</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#组合和排列的区别-新手最容易混">组合和排列的区别（新手最容易混）</a>
+<a class="toc-h2" href="#神器-7-lru_cache-一行让递归快-1000-倍">神器 7：lru_cache —— 一行让递归快 1000 倍</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#看到这个-31-了吗">看到这个 31 了吗</a>
+<a class="toc-h2" href="#再加两个-进阶神器-不用现在学">再加两个"进阶神器"（不用现在学）</a>
+<a class="toc-h2" href="#附-7-件神器的-常用工具速查">🧰 附：7 件神器的「常用工具速查」</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业">🎯 留个小作业</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="Python-自带的-7-件算法神器-能让你的代码快-1-万倍">Python 自带的 7 件算法神器，能让你的代码快 1 万倍</h1>
+<div style="margin:6px 0 22px"><img src="covers/03_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：你写了个"查重复"的功能，1 万条数据跑了 40 秒。<br>同事看了一眼，改成 5 行代码 —— <strong>0.01 秒</strong>。<br>这篇讲的就是这种"<strong>一瞬间的碾压</strong>"，而且全部来自 Python 自带的标准库，<strong>一个都不用装</strong>。</blockquote>
+<hr>
+<h2 id="先建立一个直觉-数据规模决定你该怎么写">先建立一个直觉：数据规模决定你该怎么写</h2>
+<p>这是新手和老手最大的思维差异。看这张表：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>数据规模 n</th>
+<th>能接受的算法</th>
+<th>例子</th>
+</tr>
+<tr>
+<td>n ≤ 20</td>
+<td>指数级都行（暴力枚举）</td>
+<td>枚举所有组合</td>
+</tr>
+<tr>
+<td>n ≤ 5000</td>
+<td>O(n²)</td>
+<td>双层循环</td>
+</tr>
+<tr>
+<td>n ≤ 10⁵</td>
+<td>必须 O(n log n)</td>
+<td>排序、二分</td>
+</tr>
+<tr>
+<td>n ≤ 10⁶ 以上</td>
+<td>必须 O(n)</td>
+<td>哈希表</td>
+</tr>
+</table></div>
+<p><strong>为什么重要</strong>：同一件事，选错方法就是<strong>1 万倍</strong>的差距。</p>
+<p>举个真实的对比 —— <strong>判断列表里有没有重复</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">数据 = list(range(10000))
+
+# ❌ 笨办法：双层循环（O(n²)）—— 1 亿次操作
+def 笨办法(lst):
+    for i in range(len(lst)):
+        for j in range(i + 1, len(lst)):
+            if lst[i] == lst[j]:
+                return True
+    return False
+
+# ✅ 聪明办法：用 set（O(n)）—— 1 万次操作
+def 聪明办法(lst):
+    return len(set(lst)) != len(lst)</code></pre></div>
+<p>一眼就能看出差多少：<strong>1 亿次 vs 1 万次</strong>。</p>
+<blockquote>💡 <strong>记住一句话</strong>：<strong>先问"数据多大"，再想"用什么容器"。</strong></blockquote>
+<hr>
+<h2 id="神器-1-Counter-一行统计-出现了几次">神器 1：Counter —— 一行统计"出现了几次"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>一个<strong>自动计数器</strong>。给它一堆东西，它告诉你每个出现了几次。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from collections import Counter
+
+words = "苹果 香蕉 苹果 橘子 苹果 香蕉".split()
+c = Counter(words)
+print(c)
+print("最多的两个:", c.most_common(2))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">Counter({'苹果': 3, '香蕉': 2, '橘子': 1})
+最多的两个: [('苹果', 3), ('香蕉', 2)]</code></pre></div>
+<p><strong>手写要多少行</strong>？至少要 5 行循环 + 判断。Counter 只要一行。</p>
+<p><strong>还能怎么用</strong>：</p>
+<ul><li>统计一篇文章里出现最多的 10 个词</li><li>投票计票</li><li>找众数</li></ul>
+<hr>
+<h2 id="神器-2-deque-两头都能快速进出的-队列">神器 2：deque —— 两头都能快速进出的"队列"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>普通列表在<strong>开头</strong>插入/删除很慢（后面的元素要全部挪一遍）。<code>deque</code> 两头进出都是 O(1)。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from collections import deque
+
+q = deque(["乙", "丙"])
+q.appendleft("甲")      # 从左边塞进去
+q.append("丁")          # 从右边塞进去
+print(list(q))
+print("左边弹出:", q.popleft())</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">['甲', '乙', '丙', '丁']
+左边弹出: 甲</code></pre></div>
+<p><strong>什么时候用</strong>：BFS 广度优先搜索、滑动窗口、任务队列。</p>
+<hr>
+<h2 id="神器-3-defaultdict-不会报-KeyError-的字典">神器 3：defaultdict —— 不会报 KeyError 的字典</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>普通字典访问不存在的键会报错。<code>defaultdict</code> 会自动给你创建一个默认值。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from collections import defaultdict
+
+groups = defaultdict(list)         # 访问不存在的键 → 自动建一个空列表
+for name, cls in [("张三", "一班"), ("李四", "二班"), ("王五", "一班")]:
+    groups[cls].append(name)
+print(dict(groups))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">{'一班': ['张三', '王五'], '二班': ['李四']}</code></pre></div>
+<p><strong>对比一下普通写法</strong>（多 3 行的判断）：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">groups = {}
+for name, cls in data:
+    if cls not in groups:      # ← 这几行可以省掉
+        groups[cls] = []
+    groups[cls].append(name)</code></pre></div>
+<hr>
+<h2 id="神器-4-heapq-每次都想要-最小的那个">神器 4：heapq —— 每次都想要"最小的那个"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p><code>heapq</code> 是"最小堆"：不管你怎么插入，<strong>最小值永远在最前面</strong>，取出它是 O(log n)。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import heapq
+
+nums = [5, 1, 8, 3]
+heapq.heapify(nums)
+print("堆里:", nums, " 最小值:", nums[0])
+print("弹出:", heapq.heappop(nums), "剩下:", nums)
+print("最大的两个:", heapq.nlargest(2, [10, 3, 99, 42]))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">堆里: [1, 3, 8, 5]  最小值: 1
+弹出: 1 剩下: [3, 5, 8]
+最大的两个: [99, 42]</code></pre></div>
+<blockquote>⚠️ <strong>注意</strong>：打印出来是 <code>[1, 3, 8, 5]</code>，<strong>不是排好序的</strong> —— 但 <code>nums[0]</code> 一定是全局最小值，这就是堆的性质。别以为出 bug 了。</blockquote>
+<p><strong>什么时候用</strong>：Top K 问题、"每次取最小/最大"、任务优先级调度。</p>
+<hr>
+<h2 id="神器-5-bisect-有序列表里的二分查找">神器 5：bisect —— 有序列表里的二分查找</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>在<strong>已经排好序</strong>的列表里查位置、插数据，都是 O(log n)。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import bisect
+
+scores = [60, 70, 80, 90]
+print("85 该插在下标:", bisect.bisect_left(scores, 85))
+bisect.insort(scores, 85)          # 插进去还保持有序
+print("插入后:", scores)</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">85 该插在下标: 3
+插入后: [60, 70, 80, 85, 90]</code></pre></div>
+<p><strong>为什么快</strong>：它每次砍掉一半（二分），100 万个元素最多比 20 次。</p>
+<p><strong>实用场景</strong>：给分数找等级线、维护一个"永远有序"的列表。</p>
+<hr>
+<h2 id="神器-6-itertools-排列组合一行搞定">神器 6：itertools —— 排列组合一行搞定</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>枚举所有组合、排列、两列数据的所有搭配 —— 暴力枚举和抽签的利器。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import itertools
+
+print("两两组合:", list(itertools.combinations([1, 2, 3], 2)))
+print("前 3 个排列:", list(itertools.permutations([1, 2, 3], 2))[:3])
+print("笛卡尔积:", list(itertools.product("AB", "12")))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">两两组合: [(1, 2), (1, 3), (2, 3)]
+前 3 个排列: [(1, 2), (1, 3), (2, 1)]
+笛卡尔积: [('A', '1'), ('A', '2'), ('B', '1'), ('B', '2')]</code></pre></div>
+<h3 id="组合和排列的区别-新手最容易混">组合和排列的区别（新手最容易混）</h3>
+<ul><li><code>combinations</code>（组合）：<code>(1,2)</code> 和 <code>(2,1)</code> <strong>算同一个</strong>，只看选了哪些</li><li><code>permutations</code>（排列）：<code>(1,2)</code> 和 <code>(2,1)</code> <strong>算两个</strong>，看顺序</li></ul>
+<p>打个比方：<strong>选 3 个人去领奖（组合）</strong> vs <strong>选 3 个人分别当冠亚季军（排列）</strong>。</p>
+<hr>
+<h2 id="神器-7-lru_cache-一行让递归快-1000-倍">神器 7：lru_cache —— 一行让递归快 1000 倍</h2>
+<h3 id="它是什么">它是什么</h3>
+<p><strong>记忆化</strong>：函数算过的参数就存下来，下次同样参数直接给结果，不重算。</p>
+<p>先看没优化的斐波那契（经典的慢）：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def fib(n):
+    return n if n &lt; 2 else fib(n-1) + fib(n-2)
+# fib(30) 要算几百万次，慢到怀疑人生</code></pre></div>
+<p><strong>加一行装饰器</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from functools import lru_cache
+
+calls = 0
+@lru_cache(maxsize=None)          # ★ 就是这一行
+def fib(n):
+    global calls
+    calls += 1
+    return n if n &lt; 2 else fib(n-1) + fib(n-2)
+
+print("fib(30) =", fib(30))
+print("实际计算次数:", calls)</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">fib(30) = 832040
+实际计算次数: 31</code></pre></div>
+<h3 id="看到这个-31-了吗">看到这个 31 了吗</h3>
+<p>不用缓存时，<code>fib(30)</code> 要重复计算<strong>几百万次</strong>；</p>
+<p>加了 <code>lru_cache</code> 之后，因为每个 <code>fib(k)</code> 只算一次，所以<strong>总共只算了 31 次</strong>（k=0 到 30）。</p>
+<blockquote>💡 <strong>一句话记住</strong>：<strong>递归慢，先想 lru_cache。</strong></blockquote>
+<hr>
+<h2 id="再加两个-进阶神器-不用现在学">再加两个"进阶神器"（不用现在学）</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>是什么</th>
+<th>什么时候用</th>
+</tr>
+<tr>
+<td><strong>sortedcontainers</strong></td>
+<td>永远保持有序的列表，插入查找都是 O(log n)</td>
+<td>实时排行榜、滑动窗口中位数</td>
+</tr>
+<tr>
+<td><strong>more-itertools</strong></td>
+<td>itertools 的加强版：<strong>滑动窗口</strong>、分块</td>
+<td>算"每 3 天的移动平均"</td>
+</tr>
+<tr>
+<td><strong>z3-solver</strong></td>
+<td>你写条件，它帮你解答案</td>
+<td>数独、排班、逆向题</td>
+</tr>
+<tr>
+<td><strong>networkx</strong></td>
+<td>图论：最短路、连通性</td>
+<td>关系网络、依赖分析</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># more-itertools 的滑动窗口（实测）
+import more_itertools as mit
+print(list(mit.windowed([1, 2, 3, 4], 2)))     # [(1,2),(2,3),(3,4)]
+print(list(mit.chunked([1, 2, 3, 4, 5], 2)))   # [[1,2],[3,4],[5]]</code></pre></div>
+<hr>
+<h2 id="附-7-件神器的-常用工具速查">🧰 附：7 件神器的「常用工具速查」</h2>
+<blockquote>这些<strong>全都不用 pip install</strong>，<code>import</code> 就能用。记不住就回来查。</blockquote>
+<div class="tablewrap"><table>
+<tr>
+<th>神器</th>
+<th>常用工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><strong>Counter</strong></td>
+<td><code>Counter(可迭代)</code></td>
+<td>计数</td>
+<td><code>Counter("banana")</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>.most_common(n)</code></td>
+<td>出现最多的前 n 个</td>
+<td><code>c.most_common(3)</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>.update()</code></td>
+<td>累加计数</td>
+<td>统计多批数据</td>
+</tr>
+<tr>
+<td><strong>deque</strong></td>
+<td><code>deque(列表)</code></td>
+<td>双端队列</td>
+<td>队列/BFS</td>
+</tr>
+<tr>
+<td></td>
+<td><code>.appendleft() / .popleft()</code></td>
+<td>左进 / 左出</td>
+<td>都是 O(1)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>.maxlen=n</code></td>
+<td>只保留最近 n 个</td>
+<td>滑动窗口神器</td>
+</tr>
+<tr>
+<td><strong>defaultdict</strong></td>
+<td><code>defaultdict(list)</code></td>
+<td>缺键自动建列表</td>
+<td>分组</td>
+</tr>
+<tr>
+<td></td>
+<td><code>defaultdict(int)</code></td>
+<td>缺键自动是 0</td>
+<td>计数</td>
+</tr>
+<tr>
+<td></td>
+<td><code>defaultdict(set)</code></td>
+<td>自动去重</td>
+<td>关系表</td>
+</tr>
+<tr>
+<td><strong>heapq</strong></td>
+<td><code>heapify(列表)</code></td>
+<td>整理成堆</td>
+<td>最小值总在 [0]</td>
+</tr>
+<tr>
+<td></td>
+<td><code>heappush / heappop</code></td>
+<td>进 / 出最小值</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>nlargest(n, 数据) / nsmallest()</code></td>
+<td>Top N</td>
+<td>排行榜</td>
+</tr>
+<tr>
+<td><strong>bisect</strong></td>
+<td><code>bisect_left(有序表, x)</code></td>
+<td>查 x 该插哪儿</td>
+<td>二分</td>
+</tr>
+<tr>
+<td></td>
+<td><code>insort(有序表, x)</code></td>
+<td>插入并保持有序</td>
+<td>替代"每次 sort"</td>
+</tr>
+<tr>
+<td><strong>itertools</strong></td>
+<td><code>combinations(表, k)</code></td>
+<td><strong>组合</strong>（不计顺序）</td>
+<td>抽签</td>
+</tr>
+<tr>
+<td></td>
+<td><code>permutations(表, k)</code></td>
+<td><strong>排列</strong>（计顺序）</td>
+<td>排队</td>
+</tr>
+<tr>
+<td></td>
+<td><code>product(A, B)</code></td>
+<td>笛卡尔积</td>
+<td>全配对</td>
+</tr>
+<tr>
+<td></td>
+<td><code>chain(a, b)</code></td>
+<td>连接多个列表</td>
+<td>拼数据</td>
+</tr>
+<tr>
+<td><strong>lru_cache</strong></td>
+<td><code>@lru_cache(maxsize=None)</code></td>
+<td>记忆化</td>
+<td><strong>写在函数上面</strong></td>
+</tr>
+<tr>
+<td></td>
+<td><code>.cache_info()</code></td>
+<td>看命中率</td>
+<td>调优</td>
+</tr>
+<tr>
+<td><strong>附加</strong></td>
+<td><code>more_itertools.windowed(表, n)</code></td>
+<td>滑动窗口</td>
+<td>移动平均</td>
+</tr>
+<tr>
+<td></td>
+<td><code>more_itertools.chunked(表, n)</code></td>
+<td>分块</td>
+<td>分批处理</td>
+</tr>
+</table></div>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>需求</th>
+<th>用什么</th>
+</tr>
+<tr>
+<td>统计次数 / 找众数</td>
+<td><code>collections.Counter</code></td>
+</tr>
+<tr>
+<td>队列 / BFS</td>
+<td><code>collections.deque</code></td>
+</tr>
+<tr>
+<td>分组、缺键自动初始化</td>
+<td><code>collections.defaultdict</code></td>
+</tr>
+<tr>
+<td>每次取最小 / Top K</td>
+<td><code>heapq</code></td>
+</tr>
+<tr>
+<td>有序列表里查/插</td>
+<td><code>bisect</code></td>
+</tr>
+<tr>
+<td>排列组合枚举</td>
+<td><code>itertools</code></td>
+</tr>
+<tr>
+<td>递归太慢</td>
+<td><code>functools.lru_cache</code></td>
+</tr>
+</table></div>
+<p><strong>核心心法</strong>：<strong>先判断数据规模 → 再选容器 → 最后才写代码。</strong></p>
+<h2 id="留个小作业">🎯 留个小作业</h2>
+<p>用 <code>Counter</code> 统计一段中文里出现最多的 5 个字（提示：中文也能按字符拆）。</p>
+<p>再用 <code>lru_cache</code> 优化一下"爬楼梯"问题（每次走 1 或 2 阶，共有几种走法）。</p>
+<hr>
+<p><strong>下一篇</strong>：《爬虫入门：我是怎么把 1000 本书的数据"搬"回家的》</p>
+<p>👉 如果这篇让你第一次意识到"<strong>代码快不快，取决于你怎么选容器</strong>"，<strong>点个「赞」</strong>。</p>
+<p>👉 <strong>关注我</strong>，下一篇带你把网上的数据真正抓下来（含一整套合规清单）。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

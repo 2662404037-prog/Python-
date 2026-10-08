@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工具上手课 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#先看这一段-很重要">先看这一段（很重要）</a>
+<a class="toc-h2" href="#pandas-处理表格">pandas —— 处理表格</a>
+<a class="toc-h3" href="#①-把表格读进来">① 把表格读进来</a>
+<a class="toc-h3" href="#②-按条件筛选-最常用的一招">② 按条件筛选（最常用的一招）</a>
+<a class="toc-h3" href="#③-统计和分组">③ 统计和分组</a>
+<a class="toc-h3" href="#④-导出结果">④ 导出结果</a>
+<a class="toc-h2" href="#numpy-算一堆数字">numpy —— 算一堆数字</a>
+<a class="toc-h3" href="#①-把列表变成-数组">① 把列表变成"数组"</a>
+<a class="toc-h3" href="#②-一行算出统计值">② 一行算出统计值</a>
+<a class="toc-h3" href="#③-变成矩阵-行-列">③ 变成矩阵（行 × 列）</a>
+<a class="toc-h3" href="#④-按条件挑选">④ 按条件挑选</a>
+<a class="toc-h2" href="#matplotlib-把数字画成图">matplotlib —— 把数字画成图</a>
+<a class="toc-h3" href="#①-画一张柱状图并存成图片-先跑通这个">① 画一张柱状图并存成图片（先跑通这个）</a>
+<a class="toc-h3" href="#②-换个图形-只改一个词">② 换个图形，只改一个词</a>
+<a class="toc-h3" href="#③-加标题-轴名-网格">③ 加标题、轴名、网格</a>
+<a class="toc-h2" href="#openpyxl-用代码写-Excel">openpyxl —— 用代码写 Excel</a>
+<a class="toc-h3" href="#①-生成一张最简单的表">① 生成一张最简单的表</a>
+<a class="toc-h3" href="#②-加个表头样式-让它好看点">② 加个表头样式（让它好看点）</a>
+<a class="toc-h3" href="#③-写公式-读回来">③ 写公式 &amp; 读回来</a>
+<a class="toc-h2" href="#python-docx-用代码写-Word">python-docx —— 用代码写 Word</a>
+<a class="toc-h3" href="#①-生成一份最简报告">① 生成一份最简报告</a>
+<a class="toc-h3" href="#②-插一个表格">② 插一个表格</a>
+<a class="toc-h3" href="#③-插图">③ 插图</a>
+<a class="toc-h2" href="#pathlib-文件和文件夹的操作台">pathlib —— 文件和文件夹的操作台</a>
+<a class="toc-h3" href="#①-表示一个路径">① 表示一个路径</a>
+<a class="toc-h3" href="#②-列出文件夹里的文件-批量处理的第一步">② 列出文件夹里的文件（批量处理的第一步）</a>
+<a class="toc-h3" href="#③-新建文件夹-判断存在">③ 新建文件夹 / 判断存在</a>
+<a class="toc-h3" href="#④-批量改名-一个真实小需求">④ 批量改名（一个真实小需求）</a>
+<a class="toc-h2" href="#json-保存和读取结构化数据">json —— 保存和读取结构化数据</a>
+<a class="toc-h3" href="#①-把字典存成文件">① 把字典存成文件</a>
+<a class="toc-h3" href="#②-读回来用">② 读回来用</a>
+<a class="toc-h3" href="#③-转换成字符串-不写文件">③ 转换成字符串（不写文件）</a>
+<a class="toc-h2" href="#requests-去网上拿数据">requests —— 去网上拿数据</a>
+<a class="toc-h3" href="#①-拿一个网页-第一个爬虫就这三行">① 拿一个网页（第一个爬虫就这三行）</a>
+<a class="toc-h3" href="#②-看-成功没成功-状态码">② 看"成功没成功"：状态码</a>
+<a class="toc-h3" href="#③-装成浏览器-不然可能被拒">③ 装成浏览器（不然可能被拒）</a>
+<a class="toc-h3" href="#④-调用一个接口-直接拿到字典">④ 调用一个接口，直接拿到字典</a>
+<a class="toc-h3" href="#⑤-下载一个文件">⑤ 下载一个文件</a>
+<a class="toc-h2" href="#BeautifulSoup-从网页里-挑-数据">BeautifulSoup —— 从网页里"挑"数据</a>
+<a class="toc-h3" href="#①-先跑一个离线例子-不联网也能看效果">① 先跑一个离线例子（不联网也能看效果）</a>
+<a class="toc-h3" href="#②-两个核心工具-select-和-select_one">② 两个核心工具：select 和 select_one</a>
+<a class="toc-h3" href="#③-选择器怎么写-背这-4-个就够">③ 选择器怎么写（背这 4 个就够）</a>
+<a class="toc-h3" href="#④-取文字和取属性">④ 取文字和取属性</a>
+<a class="toc-h3" href="#⑤-把相对链接拼成完整链接-必学">⑤ 把相对链接拼成完整链接（必学）</a>
+<a class="toc-h2" href="#sqlite3-把数据存起来">sqlite3 —— 把数据存起来</a>
+<a class="toc-h3" href="#①-建表-存数据">① 建表 + 存数据</a>
+<a class="toc-h3" href="#②-一次存一批-更快">② 一次存一批（更快）</a>
+<a class="toc-h3" href="#③-查出来">③ 查出来</a>
+<a class="toc-h3" href="#④-一个实用技巧-用网址去重">④ 一个实用技巧：用网址去重</a>
+<a class="toc-h2" href="#playwright-页面是-JS-渲染的-开真浏览器">playwright —— 页面是 JS 渲染的？开真浏览器</a>
+<a class="toc-h3" href="#①-装它-第一次要下载浏览器">① 装它（第一次要下载浏览器）</a>
+<a class="toc-h3" href="#②-打开页面并取文字">② 打开页面并取文字</a>
+<a class="toc-h3" href="#③-填表单-点按钮">③ 填表单 + 点按钮</a>
+<a class="toc-h3" href="#④-截图-做-证据-最方便">④ 截图（做"证据"最方便）</a>
+<a class="toc-h2" href="#re-在文字里找东西">re —— 在文字里找东西</a>
+<a class="toc-h3" href="#①-找出所有数字">① 找出所有数字</a>
+<a class="toc-h3" href="#②-找手机号-邮箱-实用">② 找手机号 / 邮箱（实用）</a>
+<a class="toc-h3" href="#③-分组提取-把日期拆成-年-月-日">③ 分组提取（把日期拆成 年/月/日）</a>
+<a class="toc-h3" href="#④-批量替换">④ 批量替换</a>
+<a class="toc-h2" href="#datetime-处理日期和时间">datetime —— 处理日期和时间</a>
+<a class="toc-h3" href="#①-拿到-现在">① 拿到"现在"</a>
+<a class="toc-h3" href="#②-给文件名加时间戳-超实用">② 给文件名加时间戳（超实用）</a>
+<a class="toc-h3" href="#③-算-还差几天">③ 算"还差几天"</a>
+<a class="toc-h3" href="#④-加减时间">④ 加减时间</a>
+<a class="toc-h2" href="#random-和-secrets-随机">random 和 secrets —— 随机</a>
+<a class="toc-h3" href="#①-抽签-洗牌用-random">① 抽签、洗牌用 random</a>
+<a class="toc-h3" href="#②-生成密码-验证码要用-secrets">② 生成密码 / 验证码要用 secrets</a>
+<a class="toc-h2" href="#jieba-中文分词">jieba —— 中文分词</a>
+<a class="toc-h3" href="#①-把一句话切开">① 把一句话切开</a>
+<a class="toc-h3" href="#②-统计词频-配合-Counter-超好用">② 统计词频（配合 Counter，超好用）</a>
+<a class="toc-h3" href="#③-提取关键词">③ 提取关键词</a>
+<a class="toc-h2" href="#scikit-learn-让程序学会预测">scikit-learn —— 让程序学会预测</a>
+<a class="toc-h3" href="#①-完整流程-背下这-4-步就够">① 完整流程（背下这 4 步就够）</a>
+<a class="toc-h3" href="#②-换模型只改一行">② 换模型只改一行</a>
+<a class="toc-h3" href="#③-想看得更细-分类报告">③ 想看得更细：分类报告</a>
+<a class="toc-h3" href="#④-特征标准化-换数据后必备">④ 特征标准化（换数据后必备）</a>
+<a class="toc-h2" href="#openai-调用大模型">openai —— 调用大模型</a>
+<a class="toc-h3" href="#①-先解决密钥-这一步最重要">① 先解决密钥（这一步最重要）</a>
+<a class="toc-h3" href="#②-给它一个-人设">② 给它一个"人设"</a>
+<a class="toc-h3" href="#③-让它输出-JSON-方便程序处理">③ 让它输出 JSON（方便程序处理）</a>
+<a class="toc-h2" href="#loguru-别再用-print-调试">loguru —— 别再用 print 调试</a>
+<a class="toc-h3" href="#①-三行搞定日志">① 三行搞定日志</a>
+<a class="toc-h3" href="#②-出错时自动带完整-案发现场">② 出错时自动带完整"案发现场"</a>
+<a class="toc-h3" href="#③-把-print-换成-logger-的对应关系">③ 把 print 换成 logger 的对应关系</a>
+<a class="toc-h2" href="#tqdm-给长任务加进度条">tqdm —— 给长任务加进度条</a>
+<a class="toc-h2" href="#pytest-改代码不心慌">pytest —— 改代码不心慌</a>
+<a class="toc-h3" href="#①-写第一个测试">① 写第一个测试</a>
+<a class="toc-h3" href="#②-断言-这里应该报错">② 断言"这里应该报错"</a>
+<a class="toc-h3" href="#③-一次测多组数据">③ 一次测多组数据</a>
+<a class="toc-h2" href="#最后-一个-抄代码-的心法">最后：一个"抄代码"的心法</a>
+<a class="toc-h2" href="#这一页覆盖了什么">📌 这一页覆盖了什么</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="常用工具上手课">🧰 常用工具上手课</h1>
+<blockquote><strong>这一页不是"速查表"，是"上手课"。</strong><br>速查表告诉你"有这个函数"；这一页告诉你<strong>什么时候该用它、怎么写、写完会看到什么</strong>。<br>每个库我只挑 <strong>3~5 个你一定会用到的工具</strong>，每个都按同样的套路讲：<br><strong>① 什么时候会用到它 → ② 怎么写 → ③ 你会看到什么 → ④ 试着改一改</strong></blockquote>
+<hr>
+<h2 id="先看这一段-很重要">先看这一段（很重要）</h2>
+<p>新手最常卡住的不是"不会写代码"，而是<strong>"不知道什么时候该用哪个工具"</strong>。</p>
+<p>所以这一页的顺序是<strong>按"你要干的事"排的</strong>，不是按函数名字母排的：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>你要干的事</th>
+<th>跳到哪一节</th>
+</tr>
+<tr>
+<td>处理一份表格 / Excel</td>
+<td><a href="#pandas--处理表格">pandas</a> · <a href="#openpyxl--用代码写-excel">openpyxl</a></td>
+</tr>
+<tr>
+<td>算一堆数字、画图</td>
+<td><a href="#numpy--算一堆数字">numpy</a> · <a href="#matplotlib--把数字画成图">matplotlib</a></td>
+</tr>
+<tr>
+<td>从网上抓数据</td>
+<td><a href="#requests--去网上拿数据">requests</a> · <a href="#beautifulsoup--从网页里挑数据">beautifulsoup</a></td>
+</tr>
+<tr>
+<td>把数据存起来</td>
+<td><a href="#sqlite3--把数据存起来">sqlite3</a></td>
+</tr>
+<tr>
+<td>批量改文件名 / 处理路径</td>
+<td><a href="#pathlib--文件和文件夹的操作台">pathlib</a></td>
+</tr>
+<tr>
+<td>处理文字（查找替换、日期）</td>
+<td><a href="#re--在文字里找东西">re</a> · <a href="#datetime--处理日期和时间">datetime</a></td>
+</tr>
+<tr>
+<td>自动生成 Word 报告</td>
+<td><a href="#python-docx--用代码写-word">python-docx</a></td>
+</tr>
+<tr>
+<td>中文分词 / 情感分析</td>
+<td><a href="#jieba--中文分词">jieba</a></td>
+</tr>
+<tr>
+<td>做个小预测</td>
+<td><a href="#scikit-learn--让程序学会预测">scikit-learn</a></td>
+</tr>
+<tr>
+<td>调用大模型</td>
+<td><a href="#openai--调用大模型">openai</a></td>
+</tr>
+<tr>
+<td>让代码"专业一点"</td>
+<td><a href="#loguru--别再用-print-调试">loguru</a> · <a href="#tqdm--给长任务加进度条">tqdm</a> · <a href="#pytest--改代码不心慌">pytest</a></td>
+</tr>
+</table></div>
+<blockquote>💡 <strong>建议</strong>：不要一次看完。今天只用得上哪个，就只看那一节。</blockquote>
+<hr>
+<h2 id="pandas-处理表格">pandas —— 处理表格</h2>
+<p><strong>什么时候会用到它</strong>：手里有 CSV / Excel，要筛选、统计、分组、导出。<strong>这是新手最该先学的库。</strong></p>
+<h3 id="①-把表格读进来">① 把表格读进来</h3>
+<p><strong>怎么写</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+
+df = pd.read_csv("成绩.csv")      # 读 CSV
+# df = pd.read_excel("成绩.xlsx") # 读 Excel（需要 openpyxl）
+print(df.head())                  # 先看前 5 行</code></pre></div>
+<p><strong>你会看到</strong>：一张带表头的表，像 Excel 一样（左边多了个行号）。</p>
+<p><strong>试着改一改</strong>：换成你自己的文件名；把 <code>head()</code> 改成 <code>head(10)</code> 看前 10 行。</p>
+<blockquote>⚠️ 读中文 CSV 如果乱码，加一个参数：<code>pd.read_csv("成绩.csv", encoding="utf-8-sig")</code></blockquote>
+<h3 id="②-按条件筛选-最常用的一招">② 按条件筛选（最常用的一招）</h3>
+<p><strong>什么时候用</strong>：只想看"分数大于 660 的"、"杭州的"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">print(df[df["分数"] &gt; 660])                       # 一个条件
+print(df[(df["分数"] &gt; 660) &amp; (df["城市"] == "杭州")])   # 两个条件</code></pre></div>
+<p><strong>你会看到</strong>：只剩符合条件的那些行。</p>
+<p><strong>试着改一改</strong>：把 <code>&gt;</code> 改成 <code>&gt;=</code>、把 660 改成你自己的分数线。</p>
+<p>（多条件时<strong>每个条件都要加括号</strong>，用 <code>&amp;</code> 表示"并且"，<code>|</code> 表示"或者"。）</p>
+<h3 id="③-统计和分组">③ 统计和分组</h3>
+<p><strong>什么时候用</strong>：想知道"平均分多少""每个城市各有多少人"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">print(df["分数"].mean())                     # 平均分
+print(df["分数"].max(), df["分数"].min())     # 最高 / 最低
+print(df["城市"].value_counts())             # 每个城市出现几次
+print(df.groupby("城市")["分数"].mean())      # 每个城市的平均分</code></pre></div>
+<p><strong>你会看到</strong>：一串数字或一张小组表。</p>
+<p><strong>试着改一改</strong>：把 <code>mean()</code> 换成 <code>sum()</code>、<code>max()</code>、<code>count()</code> 试试。</p>
+<h3 id="④-导出结果">④ 导出结果</h3>
+<p><strong>什么时候用</strong>：算完了要发给别人。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">df.to_excel("结果.xlsx", index=False)     # 导出 Excel（记得装 openpyxl）
+df.to_csv("结果.csv", index=False, encoding="utf-8-sig")</code></pre></div>
+<p><strong>你会看到</strong>：当前文件夹里多了 <code>结果.xlsx</code>。</p>
+<p><strong>试着改一改</strong>：把 <code>index=False</code> 删掉，打开文件看看多了什么（会多一列行号）。</p>
+<hr>
+<h2 id="numpy-算一堆数字">numpy —— 算一堆数字</h2>
+<p><strong>什么时候会用到它</strong>：要一次算很多数字（比如给 1 万个数据乘 2），或者做矩阵运算。</p>
+<blockquote><strong>它和普通列表的区别</strong>：<code>[1,2,3] * 2</code> 会变成 6 个元素（重复），<br>而 numpy 数组 <code>a * 2</code> 是<strong>每个元素都乘 2</strong>。</blockquote>
+<h3 id="①-把列表变成-数组">① 把列表变成"数组"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import numpy as np
+
+a = np.array([1, 2, 3, 4])
+print(a * 2)        # [2 4 6 8]
+print(a + 10)       # [11 12 13 14]</code></pre></div>
+<p><strong>你会看到</strong>：<code>[2 4 6 8]</code> —— 注意它<strong>没有逗号</strong>，这是 numpy 数组的样子。</p>
+<p><strong>试着改一改</strong>：把 <code>* 2</code> 换成 <code>** 2</code>（平方）、<code>/ 2</code>（除 2）。</p>
+<h3 id="②-一行算出统计值">② 一行算出统计值</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = np.array([1, 2, 3, 4])
+print(a.mean())     # 2.5   平均
+print(a.sum())      # 10    求和
+print(a.max())      # 4     最大
+print(a.min())      # 1     最小</code></pre></div>
+<p><strong>你会看到</strong>：直接出数字，<strong>不用写循环</strong>。</p>
+<p><strong>试着改一改</strong>：用 100 个随机数试试：<code>np.random.rand(100).mean()</code>。</p>
+<h3 id="③-变成矩阵-行-列">③ 变成矩阵（行 × 列）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">m = np.arange(6).reshape(2, 3)   # 0~5 排成 2 行 3 列
+print(m)
+print(m.sum(axis=0))             # 每列的和</code></pre></div>
+<p><strong>你会看到</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">[[0 1 2]
+ [3 4 5]]
+[3 5 7]</code></pre></div>
+<p><strong>试着改一改</strong>：把 <code>axis=0</code> 改成 <code>axis=1</code>（变成每行的和）。</p>
+<h3 id="④-按条件挑选">④ 按条件挑选</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = np.array([1, 5, 8, 3, 9])
+print(a[a &gt; 4])     # [5 8 9]</code></pre></div>
+<p><strong>你会看到</strong>：只剩大于 4 的那些。</p>
+<hr>
+<h2 id="matplotlib-把数字画成图">matplotlib —— 把数字画成图</h2>
+<p><strong>什么时候会用到它</strong>：要把数据画成折线 / 柱状 / 饼图，放进报告。</p>
+<h3 id="①-画一张柱状图并存成图片-先跑通这个">① 画一张柱状图并存成图片（先跑通这个）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import matplotlib
+matplotlib.use("Agg")                                   # 只存文件，不弹窗
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]   # ★ 不写这行，中文会变方框
+plt.rcParams["axes.unicode_minus"] = False
+
+plt.bar(["张三", "李四", "王五"], [686, 655, 700])
+plt.title("三个人考了多少分")
+plt.savefig("成绩图.png", dpi=150, bbox_inches="tight")
+print("图片已生成")</code></pre></div>
+<p><strong>你会看到</strong>：文件夹里多了一张 <code>成绩图.png</code>，打开是一张带中文标题的柱状图。</p>
+<p><strong>试着改一改</strong>：把名字和分数换成你自己的数据。</p>
+<blockquote>⚠️ <strong>两个经典坑</strong>：① 不设中文字体 → 标题变<strong>方框</strong>；<br>② <code>savefig</code> 写在 <code>plt.show()</code> <strong>后面</strong> → 存出来是<strong>空白</strong>。</blockquote>
+<h3 id="②-换个图形-只改一个词">② 换个图形，只改一个词</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>想画什么</th>
+<th>把 <code>plt.bar</code> 换成</th>
+</tr>
+<tr>
+<td>折线图（看趋势）</td>
+<td><code>plt.plot(x, y)</code></td>
+</tr>
+<tr>
+<td>柱状图（做对比）</td>
+<td><code>plt.bar(标签, 值)</code></td>
+</tr>
+<tr>
+<td>散点图（看关系）</td>
+<td><code>plt.scatter(x, y)</code></td>
+</tr>
+<tr>
+<td>直方图（看分布）</td>
+<td><code>plt.hist(数据, bins=20)</code></td>
+</tr>
+<tr>
+<td>饼图（看占比）</td>
+<td><code>plt.pie(值, labels=标签)</code></td>
+</tr>
+</table></div>
+<p><strong>试着改一改</strong>：把上面那段代码的 <code>plt.bar</code> 换成 <code>plt.plot</code>，重新跑一次。</p>
+<h3 id="③-加标题-轴名-网格">③ 加标题、轴名、网格</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">plt.title("标题")
+plt.xlabel("横轴叫什么")
+plt.ylabel("纵轴叫什么")
+plt.grid(True)
+plt.legend()</code></pre></div>
+<p><strong>你会看到</strong>：图上多了文字说明和网格线，更像"能交出去"的图。</p>
+<hr>
+<h2 id="openpyxl-用代码写-Excel">openpyxl —— 用代码写 Excel</h2>
+<p><strong>什么时候会用到它</strong>：要让程序<strong>生成一张 Excel</strong>（带表头、格式、公式），或者读取别人给的表。</p>
+<h3 id="①-生成一张最简单的表">① 生成一张最简单的表</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl import Workbook
+
+wb = Workbook()          # 新建一个工作簿
+ws = wb.active           # 拿到当前那张表
+ws.title = "成绩"        # 给表起个名字
+
+ws.append(["姓名", "分数"])            # 写一行（表头）
+ws.append(["张三", 686])
+ws.append(["李四", 655])
+
+wb.save("成绩表.xlsx")   # ★ 千万别忘了保存
+print("生成成功")</code></pre></div>
+<p><strong>你会看到</strong>：文件夹里出现 <code>成绩表.xlsx</code>，双击打开就是你要的表格。</p>
+<p><strong>试着改一改</strong>：多写几行 <code>ws.append([...])</code>，改成你自己的数据。</p>
+<h3 id="②-加个表头样式-让它好看点">② 加个表头样式（让它好看点）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl.styles import Font, PatternFill
+
+ws["A1"].font = Font(bold=True, color="FFFFFF")          # 白色加粗
+ws["A1"].fill = PatternFill("solid", fgColor="4F81BD")   # 蓝色底
+ws.column_dimensions["A"].width = 14                     # A 列加宽
+ws.freeze_panes = "A2"                                   # 冻结首行</code></pre></div>
+<p><strong>你会看到</strong>：表头变成蓝底白字，A 列变宽了，往下滚时表头不动。</p>
+<p><strong>试着改一改</strong>：把 <code>fgColor</code> 换成 <code>"C0504D"</code>（红）、<code>"9BBB59"</code>（绿）试试。</p>
+<h3 id="③-写公式-读回来">③ 写公式 &amp; 读回来</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">ws["D1"] = "=SUM(B2:B3)"          # 让 Excel 自己算总和
+
+from openpyxl import load_workbook
+
+wb2 = load_workbook("成绩表.xlsx")
+ws2 = wb2["成绩"]
+for row in ws2.iter_rows(values_only=True):   # 只取值，不要单元格对象
+    print(row)</code></pre></div>
+<p><strong>你会看到</strong>：打印出每一行的内容，像 <code>('姓名', '分数')</code> 这样。</p>
+<p><strong>试着改一改</strong>：用 <code>ws2["B2"].value</code> 取某个格子的值。</p>
+<blockquote>⚠️ openpyxl 只支持 <code>.xlsx</code>；老式的 <code>.xls</code> 要装 <code>xlrd</code>。</blockquote>
+<hr>
+<h2 id="python-docx-用代码写-Word">python-docx —— 用代码写 Word</h2>
+<p><strong>什么时候会用到它</strong>：每周/每月要交一份<strong>格式一样的报告</strong>，但内容总在变。</p>
+<h3 id="①-生成一份最简报告">① 生成一份最简报告</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from docx import Document
+
+doc = Document()
+doc.add_heading("本周工作周报", level=1)      # 一级标题
+doc.add_paragraph("这一行是正文。")            # 正文段落
+doc.add_paragraph("第一条要点", style="List Bullet")   # 项目符号
+doc.save("周报.docx")
+print("生成成功")</code></pre></div>
+<p><strong>你会看到</strong>：<code>周报.docx</code> 出现在文件夹里，打开有大标题、正文、圆点列表。</p>
+<p><strong>试着改一改</strong>：把 <code>style="List Bullet"</code> 换成 <code>"List Number"</code>（变成 1. 2. 3.）。</p>
+<h3 id="②-插一个表格">② 插一个表格</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">t = doc.add_table(rows=1, cols=2)      # 1 行 2 列
+t.style = "Table Grid"                 # 加边框（不加线会看不见）
+
+t.rows[0].cells[0].text = "日期"       # 表头
+t.rows[0].cells[1].text = "工时"
+
+for d, h in [("周一", 8), ("周二", 7.5)]:
+    c = t.add_row().cells               # 加一行
+    c[0].text = d
+    c[1].text = str(h)                  # ★ 数字要转成字符串</code></pre></div>
+<p><strong>你会看到</strong>：Word 里多了一张带边框的两列表格。</p>
+<p><strong>试着改一改</strong>：在循环里多写几天的数据。</p>
+<h3 id="③-插图">③ 插图</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from docx.shared import Inches
+doc.add_picture("成绩图.png", width=Inches(6))   # 把 matplotlib 画的图放进去</code></pre></div>
+<p><strong>你会看到</strong>：图片插进文档里了 —— 这就是"自动生成图文报告"的最后一块拼图。</p>
+<hr>
+<h2 id="pathlib-文件和文件夹的操作台">pathlib —— 文件和文件夹的操作台</h2>
+<p><strong>什么时候会用到它</strong>：批量改文件名、遍历文件夹、判断文件存不存在、拼路径。</p>
+<blockquote>💡 它比老的 <code>os.path</code> 更好用，<strong>推荐新手直接用这个</strong>。</blockquote>
+<h3 id="①-表示一个路径">① 表示一个路径</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from pathlib import Path
+
+p = Path("data") / "成绩.csv"      # ★ 用 / 拼路径，不用手动加斜杠
+print(p)                            # data\成绩.csv
+print(p.name)                       # 成绩.csv      文件名
+print(p.stem)                       # 成绩          不带后缀
+print(p.suffix)                     # .csv          后缀
+print(p.parent)                     # data          上级文件夹</code></pre></div>
+<p><strong>你会看到</strong>：Windows 上会自动用反斜杠，不用自己操心。</p>
+<p><strong>试着改一改</strong>：把文件名换成你自己的，打印看看 <code>name</code> 和 <code>stem</code> 的区别。</p>
+<h3 id="②-列出文件夹里的文件-批量处理的第一步">② 列出文件夹里的文件（批量处理的第一步）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for f in Path("图片").glob("*.jpg"):     # 只看 jpg
+    print(f.name)</code></pre></div>
+<p><strong>你会看到</strong>：把 <code>图片</code> 文件夹里所有 jpg 的名字列一遍。</p>
+<p><strong>试着改一改</strong>：把 <code>*.jpg</code> 改成 <code>*</code>（所有文件）、<code>*.txt</code>（只看文本）。</p>
+<h3 id="③-新建文件夹-判断存在">③ 新建文件夹 / 判断存在</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">Path("输出").mkdir(exist_ok=True)        # 建文件夹；已存在也不报错
+
+p = Path("成绩.csv")
+if p.exists():
+    print("文件在，大小是", p.stat().st_size, "字节")
+else:
+    print("文件不存在")</code></pre></div>
+<p><strong>你会看到</strong>：文件夹被建出来（重复跑不会报错）。</p>
+<h3 id="④-批量改名-一个真实小需求">④ 批量改名（一个真实小需求）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from pathlib import Path
+
+n = 1
+for f in sorted(Path("照片").glob("*.jpg")):
+    f.rename(f.parent / ("旅行_" + str(n) + f.suffix))
+    n += 1
+print("改完了，共", n - 1, "张")</code></pre></div>
+<p><strong>你会看到</strong>：文件名变成 <code>旅行_1.jpg</code>、<code>旅行_2.jpg</code>… 按顺序排好了。</p>
+<blockquote>⚠️ 先拿<strong>备份</strong>的文件夹试！改名是不可逆的。</blockquote>
+<hr>
+<h2 id="json-保存和读取结构化数据">json —— 保存和读取结构化数据</h2>
+<p><strong>什么时候会用到它</strong>：要存配置、存抓到的数据、和别的程序交换数据。</p>
+<h3 id="①-把字典存成文件">① 把字典存成文件</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import json
+
+data = {"姓名": "张三", "分数": 686, "兴趣": ["AI", "爬虫"]}
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)   # ★ ensure_ascii=False 中文不乱码
+print("存好了")</code></pre></div>
+<p><strong>你会看到</strong>：<code>data.json</code> 里是<strong>规规矩矩排好版</strong>的内容（<code>indent=2</code> 让它好看）。</p>
+<p><strong>试着改一改</strong>：删掉 <code>ensure_ascii=False</code> 再看文件 —— 中文会变成 <code>\u5f20\u4e09</code> 这种。</p>
+<h3 id="②-读回来用">② 读回来用</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">with open("data.json", encoding="utf-8") as f:
+    data = json.load(f)
+
+print(data["姓名"])          # 张三
+print(data["兴趣"][0])       # AI</code></pre></div>
+<p><strong>你会看到</strong>：拿回来的是<strong>真正的字典</strong>，可以继续当字典用。</p>
+<p><strong>试着改一改</strong>：给它加一个新键，再存一次。</p>
+<h3 id="③-转换成字符串-不写文件">③ 转换成字符串（不写文件）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">s = json.dumps({"a": 1}, ensure_ascii=False)
+print(s)                     # {"a": 1}
+print(json.loads(s)["a"])    # 1</code></pre></div>
+<p><strong>什么时候用</strong>：要放进日志、要发给接口、要存进数据库的时候。</p>
+<hr>
+<h2 id="requests-去网上拿数据">requests —— 去网上拿数据</h2>
+<p><strong>什么时候会用到它</strong>：想从一个网址拿内容（网页、接口、文件）。</p>
+<blockquote><strong>一句话理解</strong>：它是 Python 的"<strong>浏览器替身</strong>"—— 你告诉它网址，它把内容给你拿回来。</blockquote>
+<h3 id="①-拿一个网页-第一个爬虫就这三行">① 拿一个网页（第一个爬虫就这三行）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests
+
+r = requests.get("https://books.toscrape.com/", timeout=15)
+print(r.status_code)     # 200 表示成功
+print(len(r.text))       # 网页有多少个字符</code></pre></div>
+<p><strong>你会看到</strong>：打印出 <code>200</code> 和一串数字（几万）。</p>
+<p><strong>试着改一改</strong>：把网址换成别的网站，看看状态码还是不是 200。</p>
+<blockquote>⚠️ <strong>一定要写 <code>timeout=15</code></strong> —— 不写的话，网络一卡，程序会<strong>永久卡住</strong>。</blockquote>
+<h3 id="②-看-成功没成功-状态码">② 看"成功没成功"：状态码</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>状态码</th>
+<th>什么意思</th>
+<th>你该做什么</th>
+</tr>
+<tr>
+<td><strong>200</strong></td>
+<td>成功</td>
+<td>继续处理</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>被拒绝</td>
+<td>补一个 <code>User-Agent</code>、慢一点</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>网址不存在</td>
+<td>检查网址拼写</td>
+</tr>
+<tr>
+<td><strong>429</strong></td>
+<td>请求太快了</td>
+<td><strong>立刻降速</strong>（加 time.sleep）</td>
+</tr>
+<tr>
+<td><strong>5xx</strong></td>
+<td>服务器出错</td>
+<td>等会儿重试</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if r.status_code == 200:
+    print("拿到数据了")
+else:
+    print("出问题了，状态码：", r.status_code)</code></pre></div>
+<h3 id="③-装成浏览器-不然可能被拒">③ 装成浏览器（不然可能被拒）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+r = requests.get("https://books.toscrape.com/", headers=headers, timeout=15)</code></pre></div>
+<p><strong>什么时候用</strong>：明明浏览器能打开，代码却返回 403 的时候。</p>
+<p><strong>试着改一改</strong>：加完 headers 再跑，看状态码有没有变成 200。</p>
+<h3 id="④-调用一个接口-直接拿到字典">④ 调用一个接口，直接拿到字典</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">r = requests.get("https://httpbin.org/get", timeout=15)
+data = r.json()               # ★ 一行把 JSON 变成 Python 字典
+print(data["url"])            # 打印请求的网址</code></pre></div>
+<p><strong>你会看到</strong>：能像操作字典一样取里面的字段（不用自己解析 JSON 字符串）。</p>
+<h3 id="⑤-下载一个文件">⑤ 下载一个文件</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">url = "https://books.toscrape.com/media/cache/2c/da/2cdad67c44b002e7ead0cc35693c0e8b.jpg"
+with requests.get(url, timeout=15, stream=True) as r:
+    r.raise_for_status()
+    with open("封面.jpg", "wb") as f:      # ★ 注意是 "wb"（二进制写）
+        for chunk in r.iter_content(8192):
+            f.write(chunk)
+print("下载完成")</code></pre></div>
+<p><strong>你会看到</strong>：文件夹里多了一张 <code>封面.jpg</code>。</p>
+<p><strong>试着改一改</strong>：换一个图片地址再下载一次。</p>
+<hr>
+<h2 id="BeautifulSoup-从网页里-挑-数据">BeautifulSoup —— 从网页里"挑"数据</h2>
+<p><strong>什么时候会用到它</strong>：requests 把网页拿回来了，但那是<strong>一堆标签</strong>，你要从里面挑出"标题""价格"。</p>
+<blockquote><strong>一句话理解</strong>：它把网页变成<strong>能按名字查找</strong>的东西 —— 你说"我要所有价格"，它给你挑出来。</blockquote>
+<h3 id="①-先跑一个离线例子-不联网也能看效果">① 先跑一个离线例子（不联网也能看效果）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from bs4 import BeautifulSoup
+
+html = """
+&lt;div class="book"&gt;&lt;h3&gt;A 书&lt;/h3&gt;&lt;p class="price"&gt;51.77&lt;/p&gt;&lt;/div&gt;
+&lt;div class="book"&gt;&lt;h3&gt;B 书&lt;/h3&gt;&lt;p class="price"&gt;22.50&lt;/p&gt;&lt;/div&gt;
+"""
+soup = BeautifulSoup(html, "lxml")
+
+for card in soup.select("div.book"):           # 找到每一个"书盒子"
+    title = card.select_one("h3").get_text(strip=True)
+    price = card.select_one("p.price").get_text(strip=True)
+    print(title, "→", price)</code></pre></div>
+<p><strong>你会看到</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">A 书 → 51.77
+B 书 → 22.50</code></pre></div>
+<p><strong>试着改一改</strong>：往 HTML 里再加一个 <code>&lt;div class="book"&gt;</code>，看能不能自动多打印一行。</p>
+<h3 id="②-两个核心工具-select-和-select_one">② 两个核心工具：select 和 select_one</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>区别</th>
+</tr>
+<tr>
+<td>`soup.select("...")</td>
+</tr>
+</table></div>
+<p>` | <strong>取一列</strong>（所有符合条件的） | 返回列表，能 for 遍历 |</p>
+<p>| `soup.select_one("...")</p>
+<p><code> | <strong>只取第一个</strong> | 取不到返回 </code>None` |</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">cards = soup.select("div.book")        # 一列
+first = soup.select_one("div.book")    # 第一个
+print(len(cards))</code></pre></div>
+<h3 id="③-选择器怎么写-背这-4-个就够">③ 选择器怎么写（背这 4 个就够）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>想找什么</th>
+<th>怎么写</th>
+<th>例子</th>
+</tr>
+<tr>
+<td>标签</td>
+<td><code>标签名</code></td>
+<td><code>select("h3")</code></td>
+</tr>
+<tr>
+<td>class 是 xxx</td>
+<td><code>.xxx</code></td>
+<td><code>select(".price")</code></td>
+</tr>
+<tr>
+<td>id 是 xxx</td>
+<td><code>#xxx</code></td>
+<td><code>select("#main")</code></td>
+</tr>
+<tr>
+<td>某标签<strong>里面</strong>的某标签</td>
+<td><code>a b</code></td>
+<td><code>select("div.book h3")</code></td>
+</tr>
+</table></div>
+<p><strong>试着改一改</strong>：把 <code>select("div.book")</code> 改成 <code>select("p.price")</code>，看会取出什么。</p>
+<h3 id="④-取文字和取属性">④ 取文字和取属性</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">tag = soup.select_one("h3")
+print(tag.get_text(strip=True))    # 取纯文字（去空白）
+print(tag.get("class"))            # 取属性；没有就返回 None
+
+a = soup.select_one("a")
+print(a["href"])                   # 取链接；没有会报错
+print(a.get("href", "无链接"))      # 更安全：给默认值</code></pre></div>
+<p><strong>什么时候用</strong>：<code>["href"]</code> 取链接最常用；但<strong>先判断一下</strong>，不然遇到缺属性的标签程序会崩。</p>
+<h3 id="⑤-把相对链接拼成完整链接-必学">⑤ 把相对链接拼成完整链接（必学）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from urllib.parse import urljoin
+
+full = urljoin("https://books.toscrape.com/catalogue/page-1.html",
+               "catalogue/a-light-in-the-attic_1000/index.html")
+print(full)</code></pre></div>
+<p><strong>你会看到</strong>：拼成完整的 <code>https://books.toscrape.com/catalogue/...</code>。</p>
+<blockquote>⚠️ <strong>新手最常踩的坑</strong>：网页里的链接是<strong>相对路径</strong>，直接存下来打不开。一定要用 <code>urljoin</code>。</blockquote>
+<hr>
+<h2 id="sqlite3-把数据存起来">sqlite3 —— 把数据存起来</h2>
+<p><strong>什么时候会用到它</strong>：抓到的数据不能只 print，要<strong>存下来反复用</strong>。</p>
+<blockquote><strong>一句话理解</strong>：<strong>一个文件就是一个数据库</strong>，Python 自带，不用装任何东西。</blockquote>
+<h3 id="①-建表-存数据">① 建表 + 存数据</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import sqlite3
+
+conn = sqlite3.connect("students.db")     # 文件不存在会自动创建
+conn.execute("""CREATE TABLE IF NOT EXISTS student(
+    name TEXT, score INTEGER)""")         # 建表（已存在就跳过）
+
+conn.execute("INSERT INTO student VALUES (?, ?)", ("张三", 686))   # ★ 用 ? 传参
+conn.commit()                              # ★ 不写这句等于没存
+print("存好了")</code></pre></div>
+<p><strong>你会看到</strong>：文件夹里多一个 <code>students.db</code>。</p>
+<p><strong>试着改一改</strong>：再插一条；跑到第二遍也不会重复（因为每次都是新插一条 —— 想防重看下一节）。</p>
+<h3 id="②-一次存一批-更快">② 一次存一批（更快）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">rows = [("李四", 655), ("王五", 700), ("赵六", 720)]
+conn.executemany("INSERT INTO student VALUES (?, ?)", rows)
+conn.commit()</code></pre></div>
+<p><strong>什么时候用</strong>：抓了几十上百条数据的时候。</p>
+<h3 id="③-查出来">③ 查出来</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for row in conn.execute("SELECT name, score FROM student WHERE score &gt; ? ORDER BY score DESC", (660,)):
+    print(row)</code></pre></div>
+<p><strong>你会看到</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">('赵六', 720)
+('王五', 700)
+('张三', 686)</code></pre></div>
+<p><strong>试着改一改</strong>：把 <code>&gt; 660</code> 改成 <code>&gt; 100</code>（全部），或者换成 <code>ORDER BY score</code>（从小到大）。</p>
+<h3 id="④-一个实用技巧-用网址去重">④ 一个实用技巧：用网址去重</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">conn.execute("""CREATE TABLE IF NOT EXISTS books(
+    url   TEXT PRIMARY KEY,     -- ★ 网址做主键 = 天然去重
+    title TEXT, price REAL)""")
+conn.execute("INSERT OR IGNORE INTO books VALUES (?, ?, ?)", (url, title, price))</code></pre></div>
+<p><strong>为什么要这样</strong>：爬虫经常要跑好几遍。用 <code>PRIMARY KEY</code> + <code>INSERT OR IGNORE</code>，<strong>重复跑也不会产生重复数据</strong>。</p>
+<blockquote>⚠️ <strong>安全铁律</strong>：永远用 <code>?</code> 占位符，<strong>别用 f-string 拼 SQL</strong> —— 那是"SQL 注入"的入口。</blockquote>
+<hr>
+<h2 id="playwright-页面是-JS-渲染的-开真浏览器">playwright —— 页面是 JS 渲染的？开真浏览器</h2>
+<p><strong>什么时候会用到它</strong>：用 requests 抓回来发现<strong>里面啥也没有</strong>（因为内容是浏览器用 JavaScript 现算出来的）。</p>
+<blockquote><strong>一句话理解</strong>：它<strong>真的开一个浏览器</strong>，替你等页面加载完、点按钮、往下滚，然后把内容读出来。</blockquote>
+<h3 id="①-装它-第一次要下载浏览器">① 装它（第一次要下载浏览器）</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install playwright
+playwright install chromium</code></pre></div>
+<h3 id="②-打开页面并取文字">② 打开页面并取文字</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)     # headless=False 能看见浏览器在动
+    page = browser.new_page()
+    page.goto("https://quotes.toscrape.com/js/", wait_until="networkidle")
+
+    page.wait_for_selector(".quote")               # ★ 等元素出现再取
+    texts = page.locator(".quote .text").all_inner_texts()
+    print("拿到", len(texts), "条")
+    print(texts[0][:30])
+    browser.close()</code></pre></div>
+<p><strong>你会看到</strong>：打印出拿到的条数和第一条内容。</p>
+<p><strong>试着改一改</strong>：把 <code>headless=True</code> 改成 <code>False</code>，你会<strong>真的看到浏览器自己打开、自己加载</strong>。</p>
+<h3 id="③-填表单-点按钮">③ 填表单 + 点按钮</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">page.fill("input[name=q]", "python")     # 在输入框里打字
+page.click("button[type=submit]")        # 点按钮
+page.wait_for_load_state("networkidle")  # 等它加载完</code></pre></div>
+<h3 id="④-截图-做-证据-最方便">④ 截图（做"证据"最方便）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">page.screenshot(path="截图.png", full_page=True)   # full_page 是整页长图</code></pre></div>
+<p><strong>你会看到</strong>：文件夹里多一张<strong>整个网页的长截图</strong>。</p>
+<hr>
+<h2 id="re-在文字里找东西">re —— 在文字里找东西</h2>
+<p><strong>什么时候会用到它</strong>：从一段文字里<strong>找出手机号 / 日期 / 邮箱</strong>，或者做<strong>批量替换</strong>。</p>
+<blockquote><strong>一句话理解</strong>：它让你用"<strong>一个模式</strong>"去文字里匹配，比 <code>.find()</code> 强大得多。</blockquote>
+<h3 id="①-找出所有数字">① 找出所有数字</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import re
+
+text = "成绩分别是 686、655、700 分"
+print(re.findall(r"\d+", text))       # ['686', '655', '700']</code></pre></div>
+<p><strong>你会看到</strong>：一个列表，里面是<strong>字符串形式</strong>的数字（要用得转成 int）。</p>
+<p><strong>试着改一改</strong>：把 <code>\d+</code> 改成 <code>\d</code>（只匹配单个数字），看结果变成什么。</p>
+<h3 id="②-找手机号-邮箱-实用">② 找手机号 / 邮箱（实用）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">text = "联系 13812345678，邮箱 abc@test.com"
+print(re.findall(r"1[3-9]\d{9}", text))              # 手机号
+print(re.findall(r"[\w.+-]+@[\w-]+\.[\w.]+", text))  # 邮箱</code></pre></div>
+<p><strong>你会看到</strong>：分别把手机号和邮箱挑出来了。</p>
+<p><strong>试着改一改</strong>：把你自己的一段文字粘进去试试。</p>
+<h3 id="③-分组提取-把日期拆成-年-月-日">③ 分组提取（把日期拆成 年/月/日）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">m = re.search(r"(\d{4})-(\d{2})-(\d{2})", "日期 2026-10-08")
+print(m.group(1), m.group(2), m.group(3))     # 2026 10 08</code></pre></div>
+<p><strong>你会看到</strong>：<code>2026 10 08</code>。</p>
+<blockquote>💡 <strong>括号 = 分组</strong>。一个括号就是一组，用 <code>group(1)</code>、<code>group(2)</code> 取。</blockquote>
+<h3 id="④-批量替换">④ 批量替换</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">text = "手机 138-1234-5678，备用 139-8765-4321"
+print(re.sub(r"-", "", text))       # 把所有横线删掉</code></pre></div>
+<p><strong>你会看到</strong>：横线全没了。</p>
+<p><strong>新手最常用的几个符号</strong>（记这 6 个就够）：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>意思</th>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>一个数字</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td>字母 / 数字 / 下划线</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>一个空格</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>前面那个东西重复 1 次或多次</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>前面那个东西重复 0 次或多次</td>
+</tr>
+<tr>
+<td><code>{4}</code></td>
+<td>重复 4 次（比如 <code>\d{4}</code> 是 4 位数字）</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="datetime-处理日期和时间">datetime —— 处理日期和时间</h2>
+<p><strong>什么时候会用到它</strong>：给文件加时间戳、算"还有几天"、格式化显示日期。</p>
+<h3 id="①-拿到-现在">① 拿到"现在"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from datetime import datetime
+
+now = datetime.now()
+print(now)                              # 2026-10-08 20:45:31.123456
+print(now.strftime("%Y-%m-%d"))         # 2026-10-08
+print(now.strftime("%H:%M"))            # 20:45</code></pre></div>
+<p><strong>你会看到</strong>：先是完整时间，然后是两个格式化后的字符串。</p>
+<p><strong>试着改一改</strong>：把格式串换成 <code>"%Y年%m月%d日"</code>。</p>
+<p><strong>常用的格式符</strong>：``<code>Y</code> 四位年 ｜ ``<code>m</code> 月 ｜ ``<code>d</code> 日 ｜ ``<code>H</code> 时 ｜ ``<code>M</code> 分 ｜ ``<code>S</code> 秒</p>
+<h3 id="②-给文件名加时间戳-超实用">② 给文件名加时间戳（超实用）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">name = "报告_" + datetime.now().strftime("%Y%m%d_%H%M") + ".xlsx"
+print(name)          # 报告_20261008_2045.xlsx</code></pre></div>
+<p><strong>为什么要这样</strong>：每次生成的报告都不会覆盖上一次。</p>
+<h3 id="③-算-还差几天">③ 算"还差几天"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from datetime import datetime
+
+d1 = datetime(2026, 10, 8)
+d2 = datetime(2026, 12, 31)
+print((d2 - d1).days)          # 两个日期相差多少天</code></pre></div>
+<p><strong>你会看到</strong>：一个整数（相差的天数）。</p>
+<p><strong>试着改一改</strong>：把日期改成你考试/生日的日期，算算还有几天。</p>
+<h3 id="④-加减时间">④ 加减时间</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from datetime import datetime, timedelta
+
+now = datetime.now()
+print(now + timedelta(days=3))       # 三天后
+print(now - timedelta(hours=2))      # 两小时前</code></pre></div>
+<hr>
+<h2 id="random-和-secrets-随机">random 和 secrets —— 随机</h2>
+<p><strong>什么时候会用到它</strong>：抽签、洗牌、造测试数据；生成密码 / 验证码。</p>
+<blockquote>⚠️ <strong>先记住这条</strong>：<code>random</code> 是"<strong>可预测</strong>"的随机，<strong>不能用来做密码</strong>；<br>生成密码/Token 要用 <code>secrets</code>。</blockquote>
+<h3 id="①-抽签-洗牌用-random">① 抽签、洗牌用 random</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import random
+
+print(random.randint(1, 100))            # 1~100 的随机整数
+print(random.choice(["红", "黄", "蓝"]))  # 随机选一个
+cards = [1, 2, 3, 4, 5]
+random.shuffle(cards)                    # 原地打乱
+print(cards)
+print(random.sample(cards, 2))           # 随机抽 2 个（不重复）</code></pre></div>
+<p><strong>你会看到</strong>：每次跑结果都不一样。</p>
+<p><strong>试着改一改</strong>：在最前面加 <code>random.seed(42)</code>，再跑两次 —— 结果会<strong>固定住</strong>（调试时很有用）。</p>
+<h3 id="②-生成密码-验证码要用-secrets">② 生成密码 / 验证码要用 secrets</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import secrets
+
+print(secrets.token_urlsafe(16))                       # 登录 Token / 邀请码
+print(secrets.randbelow(100))                          # 0~99
+code = "".join(str(secrets.randbelow(10)) for _ in range(6))
+print("验证码：", code)</code></pre></div>
+<p><strong>你会看到</strong>：每次都不一样，而且<strong>猜不到</strong>。</p>
+<blockquote>⚠️ <strong>高频事故</strong>：用 <code>random</code> 生成密码重置 Token → 别人能推算出来。<strong>必须用 <code>secrets</code></strong>。</blockquote>
+<hr>
+<h2 id="jieba-中文分词">jieba —— 中文分词</h2>
+<p><strong>什么时候会用到它</strong>：做词频统计、关键词提取、评论分析。</p>
+<blockquote><strong>为什么需要它</strong>：英文有空格（<code>"I love you".split()</code> 就行），<strong>中文不行</strong>。jieba 就是把中文句子切开。</blockquote>
+<h3 id="①-把一句话切开">① 把一句话切开</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import jieba
+
+s = "高考志愿填报要综合考虑分数、城市和专业"
+print(jieba.lcut(s))          # ['高考', '志愿', '填报', '要', '综合', '考虑', ...]</code></pre></div>
+<p><strong>你会看到</strong>：一个词一个词组成的列表。</p>
+<p><strong>试着改一改</strong>：把你的一段话粘进去，看看切得对不对。</p>
+<h3 id="②-统计词频-配合-Counter-超好用">② 统计词频（配合 Counter，超好用）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from collections import Counter
+import jieba
+
+s = "志愿 填报 分数 城市 专业 分数 志愿 分数"
+c = Counter(jieba.lcut(s))
+print(c.most_common(3))       # 出现最多的 3 个词</code></pre></div>
+<p><strong>你会看到</strong>：<code>[('分数', 3), ('志愿', 2), ('填报', 1)]</code> 这样的排行。</p>
+<h3 id="③-提取关键词">③ 提取关键词</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import jieba.analyse
+
+print(jieba.analyse.extract_tags("高考志愿填报要综合考虑分数、城市和专业", topK=5))</code></pre></div>
+<p><strong>你会看到</strong>：自动挑出的 5 个<strong>最能代表这段话</strong>的词。</p>
+<hr>
+<h2 id="scikit-learn-让程序学会预测">scikit-learn —— 让程序学会预测</h2>
+<p><strong>什么时候会用到它</strong>：有一批带答案的数据，想让程序<strong>学会预测新的数据</strong>。</p>
+<blockquote><strong>一句话理解</strong>：不用自己写算法，调一个模型，<code>fit</code> 一下它就"学会了"。</blockquote>
+<h3 id="①-完整流程-背下这-4-步就够">① 完整流程（背下这 4 步就够）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+X, y = load_iris(return_X_y=True)          # ① 拿数据（自带鸢尾花数据集）
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)  # ② 切分
+model = RandomForestClassifier(random_state=42)
+model.fit(Xtr, ytr)                        # ③ 训练
+pred = model.predict(Xte)                  # ④ 预测
+print("准确率：", accuracy_score(yte, pred))</code></pre></div>
+<p><strong>你会看到</strong>：<code>准确率： 1.0</code>（1.0 = 全对）。</p>
+<p><strong>试着改一改</strong>：把 <code>test_size=0.2</code> 改成 <code>0.3</code>（测试集占 30%），看准确率变不变。</p>
+<blockquote>💡 <strong>为什么必须切分</strong>：绝不能拿"学过的题"考自己 —— 那成绩当然很漂亮，但没意义。</blockquote>
+<h3 id="②-换模型只改一行">② 换模型只改一行</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+
+model = DecisionTreeClassifier()      # 把这一行换掉就行
+model = KNeighborsClassifier()
+model = LogisticRegression(max_iter=1000)</code></pre></div>
+<p><strong>你会看到</strong>：所有模型的用法<strong>完全一样</strong>（<code>fit</code> / <code>predict</code>）—— 这就是 sklearn 最方便的地方。</p>
+<h3 id="③-想看得更细-分类报告">③ 想看得更细：分类报告</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.metrics import classification_report
+print(classification_report(yte, pred))</code></pre></div>
+<p><strong>你会看到</strong>：一张表，有<strong>精确率 / 召回率 / F1</strong>。</p>
+<blockquote>💡 <strong>只看"准确率"有时会骗人</strong>（比如 99% 的样本都是同一类）。<strong>分类报告更靠谱</strong>。</blockquote>
+<h3 id="④-特征标准化-换数据后必备">④ 特征标准化（换数据后必备）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+Xtr = scaler.fit_transform(Xtr)     # 训练集：fit + transform
+Xte = scaler.transform(Xte)         # 测试集：只 transform（★ 别写 fit）</code></pre></div>
+<p><strong>为什么</strong>：如果一列是"分数"（几百），一列是"比例"（零点几），模型会偏向数值大的那列。</p>
+<hr>
+<h2 id="openai-调用大模型">openai —— 调用大模型</h2>
+<p><strong>什么时候会用到它</strong>：想做 AI 应用，但<strong>不想自己训练模型</strong>。</p>
+<blockquote><strong>一句话理解</strong>：它是"给大模型<strong>打电话</strong>"的工具 —— 你发一句，它回一句。</blockquote>
+<h3 id="①-先解决密钥-这一步最重要">① 先解决密钥（这一步最重要）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()                                    # 从同目录的 .env 读
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+resp = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "用一句话解释什么是元组"}],
+)
+print(resp.choices[0].message.content)</code></pre></div>
+<p><strong>你会看到</strong>：模型给你的那句回答。</p>
+<blockquote>⚠️ <strong>三不原则</strong>：<strong>不写死在代码里、不提交 GitHub、不外发</strong>。<br><code>.env</code> 文件里写 <code>OPENAI_API_KEY=sk-xxxxx</code>，并且把 <code>.env</code> 加进 <code>.gitignore</code>。</blockquote>
+<h3 id="②-给它一个-人设">② 给它一个"人设"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">messages = [
+    {"role": "system", "content": "你是一个只懂 Python 的老师，回答要短，多举例。"},
+    {"role": "user", "content": "什么是列表推导式？"},
+]</code></pre></div>
+<p><strong>你会看到</strong>：回答风格明显变了（更短、更针对初学者）。</p>
+<p><strong>试着改一改</strong>：把 system 改成"你是严格的代码审查员，指出我的问题"。</p>
+<h3 id="③-让它输出-JSON-方便程序处理">③ 让它输出 JSON（方便程序处理）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">resp = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "给我三个 Python 学习建议，用 JSON 返回"}],
+    response_format={"type": "json_object"},
+)
+print(resp.choices[0].message.content)</code></pre></div>
+<p><strong>你会看到</strong>：返回的是一段<strong>能被 json.loads 解析</strong>的 JSON 字符串。</p>
+<hr>
+<h2 id="loguru-别再用-print-调试">loguru —— 别再用 print 调试</h2>
+<p><strong>什么时候会用到它</strong>：程序跑起来后，你想知道"它跑到哪了""哪里出错了"。</p>
+<blockquote><strong>一句话理解</strong>：它是 <code>print</code> 的升级版 —— 有时间、有级别、能存文件、出错自动带调用栈。</blockquote>
+<h3 id="①-三行搞定日志">① 三行搞定日志</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from loguru import logger
+
+logger.add("run.log", rotation="10 MB", encoding="utf-8")   # 写到文件，超过 10MB 自动换
+logger.info("程序启动")
+logger.warning("这里要小心")
+logger.success("顺利完成")</code></pre></div>
+<p><strong>你会看到</strong>：控制台有彩色输出，同时文件夹里多了 <code>run.log</code>。</p>
+<p><strong>试着改一改</strong>：打开 <code>run.log</code> 看看 —— 里面有<strong>时间戳和级别</strong>，比 print 清楚多了。</p>
+<h3 id="②-出错时自动带完整-案发现场">② 出错时自动带完整"案发现场"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">try:
+    1 / 0
+except ZeroDivisionError:
+    logger.exception("这里出错了")       # ★ 自动附上完整调用栈</code></pre></div>
+<p><strong>你会看到</strong>：日志里有一长串信息，告诉你<strong>哪一行、哪个函数</strong>出的错。</p>
+<blockquote>💡 这就是它比 print 强的地方：<strong>出错时你不猜，它直接告诉你</strong>。</blockquote>
+<h3 id="③-把-print-换成-logger-的对应关系">③ 把 print 换成 logger 的对应关系</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>原来写</th>
+<th>现在写</th>
+</tr>
+<tr>
+<td><code>print("正在处理")</code></td>
+<td><code>logger.info("正在处理")</code></td>
+</tr>
+<tr>
+<td><code>print("警告：…")</code></td>
+<td><code>logger.warning("…")</code></td>
+</tr>
+<tr>
+<td><code>print("出错了")</code></td>
+<td><code>logger.error("…")</code></td>
+</tr>
+<tr>
+<td>在 except 里 print</td>
+<td><code>logger.exception("…")</code></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="tqdm-给长任务加进度条">tqdm —— 给长任务加进度条</h2>
+<p><strong>什么时候会用到它</strong>：循环要跑很久（下载、抓取、处理几万条），你想知道<strong>跑到哪了</strong>。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tqdm import tqdm
+import time
+
+for i in tqdm(range(100), desc="处理中"):
+    time.sleep(0.05)          # 假装在干活
+print("完成")</code></pre></div>
+<p><strong>你会看到</strong>：一行会<strong>自己往前走</strong>的进度条，还带百分比和预计剩余时间。</p>
+<p><strong>试着改一改</strong>：把 <code>range(100)</code> 换成你要遍历的列表，<code>desc</code> 改成你的任务名。</p>
+<blockquote>💡 <strong>一行代码，体验提升 10 倍</strong> —— 这是性价比最高的库之一。</blockquote>
+<hr>
+<h2 id="pytest-改代码不心慌">pytest —— 改代码不心慌</h2>
+<p><strong>什么时候会用到它</strong>：你改了 A 函数，怕<strong>把 B 功能改坏了</strong>。</p>
+<blockquote><strong>一句话理解</strong>：把你"手点一遍验证"的动作，写成一个文件，<strong>一键全部跑一遍</strong>。</blockquote>
+<h3 id="①-写第一个测试">① 写第一个测试</h3>
+<p>新建 <code>test_calc.py</code>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def add(a, b):
+    return a + b
+
+def test_add():                # ★ 函数名必须以 test_ 开头
+    assert add(1, 2) == 3      # 只要有一句不成立，就会报错
+    assert add(0, 0) == 0
+    assert add(-1, 1) == 0</code></pre></div>
+<p>然后命令行里跑：</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pytest -v</code></pre></div>
+<p><strong>你会看到</strong>：绿色的 <code>PASSED</code>（通过）；如果哪句不成立，会红色显示<strong>哪一行错了</strong>。</p>
+<p><strong>试着改一改</strong>：故意把 <code>add(1, 2) == 3</code> 改成 <code>== 4</code>，看测试怎么报错。</p>
+<h3 id="②-断言-这里应该报错">② 断言"这里应该报错"</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pytest
+
+def test_invalid():
+    with pytest.raises(ValueError):     # 期望这里抛出 ValueError
+        int("abc")</code></pre></div>
+<h3 id="③-一次测多组数据">③ 一次测多组数据</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pytest
+
+@pytest.mark.parametrize("score,line,expect", [
+    (700, 700, "稳妥"),
+    (695, 700, "冲刺"),
+    (680, 700, "暂不推荐"),
+])
+def test_level(score, line, expect):
+    assert analyze(score, line) == expect</code></pre></div>
+<p><strong>你会看到</strong>：跑了 3 次测试（每组一次），代码只有一份。</p>
+<blockquote>💡 <strong>为什么值得学</strong>：这是从"能跑"到"<strong>敢改</strong>"的分界线。</blockquote>
+<hr>
+<h2 id="最后-一个-抄代码-的心法">最后：一个"抄代码"的心法</h2>
+<p>新手最有效的学习方式不是"从零写"，而是 <strong>"抄 → 跑通 → 改 → 变成自己的"</strong>。</p>
+<p>具体四步：</p>
+<ol><li><strong>抄</strong>：把上面的代码完整抄一遍（<strong>别只看着，要动手</strong>）</li><li><strong>跑</strong>：跑出一样的结果 —— 说明环境没问题，<strong>你成功了一半</strong></li><li><strong>改</strong>：改数据、改文件名、改参数，看结果怎么变（<strong>这一步收获最大</strong>）</li><li><strong>用</strong>：把它用在你自己的重复劳动上（哪怕只是"给 10 张图改名字"）</li></ol>
+<blockquote><strong>编程能力不是"学"出来的，是"用"出来的。</strong></blockquote>
+<hr>
+<h2 id="这一页覆盖了什么">📌 这一页覆盖了什么</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>分类</th>
+<th>库</th>
+<th>讲到的工具</th>
+</tr>
+<tr>
+<td>数据</td>
+<td>pandas</td>
+<td>读取、筛选、统计分组、导出</td>
+</tr>
+<tr>
+<td></td>
+<td>numpy</td>
+<td>数组、统计、矩阵、条件筛选</td>
+</tr>
+<tr>
+<td></td>
+<td>matplotlib</td>
+<td>画图、换图形、加标注</td>
+</tr>
+<tr>
+<td>办公</td>
+<td>openpyxl</td>
+<td>写表、加样式、公式、读回</td>
+</tr>
+<tr>
+<td></td>
+<td>python-docx</td>
+<td>报告、表格、插图</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>pathlib</td>
+<td>路径、列文件、建目录、批量改名</td>
+</tr>
+<tr>
+<td></td>
+<td>json</td>
+<td>存字典、读回来、转字符串</td>
+</tr>
+<tr>
+<td>爬虫</td>
+<td>requests</td>
+<td>抓网页、状态码、伪装、调接口、下载</td>
+</tr>
+<tr>
+<td></td>
+<td>BeautifulSoup</td>
+<td>挑元素、选择器、取文字属性、拼链接</td>
+</tr>
+<tr>
+<td></td>
+<td>sqlite3</td>
+<td>建表、批量插入、查询、去重</td>
+</tr>
+<tr>
+<td></td>
+<td>playwright</td>
+<td>开浏览器、等元素、填表点击、截图</td>
+</tr>
+<tr>
+<td>文字</td>
+<td>re</td>
+<td>找数字、找手机号、分组、替换</td>
+</tr>
+<tr>
+<td></td>
+<td>datetime</td>
+<td>现在、格式化、算间隔、加减</td>
+</tr>
+<tr>
+<td></td>
+<td>random / secrets</td>
+<td>抽签洗牌、生成密码</td>
+</tr>
+<tr>
+<td>AI</td>
+<td>jieba</td>
+<td>分词、词频、关键词</td>
+</tr>
+<tr>
+<td></td>
+<td>scikit-learn</td>
+<td>四步流程、换模型、分类报告、标准化</td>
+</tr>
+<tr>
+<td></td>
+<td>openai</td>
+<td>调用、人设、JSON 输出</td>
+</tr>
+<tr>
+<td>工程</td>
+<td>loguru</td>
+<td>日志、异常堆栈、替代 print</td>
+</tr>
+<tr>
+<td></td>
+<td>tqdm</td>
+<td>进度条</td>
+</tr>
+<tr>
+<td></td>
+<td>pytest</td>
+<td>写测试、测异常、多组数据</td>
+</tr>
+</table></div>
+<blockquote>想查"还有哪些库" → 看《常用第三方库速查》<br>想系统学 → 看《入门教程》<br>想跟着做一个完整项目 → 看《爬虫实战教程》</blockquote>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

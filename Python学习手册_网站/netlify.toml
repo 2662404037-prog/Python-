@@ -1,0 +1,113 @@
+# =============================================================
+# Netlify 配置 —— Python 学习手册
+# 纯静态站：没有构建步骤，不需要 npm install / build
+# 部署：A) 拖到 https://app.netlify.com/drop  B) 双击「部署到Netlify.cmd」
+# =============================================================
+
+[build]
+  publish = "."
+
+# ------------------------------------------------ 缓存
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/covers/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/downloads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# ------------------------------------------------ 安全头
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# ------------------------------------------------ 短链接（不带 .html 也能访问）
+[[redirects]]
+  from = "/tools"
+  to = "/tools.html"
+  status = 200
+
+[[redirects]]
+  from = "/tutorial"
+  to = "/tutorial.html"
+  status = 200
+
+[[redirects]]
+  from = "/reference"
+  to = "/reference.html"
+  status = 200
+
+[[redirects]]
+  from = "/spider"
+  to = "/spider.html"
+  status = 200
+
+[[redirects]]
+  from = "/basics"
+  to = "/basics.html"
+  status = 200
+
+[[redirects]]
+  from = "/series"
+  to = "/series.html"
+  status = 200
+
+[[redirects]]
+  from = "/wechat"
+  to = "/wechat.html"
+  status = 200
+
+[[redirects]]
+  from = "/s01"
+  to = "/s01.html"
+  status = 200
+
+[[redirects]]
+  from = "/s02"
+  to = "/s02.html"
+  status = 200
+
+[[redirects]]
+  from = "/s03"
+  to = "/s03.html"
+  status = 200
+
+[[redirects]]
+  from = "/s04"
+  to = "/s04.html"
+  status = 200
+
+[[redirects]]
+  from = "/s05"
+  to = "/s05.html"
+  status = 200
+
+[[redirects]]
+  from = "/s06"
+  to = "/s06.html"
+  status = 200
+
+[[redirects]]
+  from = "/s07"
+  to = "/s07.html"
+  status = 200
+
+# ------------------------------------------------ 其它
+# 404.html 会被 Netlify 自动用作 404 页面
+# 绑定自定义域名：Netlify 后台 → Domain management → Add a domain

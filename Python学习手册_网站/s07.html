@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07_完结篇_办公自动化与工程化 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#一-办公自动化-把重复工作交出去">一、办公自动化：把重复工作交出去</a>
+<a class="toc-h3" href="#1-1-openpyxl-用代码写-Excel">1.1 openpyxl —— 用代码写 Excel</a>
+<a class="toc-h3" href="#1-2-python-docx-用代码写-Word">1.2 python-docx —— 用代码写 Word</a>
+<a class="toc-h3" href="#1-3-PDF-三件套">1.3 PDF 三件套</a>
+<a class="toc-h3" href="#1-4-pyautogui-没有-API-的软件-就模拟鼠标">1.4 pyautogui —— 没有 API 的软件，就模拟鼠标</a>
+<a class="toc-h3" href="#1-5-schedule-让它每天自己跑">1.5 schedule —— 让它每天自己跑</a>
+<a class="toc-h3" href="#实战-一个-自动生成周报-脚本-完整可跑">🎯 实战：一个"自动生成周报"脚本（完整可跑）</a>
+<a class="toc-h2" href="#二-工程化-让代码看起来像老手">二、工程化：让代码看起来像老手</a>
+<a class="toc-h3" href="#2-1-loguru-别再用-print-调试了">2.1 loguru —— 别再用 print 调试了</a>
+<a class="toc-h3" href="#2-2-tqdm-tenacity-一个给眼睛-一个给耐心">2.2 tqdm + tenacity —— 一个给眼睛，一个给耐心</a>
+<a class="toc-h3" href="#2-3-pytest-敢改代码-的底气">2.3 pytest —— "敢改代码"的底气</a>
+<a class="toc-h3" href="#2-4-代码质量三件套">2.4 代码质量三件套</a>
+<a class="toc-h3" href="#2-5-rich-typer-让命令行也体面">2.5 rich + typer —— 让命令行也体面</a>
+<a class="toc-h3" href="#2-6-配置与密钥-env-的正确姿势">2.6 配置与密钥：.env 的正确姿势</a>
+<a class="toc-h2" href="#三-120-个库的全景地图">三、120 个库的全景地图</a>
+<a class="toc-h3" href="#数据处理">📊 数据处理</a>
+<a class="toc-h3" href="#算法与数据结构-多半不用装">🧮 算法与数据结构（多半不用装）</a>
+<a class="toc-h3" href="#爬虫与采集">🕷 爬虫与采集</a>
+<a class="toc-h3" href="#网络与安全-只在自己的设备-授权目标-靶场">🔐 网络与安全（⚠️ 只在自己的设备 / 授权目标 / 靶场）</a>
+<a class="toc-h3" href="#AI-与机器学习">🤖 AI 与机器学习</a>
+<a class="toc-h3" href="#Web-后端">🌐 Web 后端</a>
+<a class="toc-h3" href="#办公与文档">📄 办公与文档</a>
+<a class="toc-h3" href="#图像-音视频-OCR">🖼 图像 · 音视频 · OCR</a>
+<a class="toc-h3" href="#数据库">🗄 数据库</a>
+<a class="toc-h3" href="#工程化">🛠 工程化</a>
+<a class="toc-h2" href="#四-给新手的-30-天上手计划">四、给新手的 30 天上手计划</a>
+<a class="toc-h2" href="#五-新手最容易踩的-12-个坑-速查">五、新手最容易踩的 12 个坑（速查）</a>
+<a class="toc-h2" href="#这个系列-你一共学到了什么">📌 这个系列，你一共学到了什么</a>
+<a class="toc-h2" href="#最后一个小作业-今晚就能做完">🎯 最后一个小作业（今晚就能做完）</a>
+<a class="toc-h2" href="#写在最最后">写在最最后</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="办公自动化-工程化-把重复工作交给代码-让代码看起来像老手">办公自动化 + 工程化：把重复工作交给代码，让代码看起来像老手</h1>
+<div style="margin:6px 0 22px"><img src="covers/07_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：每周一早上 9 点，你都要花 40 分钟做同一件事——<br>从三个 Excel 里抄数据 → 算汇总 → 贴进 Word 周报 → 调格式 → 发给老板。<br>这篇教你把它变成：<strong>双击一个图标，5 秒出结果。</strong><br>顺便告诉你：<strong>为什么别人的代码"一看就像老手"。</strong></blockquote>
+<hr>
+<h2 id="一-办公自动化-把重复工作交出去">一、办公自动化：把重复工作交出去</h2>
+<h3 id="1-1-openpyxl-用代码写-Excel">1.1 openpyxl —— 用代码写 Excel</h3>
+<p><strong>🧠 人话</strong>：它能让程序生成 Excel —— 有表头、有格式、有公式、有多个 sheet。</p>
+<p><strong>🏠 生活比喻</strong>：你手工在 Excel 里敲一天，它能<strong>一秒敲一万行</strong>。</p>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>Workbook()</code></td>
+<td>新建工作簿</td>
+<td><code>wb = Workbook()</code></td>
+</tr>
+<tr>
+<td><code>wb.active</code></td>
+<td>拿到当前工作表</td>
+<td><code>ws = wb.active</code></td>
+</tr>
+<tr>
+<td><code>ws.append([...])</code></td>
+<td><strong>追加一行</strong>（最常用）</td>
+<td><code>ws.append(["张三", 686])</code></td>
+</tr>
+<tr>
+<td><code>ws["A1"] = 值</code></td>
+<td>按单元格写</td>
+<td>也能写公式 <code>"=SUM(B2:B3)"</code></td>
+</tr>
+<tr>
+<td><code>Font(bold=True)</code></td>
+<td>加粗</td>
+<td>表头常用</td>
+</tr>
+<tr>
+<td><code>PatternFill("solid", fgColor="4F81BD")</code></td>
+<td>底色</td>
+<td>表头美化</td>
+</tr>
+<tr>
+<td><code>ws.column_dimensions["A"].width = 14</code></td>
+<td>调列宽</td>
+<td>中文不挤</td>
+</tr>
+<tr>
+<td><code>ws.freeze_panes = "A2"</code></td>
+<td>冻结首行</td>
+<td>滚动表头不动</td>
+</tr>
+<tr>
+<td><code>load_workbook("x.xlsx")</code></td>
+<td>读文件</td>
+<td><code>ws.iter_rows(values_only=True)</code></td>
+</tr>
+<tr>
+<td><code>wb.save("x.xlsx")</code></td>
+<td>保存</td>
+<td>别忘</td>
+</tr>
+</table></div>
+<p><strong>🚀 上手</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+
+wb = Workbook(); ws = wb.active; ws.title = "成绩"
+ws.append(["姓名", "分数"])                       # 表头
+for n, s in [("张三", 686), ("李四", 655)]:
+    ws.append([n, s])
+
+ws["A1"].font = Font(bold=True, color="FFFFFF")   # 表头白字
+ws["A1"].fill = PatternFill("solid", fgColor="4F81BD")
+ws.column_dimensions["A"].width = 14
+ws.freeze_panes = "A2"                            # 冻结首行
+wb.save("成绩表.xlsx")
+print("生成成功")</code></pre></div>
+<blockquote>💡 <strong>小白提示</strong>：<code>pip install openpyxl</code>。它只支持 <code>.xlsx</code>，老的 <code>.xls</code> 要用 <code>xlrd</code>。</blockquote>
+<hr>
+<h3 id="1-2-python-docx-用代码写-Word">1.2 python-docx —— 用代码写 Word</h3>
+<p><strong>🧠 人话</strong>：自动生成报告、合同、周报，<strong>格式统一、不会手抖</strong>。</p>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>Document()</code></td>
+<td>新建文档</td>
+<td><code>doc = Document()</code></td>
+</tr>
+<tr>
+<td><code>doc.add_heading(文字, level=1)</code></td>
+<td>标题</td>
+<td>level 1~9</td>
+</tr>
+<tr>
+<td><code>doc.add_paragraph(文字)</code></td>
+<td>段落</td>
+<td>正文</td>
+</tr>
+<tr>
+<td><code>doc.add_paragraph(文字, style="List Bullet")</code></td>
+<td>项目符号</td>
+<td>还有 List Number</td>
+</tr>
+<tr>
+<td><code>doc.add_table(rows=1, cols=2)</code></td>
+<td>插表格</td>
+<td>配合 <code>style="Table Grid"</code></td>
+</tr>
+<tr>
+<td><code>table.add_row().cells</code></td>
+<td>加一行</td>
+<td><code>row[0].text = "…"</code></td>
+</tr>
+<tr>
+<td><code>doc.add_picture("图.png")</code></td>
+<td>插图</td>
+<td>可加 <code>width=Inches(6)</code></td>
+</tr>
+<tr>
+<td><code>doc.add_page_break()</code></td>
+<td>分页</td>
+<td>长文档</td>
+</tr>
+<tr>
+<td><code>doc.save("报告.docx")</code></td>
+<td>保存</td>
+<td>—</td>
+</tr>
+</table></div>
+<p><strong>🚀 上手</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from docx import Document
+
+doc = Document()
+doc.add_heading("本周工作周报", level=1)
+doc.add_paragraph("生成时间：2026-10-08")
+
+t = doc.add_table(rows=1, cols=2); t.style = "Table Grid"
+t.rows[0].cells[0].text = "日期"; t.rows[0].cells[1].text = "工时"
+for d, h in [("周一", 8), ("周二", 7.5)]:
+    c = t.add_row().cells
+    c[0].text, c[1].text = d, str(h)
+
+doc.add_paragraph("本周共 15.5 小时。")
+doc.save("周报.docx")</code></pre></div>
+<hr>
+<h3 id="1-3-PDF-三件套">1.3 PDF 三件套</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>干什么</th>
+<th>一句话</th>
+</tr>
+<tr>
+<td><strong>pdfplumber</strong></td>
+<td><strong>提取</strong> PDF 里的文字和表格</td>
+<td>解析发票、报表</td>
+</tr>
+<tr>
+<td><strong>pypdf</strong></td>
+<td>拆分 / 合并 / 旋转 / 加密</td>
+<td>批量整理</td>
+</tr>
+<tr>
+<td><strong>reportlab</strong></td>
+<td><strong>生成</strong> PDF</td>
+<td>做证书、发票</td>
+</tr>
+<tr>
+<td><strong>PyMuPDF</strong></td>
+<td>PDF 转图片、极速提取</td>
+<td>扫描件处理</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pdfplumber
+
+with pdfplumber.open("发票.pdf") as pdf:
+    print("总共", len(pdf.pages), "页")
+    page = pdf.pages[0]
+    print(page.extract_text()[:100])          # 提取文字
+    for table in page.extract_tables():
+        print(table)                          # 提取表格（很强）</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from pypdf import PdfReader, PdfWriter      # 合并两个 PDF
+
+w = PdfWriter()
+for f in ["a.pdf", "b.pdf"]:
+    for page in PdfReader(f).pages:
+        w.add_page(page)
+w.write("合并后.pdf")</code></pre></div>
+<blockquote>⚠️ <strong>扫描件（图片型 PDF）提不出文字</strong>，那种要配 OCR（<code>pytesseract</code> / <code>easyocr</code>）。</blockquote>
+<hr>
+<h3 id="1-4-pyautogui-没有-API-的软件-就模拟鼠标">1.4 pyautogui —— 没有 API 的软件，就模拟鼠标</h3>
+<p><strong>🧠 人话</strong>：程序替你动鼠标、敲键盘。<strong>给那些"没有接口、只能手动点"的软件做自动化。</strong></p>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>pyautogui.position()</code></td>
+<td>当前鼠标坐标</td>
+<td>先用它量坐标</td>
+</tr>
+<tr>
+<td><code>pyautogui.moveTo(x, y, duration=0.5)</code></td>
+<td>移动</td>
+<td>duration 是动画时长</td>
+</tr>
+<tr>
+<td><code>pyautogui.click(x, y)</code></td>
+<td>点击</td>
+<td>不传坐标就点当前位置</td>
+</tr>
+<tr>
+<td><code>pyautogui.write("abc", interval=0.05)</code></td>
+<td>打字</td>
+<td>interval 防漏字</td>
+</tr>
+<tr>
+<td><code>pyautogui.hotkey("ctrl", "s")</code></td>
+<td>组合键</td>
+<td>Ctrl+S、Ctrl+C</td>
+</tr>
+<tr>
+<td><code>pyautogui.screenshot("x.png")</code></td>
+<td>截图</td>
+<td>存证/找图</td>
+</tr>
+<tr>
+<td><code>locateCenterOnScreen("btn.png")</code></td>
+<td><strong>找图</strong>（比坐标稳）</td>
+<td>配 <code>confidence=0.9</code></td>
+</tr>
+<tr>
+<td><code>pyautogui.FAILSAFE</code></td>
+<td>紧急中止</td>
+<td>鼠标甩到左上角</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pyautogui, time
+
+time.sleep(3)                                  # 给自己 3 秒切窗口
+pyautogui.click(400, 300)                      # 点一下
+pyautogui.write("hello", interval=0.05)        # 打字
+pyautogui.hotkey("ctrl", "s")                  # 保存</code></pre></div>
+<blockquote>⚠️ <strong>两条保命提示</strong>：① 鼠标快速甩到<strong>屏幕左上角</strong>可紧急停止；② 屏幕缩放会改变坐标，<strong>能用"找图"就别写死坐标</strong>。</blockquote>
+<hr>
+<h3 id="1-5-schedule-让它每天自己跑">1.5 schedule —— 让它每天自己跑</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import schedule, time
+
+def job():
+    print("该交周报了！")
+
+schedule.every().day.at("20:00").do(job)          # 每天 20:00
+schedule.every(10).minutes.do(job)                # 每 10 分钟
+schedule.every().monday.at("09:00").do(job)       # 每周一 9:00
+
+while True:                                        # 需要程序一直挂着
+    schedule.run_pending()
+    time.sleep(1)</code></pre></div>
+<blockquote>💡 <strong>Windows 上更省事的做法</strong>：直接把脚本丢进「启动」文件夹，或用系统自带的<strong>任务计划程序</strong>。</blockquote>
+<hr>
+<h3 id="实战-一个-自动生成周报-脚本-完整可跑">🎯 实战：一个"自动生成周报"脚本（完整可跑）</h3>
+<p><strong>场景</strong>：从数据生成 Excel + Word 两份文件。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl import Workbook
+from docx import Document
+from datetime import datetime
+
+data = [("周一", 8), ("周二", 7.5), ("周三", 9), ("周四", 8.5), ("周五", 7)]
+total = sum(h for _, h in data)
+
+# ① 出 Excel
+wb = Workbook(); ws = wb.active; ws.title = "工时"
+ws.append(["日期", "工时"])
+for d, h in data:
+    ws.append([d, h])
+ws.append(["合计", total])
+wb.save("周报.xlsx")
+
+# ② 出 Word
+doc = Document()
+doc.add_heading("本周工作周报", level=1)
+doc.add_paragraph("生成时间：" + datetime.now().strftime("%Y-%m-%d %H:%M"))
+t = doc.add_table(rows=1, cols=2); t.style = "Table Grid"
+t.rows[0].cells[0].text = "日期"; t.rows[0].cells[1].text = "工时"
+for d, h in data:
+    c = t.add_row().cells; c[0].text, c[1].text = d, str(h)
+doc.add_paragraph("本周共 %.1f 小时，平均每天 %.1f 小时。" % (total, total / len(data)))
+doc.save("周报.docx")
+
+print("已生成 周报.xlsx 和 周报.docx，总工时:", total)</code></pre></div>
+<p><strong>运行结果</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">已生成 周报.xlsx 和 周报.docx，总工时: 40.0</code></pre></div>
+<p><strong>这类脚本的价值</strong>：<strong>写一次，以后每周点一下就行。</strong> 这就是"自动化"最朴素也最实用的形态。</p>
+<hr>
+<h2 id="二-工程化-让代码看起来像老手">二、工程化：让代码看起来像老手</h2>
+<blockquote>功能写出来了，但代码"一看就是新手"？这一节就是治这个的。<br><strong>不用全学，挑 3 个用起来，气质立刻不一样。</strong></blockquote>
+<h3 id="2-1-loguru-别再用-print-调试了">2.1 loguru —— 别再用 print 调试了</h3>
+<p><strong>🧠 人话</strong>：一行搞定漂亮的日志：有时间、有级别、能落盘、出错自动带完整堆栈。</p>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>logger.add("run.log")</code></td>
+<td>日志写文件</td>
+<td>加 <code>rotation="10 MB"</code> 自动切割</td>
+</tr>
+<tr>
+<td><code>logger.info / .warning / .error</code></td>
+<td>分级日志</td>
+<td>按重要性打</td>
+</tr>
+<tr>
+<td><code>logger.success("完成")</code></td>
+<td>成功（绿色的）</td>
+<td>好看</td>
+</tr>
+<tr>
+<td><code>logger.exception("出错了")</code></td>
+<td><strong>自动附完整堆栈</strong></td>
+<td>写在 except 里</td>
+</tr>
+<tr>
+<td><code>logger.debug(变量)</code></td>
+<td>调试信息</td>
+<td>配 <code>level="DEBUG"</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from loguru import logger
+
+logger.add("run.log", rotation="10 MB", encoding="utf-8")
+logger.info("程序启动")
+
+try:
+    1 / 0
+except ZeroDivisionError:
+    logger.exception("这里出错了")     # 日志文件里有完整调用栈</code></pre></div>
+<hr>
+<h3 id="2-2-tqdm-tenacity-一个给眼睛-一个给耐心">2.2 tqdm + tenacity —— 一个给眼睛，一个给耐心</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tqdm import tqdm
+
+for i in tqdm(range(100), desc="处理中"):     # 一行就有进度条
+    pass</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tenacity import retry, stop_after_attempt, wait_fixed
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))   # 失败自动重试 3 次
+def fetch(url):
+    ...</code></pre></div>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>干什么</th>
+<th>什么时候用</th>
+</tr>
+<tr>
+<td><strong>tqdm</strong></td>
+<td>进度条</td>
+<td>任何"跑很久"的循环</td>
+</tr>
+<tr>
+<td><strong>tenacity</strong></td>
+<td>自动重试</td>
+<td>网络请求、调接口</td>
+</tr>
+</table></div>
+<hr>
+<h3 id="2-3-pytest-敢改代码-的底气">2.3 pytest —— "敢改代码"的底气</h3>
+<p><strong>🧠 人话</strong>：给函数写几行断言，改完代码<strong>一键验证有没有改坏别的地方</strong>。</p>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td>文件名 <code>test_*.py</code></td>
+<td>约定</td>
+<td>pytest 只认这个命名</td>
+</tr>
+<tr>
+<td><code>def test_xxx():</code></td>
+<td>一个测试</td>
+<td>函数名也要 test_ 开头</td>
+</tr>
+<tr>
+<td><code>assert 表达式</code></td>
+<td>断言</td>
+<td>失败就报错</td>
+</tr>
+<tr>
+<td><code>pytest.raises(异常)</code></td>
+<td><strong>断言"这里该报错"</strong></td>
+<td>测异常分支</td>
+</tr>
+<tr>
+<td><code>@pytest.mark.parametrize</code></td>
+<td>一次测多组数据</td>
+<td>表驱动</td>
+</tr>
+<tr>
+<td>命令行 <code>pytest -v</code></td>
+<td>跑测试</td>
+<td><code>-k 名字</code> 只跑部分</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># test_score.py
+def analyze(score, line):
+    if score &gt;= line: return "稳妥"
+    if score &gt;= line - 10: return "冲刺"
+    return "暂不推荐"
+
+def test_safe():     assert analyze(686, 680) == "稳妥"
+def test_challenge(): assert analyze(686, 690) == "冲刺"
+
+import pytest
+@pytest.mark.parametrize("s,l,e", [(700,700,"稳妥"), (695,700,"冲刺")])
+def test_more(s, l, e): assert analyze(s, l) == e</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pytest -v</code></pre></div>
+<hr>
+<h3 id="2-4-代码质量三件套">2.4 代码质量三件套</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>一行命令</th>
+</tr>
+<tr>
+<td><strong>ruff</strong></td>
+<td><strong>检查 + 自动修复 + 格式化</strong>（一个顶三个）</td>
+<td><code>ruff check . --fix</code></td>
+</tr>
+<tr>
+<td><strong>black</strong></td>
+<td>自动格式化</td>
+<td><code>black .</code></td>
+</tr>
+<tr>
+<td><strong>mypy</strong></td>
+<td><strong>静态类型检查</strong>（提前发现传错类型）</td>
+<td><code>mypy main.py</code></td>
+</tr>
+<tr>
+<td><strong>isort</strong></td>
+<td>整理 import 顺序</td>
+<td><code>isort .</code></td>
+</tr>
+<tr>
+<td><strong>pre-commit</strong></td>
+<td>提交前自动跑检查</td>
+<td><code>pre-commit install</code></td>
+</tr>
+</table></div>
+<blockquote>💡 <strong>对新手的价值</strong>：ruff 会告诉你"变量定义了没用""import 了没用""这行太长"——<br><strong>相当于一个免费的老师盯着你写代码。</strong></blockquote>
+<hr>
+<h3 id="2-5-rich-typer-让命令行也体面">2.5 rich + typer —— 让命令行也体面</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from rich.console import Console
+from rich.table import Table
+
+c = Console()
+t = Table(title="我的成绩表")
+t.add_column("姓名"); t.add_column("分数", justify="right")
+t.add_row("张三", "686"); t.add_row("李四", "655")
+c.print(t)
+c.print("[bold green]分析完成！[/bold green]")</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># typer：几行写一个专业命令行工具
+import typer
+app = typer.Typer()
+
+@app.command()
+def analyze(score: int, city: str = "杭州"):
+    """根据分数给出建议（试试 --help）"""
+    typer.echo("稳妥" if score &gt;= 680 else "冲刺")
+
+if __name__ == "__main__":
+    app()</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">python cli.py analyze 686 --city 杭州
+python cli.py --help          # 自动生成的帮助文档</code></pre></div>
+<hr>
+<h3 id="2-6-配置与密钥-env-的正确姿势">2.6 配置与密钥：<code>.env</code> 的正确姿势</h3>
+<p><strong>🧠 人话</strong>：密码、API Key <strong>绝不能写死在代码里</strong>。放在 <code>.env</code> 文件里，用 <code>python-dotenv</code> 读。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import os
+from dotenv import load_dotenv
+
+load_dotenv()                          # 读取同目录的 .env
+key = os.getenv("OPENAI_API_KEY")       # .env 里写 OPENAI_API_KEY=sk-xxxxx
+print("读到密钥:", key[:6] + "…")</code></pre></div>
+<p><strong>🔧 常用工具</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>load_dotenv()</code></td>
+<td>读 <code>.env</code></td>
+<td>程序开头调一次</td>
+</tr>
+<tr>
+<td><code>os.getenv("KEY", 默认值)</code></td>
+<td>取配置</td>
+<td>给默认值更稳</td>
+</tr>
+<tr>
+<td><code>yaml.safe_load(文件)</code></td>
+<td>读 YAML 配置</td>
+<td>复杂配置用它</td>
+</tr>
+<tr>
+<td><code>json.dumps(d, ensure_ascii=False)</code></td>
+<td>存 JSON（中文不转义）</td>
+<td>存数据</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <strong>务必</strong>把 <code>.env</code> 加进 <code>.gitignore</code>！否则推送到 GitHub 后，密钥几分钟内就可能被盗用。</blockquote>
+<hr>
+<h2 id="三-120-个库的全景地图">三、120 个库的全景地图</h2>
+<blockquote>前面 6 篇讲的是"怎么用"，这一页是"<strong>有什么</strong>"。<br><strong>忘了我还有什么牌可以打的时候，回来翻这一页。</strong></blockquote>
+<h3 id="数据处理">📊 数据处理</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>numpy</td>
+<td>数字整体运算</td>
+<td><code>np.array()</code>、<code>arr.mean()</code>、<code>arr.reshape()</code></td>
+</tr>
+<tr>
+<td>pandas</td>
+<td>Python 版 Excel</td>
+<td><code>read_csv()</code>、<code>df[条件]</code>、<code>groupby()</code>、<code>to_excel()</code></td>
+</tr>
+<tr>
+<td>matplotlib</td>
+<td>画图</td>
+<td><code>plot()</code>、<code>bar()</code>、<code>hist()</code>、<code>savefig()</code></td>
+</tr>
+<tr>
+<td>seaborn</td>
+<td>好看的统计图</td>
+<td><code>sns.barplot()</code>、<code>sns.heatmap()</code></td>
+</tr>
+<tr>
+<td>polars</td>
+<td>更快的大表处理</td>
+<td><code>pl.read_csv()</code>、<code>filter()</code>、<code>group_by()</code></td>
+</tr>
+<tr>
+<td>scipy</td>
+<td>科学计算</td>
+<td><code>optimize.minimize()</code>、<code>stats.describe()</code></td>
+</tr>
+<tr>
+<td>sympy</td>
+<td>符号数学（算公式）</td>
+<td><code>solve()</code>、<code>diff()</code>、<code>integrate()</code></td>
+</tr>
+<tr>
+<td>statsmodels</td>
+<td>专业统计</td>
+<td><code>OLS()</code>、<code>adfuller()</code></td>
+</tr>
+<tr>
+<td>pyarrow</td>
+<td>列式存储</td>
+<td><code>to_parquet()</code></td>
+</tr>
+</table></div>
+<h3 id="算法与数据结构-多半不用装">🧮 算法与数据结构（<strong>多半不用装</strong>）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>collections</td>
+<td>计数 / 队列 / 默认字典</td>
+<td><code>Counter()</code>、<code>deque()</code>、<code>defaultdict(list)</code></td>
+</tr>
+<tr>
+<td>heapq</td>
+<td>最小堆</td>
+<td><code>heapify()</code>、<code>heappop()</code>、<code>nlargest()</code></td>
+</tr>
+<tr>
+<td>bisect</td>
+<td>二分查找</td>
+<td><code>bisect_left()</code>、<code>insort()</code></td>
+</tr>
+<tr>
+<td>itertools</td>
+<td>排列组合</td>
+<td><code>combinations()</code>、<code>permutations()</code>、<code>product()</code></td>
+</tr>
+<tr>
+<td>functools</td>
+<td>记忆化</td>
+<td><code>@lru_cache</code></td>
+</tr>
+<tr>
+<td>sortedcontainers</td>
+<td>永远有序的表</td>
+<td><code>SortedList()</code>、<code>.add()</code>、<code>.bisect_left()</code></td>
+</tr>
+<tr>
+<td>more-itertools</td>
+<td>滑动窗口 / 分块</td>
+<td><code>windowed()</code>、<code>chunked()</code></td>
+</tr>
+<tr>
+<td>networkx</td>
+<td>图论</td>
+<td><code>Graph()</code>、<code>shortest_path()</code></td>
+</tr>
+<tr>
+<td>z3-solver</td>
+<td>约束求解</td>
+<td><code>Solver()</code>、<code>s.add()</code>、<code>s.model()</code></td>
+</tr>
+<tr>
+<td>ortools / pulp</td>
+<td>线性规划</td>
+<td><code>LinearSolver()</code></td>
+</tr>
+</table></div>
+<h3 id="爬虫与采集">🕷 爬虫与采集</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>requests</td>
+<td>发 HTTP 请求</td>
+<td><code>get()</code>、<code>post()</code>、<code>r.json()</code>、<code>timeout=</code></td>
+</tr>
+<tr>
+<td>httpx</td>
+<td>异步 HTTP</td>
+<td><code>AsyncClient()</code>、<code>asyncio.gather()</code></td>
+</tr>
+<tr>
+<td>beautifulsoup4</td>
+<td>从 HTML 挑数据</td>
+<td><code>select()</code>、<code>select_one()</code>、<code>get_text()</code></td>
+</tr>
+<tr>
+<td>lxml</td>
+<td>高速解析器</td>
+<td><code>BeautifulSoup(html, "lxml")</code></td>
+</tr>
+<tr>
+<td>parsel</td>
+<td>XPath / CSS</td>
+<td><code>Selector().css()</code>、<code>.xpath()</code></td>
+</tr>
+<tr>
+<td>playwright</td>
+<td>开真浏览器</td>
+<td><code>page.goto()</code>、<code>wait_for_selector()</code>、<code>screenshot()</code></td>
+</tr>
+<tr>
+<td>selenium</td>
+<td>老牌浏览器自动化</td>
+<td><code>webdriver.Chrome()</code>、<code>find_elements()</code></td>
+</tr>
+<tr>
+<td>scrapy</td>
+<td>大爬虫框架</td>
+<td><code>scrapy startproject</code>、<code>yield</code></td>
+</tr>
+<tr>
+<td>tenacity</td>
+<td>自动重试</td>
+<td><code>@retry(stop_after_attempt(3))</code></td>
+</tr>
+<tr>
+<td>tqdm</td>
+<td>进度条</td>
+<td><code>for x in tqdm(items)</code></td>
+</tr>
+<tr>
+<td>fake-useragent</td>
+<td>随机 UA</td>
+<td><code>UserAgent().random</code></td>
+</tr>
+</table></div>
+<h3 id="网络与安全-只在自己的设备-授权目标-靶场">🔐 网络与安全（⚠️ 只在自己的设备 / 授权目标 / 靶场）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>socket</td>
+<td>网络地基</td>
+<td><code>socket()</code>、<code>connect_ex()</code>、<code>gethostbyname()</code></td>
+</tr>
+<tr>
+<td>hashlib</td>
+<td>哈希指纹</td>
+<td><code>sha256().hexdigest()</code></td>
+</tr>
+<tr>
+<td>hmac</td>
+<td>带密钥的签名</td>
+<td><code>hmac.new()</code>、<code>compare_digest()</code></td>
+</tr>
+<tr>
+<td>secrets</td>
+<td>安全随机</td>
+<td><code>token_urlsafe()</code>、<code>randbelow()</code></td>
+</tr>
+<tr>
+<td>bcrypt</td>
+<td><strong>存密码唯一正解</strong></td>
+<td><code>hashpw()</code>、<code>checkpw()</code></td>
+</tr>
+<tr>
+<td>cryptography</td>
+<td>真加密</td>
+<td><code>Fernet()</code>、<code>rsa.generate_private_key()</code></td>
+</tr>
+<tr>
+<td>pyjwt</td>
+<td>JWT</td>
+<td><code>jwt.encode()</code>、<code>jwt.decode(algorithms=[...])</code></td>
+</tr>
+<tr>
+<td>scapy</td>
+<td>看网络包</td>
+<td><code>IP()/TCP()</code>、<code>sniff()</code></td>
+</tr>
+<tr>
+<td>python-nmap</td>
+<td>端口探测</td>
+<td><code>PortScanner().scan("127.0.0.1")</code></td>
+</tr>
+<tr>
+<td>dnspython</td>
+<td>DNS 查询</td>
+<td><code>dns.resolver.resolve()</code></td>
+</tr>
+<tr>
+<td>psutil</td>
+<td>系统监控</td>
+<td><code>cpu_percent()</code>、<code>virtual_memory()</code></td>
+</tr>
+<tr>
+<td>mitmproxy</td>
+<td>看自己 App 的流量</td>
+<td><code>mitmweb</code></td>
+</tr>
+<tr>
+<td>bandit / pip-audit</td>
+<td><strong>扫自己代码 / 依赖的漏洞</strong></td>
+<td><code>bandit -r .</code>、<code>pip-audit</code></td>
+</tr>
+<tr>
+<td>yara-python</td>
+<td>恶意文件特征匹配（防守）</td>
+<td><code>yara.compile()</code>、<code>rule.match()</code></td>
+</tr>
+<tr>
+<td>capstone / pefile</td>
+<td>反汇编 / 解析 exe</td>
+<td><code>Cs().disasm()</code>、<code>pefile.PE()</code></td>
+</tr>
+</table></div>
+<h3 id="AI-与机器学习">🤖 AI 与机器学习</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>scikit-learn</td>
+<td>传统机器学习</td>
+<td><code>train_test_split()</code>、<code>fit()</code>、<code>predict()</code></td>
+</tr>
+<tr>
+<td>xgboost / lightgbm</td>
+<td>表格数据最强</td>
+<td><code>XGBClassifier()</code>、<code>early_stopping_rounds</code></td>
+</tr>
+<tr>
+<td>pytorch</td>
+<td>深度学习</td>
+<td><code>nn.Sequential()</code>、<code>loss.backward()</code>、<code>opt.step()</code></td>
+</tr>
+<tr>
+<td>transformers</td>
+<td>一行用预训练模型</td>
+<td><code>pipeline("sentiment-analysis")</code></td>
+</tr>
+<tr>
+<td>sentence-transformers</td>
+<td>句子转向量</td>
+<td><code>model.encode()</code>、<code>cos_sim()</code></td>
+</tr>
+<tr>
+<td>datasets</td>
+<td>一行下数据集</td>
+<td><code>load_dataset("imdb")</code></td>
+</tr>
+<tr>
+<td>openai</td>
+<td>调大模型</td>
+<td><code>client.chat.completions.create()</code></td>
+</tr>
+<tr>
+<td>tiktoken</td>
+<td>数 token（算钱）</td>
+<td><code>enc.encode(text)</code></td>
+</tr>
+<tr>
+<td>peft</td>
+<td>低成本微调（LoRA）</td>
+<td><code>get_peft_model()</code></td>
+</tr>
+<tr>
+<td>langchain</td>
+<td>串大模型 + 你的数据（RAG）</td>
+<td><code>RetrievalQA</code>、<code>Document</code></td>
+</tr>
+<tr>
+<td>jieba</td>
+<td>中文分词</td>
+<td><code>jieba.lcut()</code>、<code>analyse.extract_tags()</code></td>
+</tr>
+<tr>
+<td>pypinyin</td>
+<td>汉字转拼音</td>
+<td><code>lazy_pinyin()</code></td>
+</tr>
+<tr>
+<td>snownlp</td>
+<td>中文情感</td>
+<td><code>SnowNLP(t).sentiments</code></td>
+</tr>
+<tr>
+<td>wordcloud</td>
+<td>词云</td>
+<td><code>WordCloud().generate()</code></td>
+</tr>
+</table></div>
+<h3 id="Web-后端">🌐 Web 后端</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>fastapi</td>
+<td>写接口 + 自动文档</td>
+<td><code>@app.post()</code>、<code>BaseModel</code>、<code>/docs</code></td>
+</tr>
+<tr>
+<td>flask</td>
+<td>最轻量 Web 框架</td>
+<td><code>@app.get()</code>、<code>render_template()</code></td>
+</tr>
+<tr>
+<td>django</td>
+<td>全家桶</td>
+<td><code>django-admin startproject</code>、<code>admin</code></td>
+</tr>
+<tr>
+<td>uvicorn / gunicorn</td>
+<td>服务器</td>
+<td><code>uvicorn main:app --reload</code></td>
+</tr>
+<tr>
+<td>pydantic</td>
+<td>数据校验</td>
+<td><code>BaseModel</code>、<code>Field(ge=0)</code></td>
+</tr>
+<tr>
+<td>sqlalchemy</td>
+<td>ORM</td>
+<td><code>create_engine()</code>、<code>Session</code>、<code>select()</code></td>
+</tr>
+<tr>
+<td>jinja2</td>
+<td>模板</td>
+<td><code>{{ 变量 }}</code>、<code>{% for %}</code></td>
+</tr>
+<tr>
+<td>streamlit</td>
+<td>几行做数据网页</td>
+<td><code>st.dataframe()</code>、<code>st.bar_chart()</code></td>
+</tr>
+<tr>
+<td>gradio</td>
+<td>几行做 AI 界面</td>
+<td><code>gr.Interface()</code></td>
+</tr>
+</table></div>
+<h3 id="办公与文档">📄 办公与文档</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>openpyxl</td>
+<td>写 Excel</td>
+<td><code>Workbook()</code>、<code>ws.append()</code>、<code>save()</code></td>
+</tr>
+<tr>
+<td>python-docx</td>
+<td>写 Word</td>
+<td><code>Document()</code>、<code>add_heading()</code>、<code>add_table()</code></td>
+</tr>
+<tr>
+<td>python-pptx</td>
+<td>写 PPT</td>
+<td><code>Presentation()</code>、<code>add_slide()</code></td>
+</tr>
+<tr>
+<td>pdfplumber</td>
+<td>提取 PDF 文字/表格</td>
+<td><code>extract_text()</code>、<code>extract_tables()</code></td>
+</tr>
+<tr>
+<td>pypdf</td>
+<td>PDF 拆分合并</td>
+<td><code>PdfReader()</code>、<code>PdfWriter()</code></td>
+</tr>
+<tr>
+<td>PyMuPDF</td>
+<td>PDF 转图片</td>
+<td><code>pymupdf.open()</code>、<code>get_pixmap()</code></td>
+</tr>
+<tr>
+<td>reportlab</td>
+<td>生成 PDF</td>
+<td><code>canvas.Canvas()</code>、<code>drawString()</code></td>
+</tr>
+<tr>
+<td>pyautogui</td>
+<td>模拟鼠标键盘</td>
+<td><code>click()</code>、<code>write()</code>、<code>hotkey()</code></td>
+</tr>
+<tr>
+<td>schedule</td>
+<td>定时任务</td>
+<td><code>schedule.every().day.at()</code></td>
+</tr>
+<tr>
+<td>pyinstaller</td>
+<td>打包成 exe</td>
+<td><code>pyinstaller -F -w 脚本.py</code></td>
+</tr>
+</table></div>
+<h3 id="图像-音视频-OCR">🖼 图像 · 音视频 · OCR</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>Pillow</td>
+<td>改图片</td>
+<td><code>Image.open()</code>、<code>resize()</code>、<code>save()</code></td>
+</tr>
+<tr>
+<td>opencv-python</td>
+<td>计算机视觉</td>
+<td><code>imread()</code>、<code>Canny()</code>、<code>CascadeClassifier()</code></td>
+</tr>
+<tr>
+<td>pytesseract / easyocr</td>
+<td>图片里的字 → 文本</td>
+<td><code>image_to_string()</code>、<code>Reader().readtext()</code></td>
+</tr>
+<tr>
+<td>moviepy</td>
+<td>剪视频</td>
+<td><code>VideoFileClip()</code>、<code>subclipped()</code></td>
+</tr>
+<tr>
+<td>pydub</td>
+<td>剪音频</td>
+<td><code>AudioSegment.from_mp3()</code></td>
+</tr>
+<tr>
+<td>whisper</td>
+<td>语音转文字</td>
+<td><code>model.transcribe()</code></td>
+</tr>
+<tr>
+<td>qrcode / pyzbar</td>
+<td>生成 / 识别二维码</td>
+<td><code>qrcode.make()</code>、<code>decode()</code></td>
+</tr>
+</table></div>
+<h3 id="数据库">🗄 数据库</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>sqlite3</td>
+<td>单文件数据库（首选）</td>
+<td><code>connect()</code>、<code>execute()</code>、<code>commit()</code></td>
+</tr>
+<tr>
+<td>pymysql / psycopg</td>
+<td>连 MySQL / PostgreSQL</td>
+<td><code>connect()</code>、<code>cursor()</code></td>
+</tr>
+<tr>
+<td>pymongo</td>
+<td>连 MongoDB</td>
+<td><code>MongoClient()</code>、<code>find()</code></td>
+</tr>
+<tr>
+<td>redis</td>
+<td>缓存 / 队列 / 计数</td>
+<td><code>set(ex=60)</code>、<code>incr()</code>、<code>lpush()</code></td>
+</tr>
+<tr>
+<td>duckdb</td>
+<td>直接用 SQL 查 CSV</td>
+<td><code>duckdb.sql("SELECT … FROM 'a.csv'")</code></td>
+</tr>
+<tr>
+<td>alembic</td>
+<td>数据库迁移</td>
+<td><code>alembic revision --autogenerate</code></td>
+</tr>
+</table></div>
+<h3 id="工程化">🛠 工程化</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>人话</th>
+<th>最常用工具</th>
+</tr>
+<tr>
+<td>pytest</td>
+<td>自动化测试</td>
+<td><code>assert</code>、<code>pytest.raises</code>、<code>parametrize</code></td>
+</tr>
+<tr>
+<td>ruff</td>
+<td>检查 + 格式化</td>
+<td><code>ruff check . --fix</code>、<code>ruff format .</code></td>
+</tr>
+<tr>
+<td>black / isort</td>
+<td>格式化 / import 排序</td>
+<td><code>black .</code>、<code>isort .</code></td>
+</tr>
+<tr>
+<td>mypy</td>
+<td>类型检查</td>
+<td><code>mypy main.py</code></td>
+</tr>
+<tr>
+<td>loguru</td>
+<td>漂亮日志</td>
+<td><code>logger.add()</code>、<code>logger.exception()</code></td>
+</tr>
+<tr>
+<td>tqdm</td>
+<td>进度条</td>
+<td><code>tqdm(items)</code></td>
+</tr>
+<tr>
+<td>rich</td>
+<td>终端美化</td>
+<td><code>Console().print(Table())</code></td>
+</tr>
+<tr>
+<td>typer / click</td>
+<td>命令行工具</td>
+<td><code>@app.command()</code></td>
+</tr>
+<tr>
+<td>python-dotenv</td>
+<td>读 <code>.env</code></td>
+<td><code>load_dotenv()</code></td>
+</tr>
+<tr>
+<td>PyYAML</td>
+<td>读写 YAML</td>
+<td><code>yaml.safe_load()</code></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="四-给新手的-30-天上手计划">四、给新手的 30 天上手计划</h2>
+<p><strong>每天 20 分钟，不用很努力，但要连续。</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>阶段</th>
+<th>目标</th>
+<th>做什么</th>
+<th>用到什么</th>
+</tr>
+<tr>
+<td><strong>第 1 周</strong></td>
+<td>环境 + 有成就感</td>
+<td>装好 Python 和 venv；跑通 3 个小例子（Excel、图片水印、二维码）</td>
+<td>pip、openpyxl、Pillow、qrcode</td>
+</tr>
+<tr>
+<td><strong>第 2 周</strong></td>
+<td>会处理数据</td>
+<td>找一份自己的数据（成绩/账单/运动记录），做筛选、统计、画图</td>
+<td>numpy、pandas、matplotlib</td>
+</tr>
+<tr>
+<td><strong>第 3 周</strong></td>
+<td>会抓数据</td>
+<td>抓 3 页公开数据 → 存进 sqlite → 导出 Excel</td>
+<td>requests、BeautifulSoup、sqlite3</td>
+</tr>
+<tr>
+<td><strong>第 4 周</strong></td>
+<td>会交付</td>
+<td>把前 3 周的东西串成一个脚本，加上日志和进度条；再用 pyinstaller 打成 exe 发给朋友</td>
+<td>loguru、tqdm、pyinstaller</td>
+</tr>
+</table></div>
+<p><strong>每周日花 10 分钟做一件事</strong>：把这周的代码发出去（公众号 / 朋友圈 / 同学群）。</p>
+<p><strong>「讲一遍」比「看十遍」有用得多。</strong></p>
+<hr>
+<h2 id="五-新手最容易踩的-12-个坑-速查">五、新手最容易踩的 12 个坑（速查）</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>#</th>
+<th>坑</th>
+<th>正确做法</th>
+</tr>
+<tr>
+<td>1</td>
+<td><code>ModuleNotFoundError</code> 就怀疑代码</td>
+<td>先 <code>pip install</code>，并确认<strong>在当前虚拟环境</strong>里</td>
+</tr>
+<tr>
+<td>2</td>
+<td>requests 不加 <code>timeout</code></td>
+<td><strong>永远加</strong>，否则永久卡住</td>
+</tr>
+<tr>
+<td>3</td>
+<td>网页中文乱码</td>
+<td><code>r.encoding = r.apparent_encoding</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>select_one</code> 返回 None 就崩</td>
+<td>先 <code>if tag:</code> 再取值</td>
+</tr>
+<tr>
+<td>5</td>
+<td>抓到的链接打不开</td>
+<td><code>urljoin(当前页, href)</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>用 f-string 拼 SQL</td>
+<td><strong>永远用 <code>?</code> 占位符</strong></td>
+</tr>
+<tr>
+<td>7</td>
+<td>用 MD5 存密码</td>
+<td>用 <strong>bcrypt</strong></td>
+</tr>
+<tr>
+<td>8</td>
+<td>用 <code>random</code> 生成 Token</td>
+<td>用 <strong>secrets</strong></td>
+</tr>
+<tr>
+<td>9</td>
+<td>API Key 写死在代码里</td>
+<td><code>.env</code> + python-dotenv + <code>.gitignore</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td>matplotlib 中文变方框</td>
+<td>设 <code>font.sans-serif</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>lst = lst.sort()</code> 变成 None</td>
+<td><code>sort()</code> 原地改；要新表用 <code>sorted()</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td>所有代码堆在一个文件里</td>
+<td><strong>用函数拆开</strong>，一个函数干一件事</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="这个系列-你一共学到了什么">📌 这个系列，你一共学到了什么</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>篇</th>
+<th>主题</th>
+<th>核心收获</th>
+</tr>
+<tr>
+<td>01</td>
+<td>学完语法卡住</td>
+<td>环境 + 装库 + 看报错 + 3 个立刻上手的小库</td>
+</tr>
+<tr>
+<td>02</td>
+<td>数据处理三件套</td>
+<td>numpy / pandas / matplotlib，把表格变成结论</td>
+</tr>
+<tr>
+<td>03</td>
+<td>7 件算法神器</td>
+<td><strong>不装任何库</strong>，让代码快一万倍</td>
+</tr>
+<tr>
+<td>04</td>
+<td>爬虫入门</td>
+<td>requests + BeautifulSoup + sqlite3，附合规红线</td>
+</tr>
+<tr>
+<td>05</td>
+<td>网络安全第一课</td>
+<td>哈希 vs 加密、bcrypt 存密码、防守方向</td>
+</tr>
+<tr>
+<td>06</td>
+<td>AI 入门</td>
+<td>中文处理 + sklearn + 大模型 API，不训练模型也能做 AI</td>
+</tr>
+<tr>
+<td>07</td>
+<td>办公自动化 + 工程化</td>
+<td>把重复工作交出去，让代码看起来像老手</td>
+</tr>
+</table></div>
+<p><strong>一共覆盖 120+ 个库。但你不需要全学</strong>——按第 30 天计划挑一条走下去就行。</p>
+<hr>
+<h2 id="最后一个小作业-今晚就能做完">🎯 最后一个小作业（今晚就能做完）</h2>
+<p><strong>用 openpyxl 生成一张"我的本周时间账单"</strong>：</p>
+<ol><li>写下你这周每天的<strong>学习时长</strong></li><li>用 openpyxl 生成 Excel：表头 + 每天一行 + 合计</li><li>给表头加个底色、把列宽调宽一点</li><li>保存成 <code>我的时间账单.xlsx</code></li></ol>
+<p><strong>做完之后你会突然明白一件事</strong>：</p>
+<blockquote>原来"让电脑替我干活"，门槛没有想象中那么高。</blockquote>
+<hr>
+<h2 id="写在最最后">写在最最后</h2>
+<p>回头看这一路：</p>
+<p>从"<strong>学完语法就卡住</strong>"，到"<strong>知道有 120 个库可以用</strong>"，再到"<strong>能用它们做出真东西</strong>"——</p>
+<p><strong>中间缺的从来不是天赋，而是有人告诉你：先做什么、再做什么。</strong></p>
+<p>如果这个系列帮你少走了三个月弯路，那我就没白写。</p>
+<hr>
+<p>👉 <strong>如果这 7 篇对你有帮助，欢迎「点赞」「在看」</strong></p>
+<p>👉 <strong>转发给那个"学完 Python 语法就卡住"的朋友</strong> —— 他大概正需要这个</p>
+<p>👉 <strong>关注我</strong>，后续会更新：<strong>每个方向的完整实战项目拆解</strong>（带可运行代码）</p>
+<blockquote>本文所有示例均以"合法、安全、可运行"为前提。<br>网络与安全部分请只在<strong>自己的设备、有书面授权的目标，或靶场 / CTF</strong> 中练习。</blockquote>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

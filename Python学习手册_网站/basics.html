@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>知识点 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#一-五种数据容器-什么时候用哪个">一、五种数据容器：什么时候用哪个</a>
+<a class="toc-h3" href="#思维导图-五种容器怎么选">🗺️ 思维导图：五种容器怎么选</a>
+<a class="toc-h3" href="#写代码前的-四问-流程">🔁 写代码前的「四问」流程</a>
+<a class="toc-h3" href="#12-个坑的因果图">🕳️ 12 个坑的因果图</a>
+<a class="toc-h2" href="#二-我踩过的-12-个坑">二、我踩过的 12 个坑</a>
+<a class="toc-h3" href="#坑-1-链式比较-interest-in-major_map-True">🕳️ 坑 1：链式比较 —— interest in major_map == True</a>
+<a class="toc-h3" href="#坑-2-pop-下标自增-每删一个就跳过一个">🕳️ 坑 2：pop + 下标自增 → 每删一个就跳过一个</a>
+<a class="toc-h3" href="#坑-3-print-return-最致命的一个">🕳️ 坑 3：print ≠ return（最致命的一个）</a>
+<a class="toc-h3" href="#坑-4-append-和-extend-分不清-存错了东西">🕳️ 坑 4：append 和 extend 分不清 / 存错了东西</a>
+<a class="toc-h3" href="#坑-5-把-整张表的判断-写在-for-循环里面">🕳️ 坑 5：把"整张表的判断"写在 for 循环里面</a>
+<a class="toc-h3" href="#坑-6-拿-自己和自己比-条件恒为真">🕳️ 坑 6：拿"自己和自己比"，条件恒为真</a>
+<a class="toc-h3" href="#坑-7-print-写在-for-外面-只打印最后一个">🕳️ 坑 7：print 写在 for 外面 → 只打印最后一个</a>
+<a class="toc-h3" href="#坑-8-函数写了参数-却根本没用">🕳️ 坑 8：函数写了参数，却根本没用</a>
+<a class="toc-h3" href="#坑-9-任务-4-用切片代替了-for-循环">🕳️ 坑 9：任务 4 用切片代替了 for 循环</a>
+<a class="toc-h3" href="#坑-10-range-的-左闭右开-没搞清">🕳️ 坑 10：range 的"左闭右开"没搞清</a>
+<a class="toc-h3" href="#坑-11-注释掉的-半成品代码-没清掉">🕳️ 坑 11：注释掉的"半成品代码"没清掉</a>
+<a class="toc-h3" href="#坑-12-变量名拼错-变量写完全没用">🕳️ 坑 12：变量名拼错 + 变量写完全没用</a>
+<a class="toc-h2" href="#三-知识点详解-进阶篇">三、知识点详解（进阶篇）</a>
+<a class="toc-h3" href="#3-1-可变-vs-不可变-Python-最底层的一条分界线">3.1 可变 vs 不可变 —— Python 最底层的一条分界线</a>
+<a class="toc-h3" href="#3-2-变量是-名字-不是-盒子-引用-is-拷贝">3.2 变量是"名字"，不是"盒子" —— 引用、is、拷贝</a>
+<a class="toc-h3" href="#3-3-哈希-hashable-为什么-set-里不能放-list">3.3 哈希（hashable）—— 为什么 set 里不能放 list</a>
+<a class="toc-h3" href="#3-4-容器选择-一套可以照着走的决策流程">3.4 容器选择：一套可以照着走的决策流程</a>
+<a class="toc-h3" href="#3-5-五种容器常用操作对照表">3.5 五种容器常用操作对照表</a>
+<a class="toc-h3" href="#3-6-真值判断-什么算-假">3.6 真值判断：什么算"假"</a>
+<a class="toc-h3" href="#3-7-比较运算符与链式比较">3.7 比较运算符与链式比较</a>
+<a class="toc-h3" href="#3-8-in-的四种含义-很容易混">3.8 in 的四种含义（很容易混）</a>
+<a class="toc-h3" href="#3-9-切片-slicing-完全指南">3.9 切片（slicing）完全指南</a>
+<a class="toc-h3" href="#3-10-range-完全指南">3.10 range 完全指南</a>
+<a class="toc-h3" href="#3-11-for-while-break-continue">3.11 for / while / break / continue</a>
+<a class="toc-h3" href="#3-12-边遍历边修改-一个必须警惕的操作">3.12 边遍历边修改 —— 一个必须警惕的操作</a>
+<a class="toc-h3" href="#3-13-列表推导式-认得就好-本作业别用">3.13 列表推导式（认得就好，本作业别用）</a>
+<a class="toc-h3" href="#3-14-函数-参数-返回值-作用域">3.14 函数：参数、返回值、作用域</a>
+<a class="toc-h3" href="#3-15-函数是-一等公民-可以当参数传-回调函数">3.15 函数是"一等公民" —— 可以当参数传（回调函数）</a>
+<a class="toc-h3" href="#3-16-默认参数的陷阱-进阶-知道就好">3.16 默认参数的陷阱（进阶，知道就好）</a>
+<a class="toc-h3" href="#3-17-常见报错速查表-看报错不再发懵">3.17 常见报错速查表（看报错不再发懵）</a>
+<a class="toc-h3" href="#3-18-调试五步法">3.18 调试五步法</a>
+<a class="toc-h3" href="#3-19-命名与注释规范-对应-优秀作业标准">3.19 命名与注释规范（对应"优秀作业标准"）</a>
+<a class="toc-h3" href="#3-20-if-__name__-__main__-是干什么的">3.20 if __name__ == "__main__": 是干什么的</a>
+<a class="toc-h2" href="#四-语法速查卡">四、语法速查卡</a>
+<a class="toc-h2" href="#五-交作业自检清单">五、交作业自检清单</a>
+<a class="toc-h2" href="#六-三条通用心法">六、三条通用心法</a>
+<a class="toc-h2" href="#七-核心术语定义表">七、核心术语定义表</a>
+<a class="toc-h2" href="#八-常用用法备注-按类型速查">八、常用用法备注（按类型速查）</a>
+<a class="toc-h3" href="#8-1-字符串-str">8.1 字符串 str</a>
+<a class="toc-h3" href="#8-2-列表-list">8.2 列表 list</a>
+<a class="toc-h3" href="#8-3-元组-tuple">8.3 元组 tuple</a>
+<a class="toc-h3" href="#8-4-集合-set">8.4 集合 set</a>
+<a class="toc-h3" href="#8-5-字典-dict">8.5 字典 dict</a>
+<a class="toc-h3" href="#8-6-range-与循环">8.6 range 与循环</a>
+<a class="toc-h3" href="#8-7-函数与返回值">8.7 函数与返回值</a>
+<a class="toc-h3" href="#8-8-输出与格式">8.8 输出与格式</a>
+<a class="toc-h3" href="#8-9-调试与排错">8.9 调试与排错</a>
+<a class="toc-h3" href="#8-10-写代码前的一句话自问">8.10 写代码前的一句话自问</a>
+<a class="toc-h2" href="#附录-12-个任务-涉及知识点对照表">附录：12 个任务 × 涉及知识点对照表</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="志愿填报作业-知识点-错题本-详解版">志愿填报作业 · 知识点 &amp; 错题本（详解版）</h1>
+<blockquote>这份文档是<strong>根据我自己写作业时踩过的坑</strong>整理的，不是标准答案。<br><strong>怎么读</strong>：<br>1. 先读「一、容器地图」——建立整体感觉<br>2. 再读「二、我踩过的 12 个坑」——这些是我真正犯过的错<br>3. 「三、知识点详解」是<strong>原理层</strong>的补充，第一遍不用全懂，写代码卡住时回来查<br>4. 查名词定义去「七、核心术语定义表」；忘了怎么写去「八、常用用法备注」<br>5. 最后用「五、交作业自检清单」过一遍</blockquote>
+<p><strong>目录</strong></p>
+<ul><li>一、五种数据容器：什么时候用哪个</li><li>二、我踩过的 12 个坑</li><li>三、知识点详解（进阶篇）</li><li>3.1 可变 vs 不可变　3.2 引用与拷贝　3.3 哈希　3.4 容器选择流程　3.5 常用操作对照</li><li>3.6 真值判断　3.7 比较与链式比较　3.8 <code>in</code> 的四种含义　3.9 切片完全指南　3.10 <code>range</code> 完全指南</li><li>3.11 for / while / break / continue　3.12 边遍历边修改　3.13 推导式</li><li>3.14 函数：参数 / 返回 / 作用域　3.15 函数是一等公民　3.16 默认参数陷阱</li><li>3.17 常见报错速查　3.18 调试五步法　3.19 命名与注释规范　3.20 <code>__main__</code></li><li>四、语法速查卡</li><li>五、交作业自检清单</li><li>六、三条通用心法</li><li>七、核心术语定义表</li><li>八、常用用法备注</li><li>附录：12 个任务 × 涉及知识点对照表</li></ul>
+<hr>
+<h2 id="一-五种数据容器-什么时候用哪个">一、五种数据容器：什么时候用哪个</h2>
+<p>这是本次作业真正的考点。判断口诀：<strong>要顺序用 list / tuple，要唯一用 set，要"按名字查东西"用 dict。</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>容器</th>
+<th>写法</th>
+<th>三个关键词</th>
+<th>本次作业用在哪</th>
+</tr>
+<tr>
+<td><code>list</code> 列表</td>
+<td><code>[1, 2, 3]</code></td>
+<td>有顺序、<strong>能改</strong>、可重复</td>
+<td><code>wish_list</code> 志愿表、<code>task_list</code> 任务清单、<code>选科</code></td>
+</tr>
+<tr>
+<td><code>tuple</code> 元组</td>
+<td><code>(1, 2, 3)</code></td>
+<td>有顺序、<strong>不能改</strong>、可重复</td>
+<td><code>universities</code>（分数线是"事实"，不该被随手改）</td>
+</tr>
+<tr>
+<td><code>str</code> 字符串</td>
+<td><code>"张三"</code></td>
+<td>文字、<strong>不可变</strong></td>
+<td><code>student["姓名"]</code></td>
+</tr>
+<tr>
+<td><code>set</code> 集合</td>
+<td><code>{1, 2, 3}</code></td>
+<td><strong>自动去重</strong>、<strong>无序</strong>、元素必须可哈希</td>
+<td>兴趣标签去重、志愿表查重、推荐专业去重</td>
+</tr>
+<tr>
+<td><code>dict</code> 字典</td>
+<td><code>{"键": "值"}</code></td>
+<td><strong>按 key 找 value</strong></td>
+<td><code>student</code>、<code>major_map</code>、专业计数</td>
+</tr>
+</table></div>
+<p><strong>两个容易忘的细节：</strong></p>
+<ol><li><strong>list 和 tuple 唯一的根本区别</strong>：能改 / 不能改。</li></ol>
+<p>   试试 <code>universities[0][2] = 700</code> → 直接报错，这就是题目让你"体会"的地方。</p>
+<ol><li><strong>set 里不能放 list</strong>。<code>set([[1,2],[3,4]])</code> 会报 <code>TypeError: unhashable type: 'list'</code>。</li></ol>
+<p>   原因见 3.3 —— 集合靠"哈希值"判断元素是否重复，而<strong>可变容器没法安全地哈希</strong>。</p>
+<hr>
+<h3 id="思维导图-五种容器怎么选">🗺️ 思维导图：五种容器怎么选</h3>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">mindmap
+  root((选哪个容器))
+    一个东西
+      str 文字
+      int float 数字
+      bool
+    一堆东西
+      要按名字查
+        dict
+          学生信息
+          兴趣到专业映射
+          专业计数
+      要不能重复
+        set
+          兴趣标签去重
+          志愿表查重
+          推荐专业去重
+      要能改
+        list
+          志愿表
+          任务清单
+          选科
+      不能改 是事实
+        tuple
+          大学分数线
+          函数多返回值</code></pre></div>
+<h3 id="写代码前的-四问-流程">🔁 写代码前的「四问」流程</h3>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart TD
+  A[拿到一份数据] --&gt; B{是一个还是一堆}
+  B -- 一个 --&gt; C[str / int / float]
+  B -- 一堆 --&gt; D{要按名字查吗}
+  D -- 要 --&gt; E[dict]
+  D -- 不要 --&gt; F{要保证不重复吗}
+  F -- 要 --&gt; G[set]
+  F -- 不要 --&gt; H{需要改吗}
+  H -- 需要 --&gt; I[list]
+  H -- 不需要 --&gt; J[tuple]</code></pre></div>
+<h3 id="12-个坑的因果图">🕳️ 12 个坑的因果图</h3>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart LR
+  P1[坑1 链式比较] --&gt; R1[结果恒为假]
+  P2[坑2 pop 加下标自增] --&gt; R2[只删一半]
+  P3[坑3 没有 return] --&gt; R3[结果变成 None]
+  P5[坑5 判断写在循环里] --&gt; R4[重复打印 N 次]
+  P6[坑6 自己和自己比] --&gt; R1
+  P7[坑7 print 在循环外] --&gt; R5[只打印最后一个]
+  P8[坑8 函数不用参数] --&gt; R6[换数据就失效]
+  P9[坑9 用切片代替 for] --&gt; R7[考点不给分]</code></pre></div>
+<hr>
+<h2 id="二-我踩过的-12-个坑">二、我踩过的 12 个坑</h2>
+<h3 id="坑-1-链式比较-interest-in-major_map-True">🕳️ 坑 1：链式比较 —— <code>interest in major_map == True</code></h3>
+<p><strong>现象</strong>：推荐专业那一栏永远是空的，程序不报错，就是没结果。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if interest in major_map == True:      # ❌ 永远为 False
+    recommended.append(interest)</code></pre></div>
+<p><strong>为什么错</strong>：Python 允许<strong>链式比较</strong>，<code>a &lt; b &lt; c</code> 会被理解成 <code>(a &lt; b) and (b &lt; c)</code>。</p>
+<p><code>in</code> 也是<strong>比较运算符</strong>，所以上面那行实际是：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">(interest in major_map) and (major_map == True)
+#                                 ↑ 字典永远不等于 True</code></pre></div>
+<p>结果永远是 <code>False</code>。实测：<code>'计算机' in major_map == True</code> → <code>False</code>，而 <code>'计算机' in major_map</code> → <code>True</code>。</p>
+<p><strong>正确写法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if interest in major_map:              # 直接写条件
+    ...</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>永远不要写 <code>== True</code></strong>。<code>if 条件:</code> 本身就是"如果条件为真"。</p>
+<hr>
+<h3 id="坑-2-pop-下标自增-每删一个就跳过一个">🕳️ 坑 2：<code>pop</code> + 下标自增 → 每删一个就跳过一个</h3>
+<p><strong>现象</strong>：想把 <code>task_list</code> 清空，结果只删掉一半，剩下 <code>['查询大学', '提交志愿']</code>。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">i = 0
+while i &lt; len(task_list):
+    task_list.pop(i)     # ❌
+    i += 1</code></pre></div>
+<p><strong>为什么错</strong>：<code>pop(i)</code> 删掉一个元素后，<strong>后面的元素会集体往前挪一格</strong>，但 <code>i</code> 又往前走了，于是正好跳过下一个。手推一遍：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>步骤</th>
+<th>列表</th>
+<th>说明</th>
+</tr>
+<tr>
+<td>开始</td>
+<td><code>[整理成绩, 查询大学, 筛选专业, 提交志愿]</code></td>
+<td>i=0</td>
+</tr>
+<tr>
+<td>第 1 轮后</td>
+<td><code>[查询大学, 筛选专业, 提交志愿]</code></td>
+<td><code>pop(0)</code> 删掉"整理成绩"，i 变 1</td>
+</tr>
+<tr>
+<td>第 2 轮后</td>
+<td><code>[查询大学, 提交志愿]</code></td>
+<td><code>pop(1)</code> 删掉"筛选专业"，i 变 2</td>
+</tr>
+<tr>
+<td>结束</td>
+<td><code>[查询大学, 提交志愿]</code></td>
+<td><code>len</code> 只剩 2，<code>i=2</code> 不满足条件</td>
+</tr>
+</table></div>
+<p><strong>正确写法</strong>（题目提示给了）：<strong>永远删第 0 个</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">while len(task_list) &gt; 0:      # 或者写成 while task_list:
+    task_list.pop(0)</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>边遍历边删除时，下标会"骗"你。</strong></p>
+<hr>
+<h3 id="坑-3-print-return-最致命的一个">🕳️ 坑 3：<code>print</code> ≠ <code>return</code>（最致命的一个）</h3>
+<p><strong>现象</strong>：<code>result = progress_function(0.05, final_analysis)</code> 之后 <code>print(result)</code> 打出的是 <code>None</code>，精心写的报告一个字都没出现。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def progress_function(sleep_time, print_function):
+    for x in range(100):
+        ...
+    sleep(0.1)
+    if x == 99:
+        print_function()      # ❌ 执行了，但返回值直接丢了
+                              # 函数最后没有 return → 返回 None</code></pre></div>
+<p><strong>为什么错</strong>：<strong>没有 <code>return</code> 的函数，返回值就是 <code>None</code>。</strong></p>
+<ul><li><code>print(x)</code> = 在屏幕上<strong>显示</strong> x，函数返回值还是 <code>None</code></li><li><code>return x</code> = 把 x <strong>交给调用者</strong>，可以被 <code>=</code> 接住</li></ul>
+<p><code>final_analysis()</code> 确实被调用了、也算出了报告字符串，但<strong>没人接住 → 被扔掉了</strong>。</p>
+<p><strong>正确写法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">return print_function()      # 接住回调的返回值，再交出去</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>想让外面接到东西，就必须 <code>return</code>；<code>print</code> 只是给人看的。</strong></p>
+<hr>
+<h3 id="坑-4-append-和-extend-分不清-存错了东西">🕳️ 坑 4：<code>append</code> 和 <code>extend</code> 分不清 / 存错了东西</h3>
+<p><strong>现象</strong>：推荐专业里存的是"计算机"这种<strong>兴趣标签</strong>，而不是"计算机科学与技术"这种<strong>专业</strong>。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">recommended_majors.append(interest)                   # ❌ 存了标签
+recommended_majors.extend(major_map[interest])        # ✅ 存了专业</code></pre></div>
+<p><strong>区别</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = []
+a.append(["计算机科学与技术", "软件工程"])   # → [['计算机科学与技术', '软件工程']]  整个列表塞进去
+a.extend(["计算机科学与技术", "软件工程"])   # → ['计算机科学与技术', '软件工程']   拆开逐个塞</code></pre></div>
+<p><strong>一句话记住</strong>：<code>append</code> 塞<strong>一个</strong>东西，<code>extend</code> 把里面的东西<strong>逐个</strong>塞进去。</p>
+<hr>
+<h3 id="坑-5-把-整张表的判断-写在-for-循环里面">🕳️ 坑 5：把"整张表的判断"写在 <code>for</code> 循环里面</h3>
+<p><strong>现象</strong>：程序连打 5 遍"志愿表中没有重复的大学名称"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for i in range(len(wish_list)):
+    if 有重复:                 # ❌ 每所大学都判一次、打一次
+        print("志愿表中存在重复大学")</code></pre></div>
+<p><strong>为什么错</strong>：题目要判断的是"<strong>整张志愿表</strong>有没有重复"，一次就够，所以要<strong>跳出循环</strong>再判。</p>
+<p><strong>正确写法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">names = [item[0] for item in wish_list]
+if len(set(names)) == len(names):      # 循环之外，只判一次
+    print("志愿表中没有重复大学")
+else:
+    print("志愿表中存在重复大学")</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>循环负责"收集数据"，判断和输出放在循环外面。</strong></p>
+<hr>
+<h3 id="坑-6-拿-自己和自己比-条件恒为真">🕳️ 坑 6：拿"自己和自己比"，条件恒为真</h3>
+<p><strong>现象</strong>：不管资料里有没有重复，永远输出"没有重复"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if list(set(wish_list[i][0])) == list(set(wish_list[i][0])):   # ❌ 左右完全一样</code></pre></div>
+<p><strong>为什么错</strong>：等号两边是<strong>同一个东西</strong>，永远相等。我本来想比较"原始"和"去重后"，但两边都写了去重版。</p>
+<p><strong>正确的查重思路 —— 比"去重前后的个数"</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">len(set(names)) == len(names)</code></pre></div>
+<ul><li>5 个名字 → 放进 set → 还剩 5 个 → 一个都没被去掉 → <strong>没重复</strong></li><li>5 个名字 → 放进 set → 变成 4 个 → 有 2 个一样 → <strong>有重复</strong></li></ul>
+<p><strong>一句话记住</strong>：<strong>查重 = <code>len(set(x))</code> 和 <code>len(x)</code> 比大小。</strong></p>
+<hr>
+<h3 id="坑-7-print-写在-for-外面-只打印最后一个">🕳️ 坑 7：<code>print</code> 写在 <code>for</code> 外面 → 只打印最后一个</h3>
+<p><strong>现象</strong>：专业计数只输出了一行 <code>专业 电子信息工程: 出现 2 次</code>，其他专业都消失了。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for i in range(len(wish_list)):
+    for major in wish_list[i][1]:
+        major_count[major] = major_count.get(major, 0) + 1
+print(f"专业 {major}: 出现 {major_count[major]} 次")     # ❌ 在循环外！</code></pre></div>
+<p><strong>为什么错</strong>：统计部分其实是<strong>对的</strong>，但打印跑出了循环，所以只在最后打印了一次，用的还是循环结束时残留的那个 <code>major</code>。</p>
+<p><strong>正确写法 —— 用 <code>for</code> 遍历字典</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for major in major_count:
+    print(major, "出现了", major_count[major], "次")</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>"每一个"要打印 → <code>print</code> 必须在 <code>for</code> 里面。</strong></p>
+<hr>
+<h3 id="坑-8-函数写了参数-却根本没用">🕳️ 坑 8：函数写了参数，却根本没用</h3>
+<p><strong>现象</strong>：<code>analyze_student(student, universities)</code> 看起来没问题，但函数体里从来没用过这两个参数。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def analyze_student(student, universities):
+    return challenge_list, safe_list, not_recommended_list   # ❌ 用的是外面的全局列表</code></pre></div>
+<p><strong>为什么错</strong>：<strong>参数是函数的"输入"</strong>。函数应该"给我什么，我算什么"，而不是偷偷去读外面的全局变量。否则这个函数换个学生、换份学校表就完全没用了。</p>
+<p><strong>正确写法 —— 用参数，在函数内部新建列表</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def analyze_student(student, universities):
+    challenge, safe, not_recommended = [], [], []
+    for name, _city, line in universities:
+        if student["高考分数"] &gt;= line:
+            safe.append(name)
+        elif student["高考分数"] &gt;= line - 10:
+            challenge.append(name)
+        else:
+            not_recommended.append(name)
+    return challenge, safe, not_recommended</code></pre></div>
+<p><strong>另一个隐藏问题</strong>：直接返回全局列表时，外面任何地方改了那个列表，"函数返回的结果"也会跟着变（它们是<strong>同一个对象</strong>，原理见 3.2）。</p>
+<p><strong>一句话记住</strong>：<strong>函数只认参数，不认全局。</strong></p>
+<hr>
+<h3 id="坑-9-任务-4-用切片代替了-for-循环">🕳️ 坑 9：任务 4 用切片代替了 <code>for</code> 循环</h3>
+<p><strong>现象</strong>：题目要求"<strong>使用 for 循环</strong>倒序复制，并且子列表也要倒序"，我写的是 <code>new_list = my_list[::-1]</code>。</p>
+<p><strong>为什么错</strong>：</p>
+<ul><li>题目写"<strong>必须使用 for 循环</strong>"——这是考点，用了切片<strong>直接不给分</strong></li><li><code>my_list[::-1]</code> 只能把<strong>外层</strong>倒过来，里面的 <code>["计算机","机器人","自动化"]</code> 还是原顺序，<strong>没满足"子列表也倒序"</strong></li></ul>
+<p><strong>正确思路</strong>：外层用 <code>range</code> 倒着走，碰到子列表再用切片倒一次。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">new_list = []
+for i in range(len(my_list) - 1, -1, -1):     # 外层：整体倒序
+    item = my_list[i]
+    if isinstance(item, list):                # 判断是不是列表
+        new_list.append(item[::-1])           # 子列表也倒序
+    else:
+        new_list.append(item)</code></pre></div>
+<p><strong>一句话记住</strong>：<strong>作业里写"必须用 X"的地方，就用 X，别用更聪明的写法。</strong></p>
+<hr>
+<h3 id="坑-10-range-的-左闭右开-没搞清">🕳️ 坑 10：<code>range</code> 的"左闭右开"没搞清</h3>
+<p><strong>现象</strong>：倒着遍历时少走了一格 / <code>range</code> 的终点写错。</p>
+<p><strong>规则</strong>：<code>range(起点, 终点, 步长)</code>，<strong>包含起点，不包含终点</strong>。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">range(5)            # 0 1 2 3 4
+range(2, 5)         # 2 3 4          终点 5 取不到
+range(0, 10, 2)     # 0 2 4 6 8
+range(4, -1, -1)    # 4 3 2 1 0      倒着走</code></pre></div>
+<p>所以倒着遍历<strong>全部下标</strong>要写 <code>range(len(x) - 1, -1, -1)</code>：</p>
+<ul><li>起点 <code>len-1</code> = 最后一个下标</li><li>终点写 <code>-1</code>（因为右开，走到 -1 才会包含 0）</li><li>步长 <code>-1</code> = 每次减 1</li></ul>
+<p><strong>一句话记住</strong>：<strong>终点取不到，所以倒着走要写到 -1。</strong></p>
+<hr>
+<h3 id="坑-11-注释掉的-半成品代码-没清掉">🕳️ 坑 11：注释掉的"半成品代码"没清掉</h3>
+<p><strong>现象</strong>：文件里留着这样一段被 <code>#</code> 包起来的死代码：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># for x in my_list:
+#     if isinbstance(x, list)==True     ← 拼错了，而且没有冒号
+#         x=x[::-1]
+#    if 学生分数 &gt;= 大学分数线:          ← 变量根本不存在</code></pre></div>
+<p><strong>问题</strong>：<code>isinbstance</code> 拼错了（正确 <code>isinstance</code>），<code>学生分数</code> 这个变量从来没定义过，缩进也乱了。这种"写了一半就放弃"的代码会让人以为任务没完成。</p>
+<p><strong>正确做法</strong>：要么真正写好，要么彻底删掉。<strong>交作业前搜一遍拼写错误。</strong></p>
+<hr>
+<h3 id="坑-12-变量名拼错-变量写完全没用">🕳️ 坑 12：变量名拼错 + 变量写完全没用</h3>
+<p><strong>现象</strong>：</p>
+<ul><li><code>recomended_majors</code> → 应为 <code>recommended_majors</code></li><li><code>appilication</code> → 应为 <code>application</code></li><li><code>major_pool</code>、<code>选科</code>、<code>目标城市</code> 定义了却一次都没用上</li></ul>
+<p><strong>为什么要注意</strong>：文档的「优秀作业标准」明确写了"<strong>变量名有意义</strong>"。</p>
+<p><strong>一句话记住</strong>：<strong>变量名是给自己三个月后看的，别偷懒。</strong></p>
+<hr>
+<h2 id="三-知识点详解-进阶篇">三、知识点详解（进阶篇）</h2>
+<blockquote>这一章把前面 12 个坑背后<strong>真正的原理</strong>补全。第一次看不用全懂，遇到问题回来查就行。<br>建议顺序：<strong>3.1 → 3.2 → 3.3</strong>（容器三大原理），其余按需查。</blockquote>
+<hr>
+<h3 id="3-1-可变-vs-不可变-Python-最底层的一条分界线">3.1 可变 vs 不可变 —— Python 最底层的一条分界线</h3>
+<p><strong>不可变类型（immutable）</strong>：<code>int</code>、<code>float</code>、<code>str</code>、<code>tuple</code>、<code>bool</code>、<code>frozenset</code>、<code>None</code></p>
+<p><strong>可变类型（mutable）</strong>：<code>list</code>、<code>dict</code>、<code>set</code>、<code>bytearray</code></p>
+<p><strong>"不可变"到底是什么意思？</strong></p>
+<p>不是"你不能改"，而是"<strong>它不允许被原地修改</strong>"——你只能造一个新的对象，把变量名重新指过去。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">s = "abc"
+s[0] = "A"          # ❌ TypeError: 'str' object does not support item assignment
+
+s = s + "d"         # ✅ 这句话其实是"新建了 abcd 这个新字符串"，再让 s 指向它</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">t = (1, 2, 3)
+t[0] = 9            # ❌ TypeError: 'tuple' object does not support item assignment
+
+lst = [1, 2, 3]
+lst[0] = 9          # ✅ 列表可以原地改
+lst.append(4)       # ✅ 原地追加</code></pre></div>
+<p><strong>怎么自己验证一件事会不会"原地改"？</strong></p>
+<p>用 <code>id()</code> 看内存地址，变没变一目了然：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">lst = [1, 2, 3]
+print(id(lst))      # 比如 140234...
+lst.append(4)
+print(id(lst))      # 地址**没变** → 原地修改（mutable）
+
+s = "abc"
+print(id(s))
+s = s + "d"
+print(id(s))        # 地址**变了** → 新建了对象（immutable）</code></pre></div>
+<p><strong>Python 为什么要这样设计？</strong></p>
+<p>因为<strong>不可变 = 安全 = 可以当"标签"用</strong>。回想坑 1 的 <code>set</code>：集合和字典的 key 都要求"<strong>可哈希（hashable）</strong>"，而可哈希的前提就是<strong>不可变</strong>。如果 <code>list</code> 能当 set 的元素，你往列表里加个东西，集合里存的"标签"就失效了。所以 Python 干脆禁止。</p>
+<p><strong>对本作业的意义</strong>：<code>universities</code> 用 tuple 装，就是想表达"<strong>这些录取分数线是既定事实，代码里不应该修改它</strong>"。这是一种"用类型表达意图"的写法。</p>
+<hr>
+<h3 id="3-2-变量是-名字-不是-盒子-引用-is-拷贝">3.2 变量是"名字"，不是"盒子" —— 引用、<code>is</code>、拷贝</h3>
+<p>这是初学者最容易误解的一点。<strong>在 Python 里，变量不装值，变量只是贴在对象上的一个名字。</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = [1, 2, 3]
+b = a              # ← 注意！这不是"复制一份"，而是"给同一个列表又起了个名字"
+b.append(4)
+print(a)           # [1, 2, 3, 4]   ← a 也跟着变了！
+print(a is b)      # True          ← 它们指的是同一个对象</code></pre></div>
+<p>内存里的样子：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">        a ─┐
+           ├──►  [1, 2, 3, 4]      ← 只有"一个"列表对象
+        b ─┘</code></pre></div>
+<p><strong><code>is</code> 和 <code>==</code> 的区别</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>比较的是</th>
+<th>例子</th>
+</tr>
+<tr>
+<td><code>a == b</code></td>
+<td><strong>值</strong>是否相等</td>
+<td><code>[1,2] == [1,2]</code> → <code>True</code></td>
+</tr>
+<tr>
+<td><code>a is b</code></td>
+<td>是不是<strong>同一个对象</strong>（地址相同）</td>
+<td><code>[1,2] is [1,2]</code> → <code>False</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">x = [1, 2]
+y = [1, 2]
+print(x == y)          # True   值一样
+print(x is y)          # False  两个不同的列表对象
+print(id(x), id(y))    # 两个不同的地址</code></pre></div>
+<blockquote>💡 一句话：<strong><code>is</code> 问"是不是本人"，<code>==</code> 问"长得一样吗"。</strong><br>只有判断 <code>None</code> 才习惯用 <code>is</code>：<code>if x is None:</code></blockquote>
+<p><strong>怎么真正"复制"一份？</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = [1, 2, 3]
+
+b = a              # ❌ 只是别名，不复制
+b = a.copy()       # ✅ 浅拷贝
+b = list(a)        # ✅ 另一种浅拷贝
+b = a[:]           # ✅ 切片也能复制整个列表</code></pre></div>
+<p><strong>⚠️ 浅拷贝的坑：里层不复制</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = [1, 2, [3, 4]]
+b = a.copy()          # 浅拷贝：只复制了最外面一层
+b[0] = 99
+print(a)              # [1, 2, [3, 4]]      ← 外层安全，a 没变
+b[2].append(5)
+print(a)              # [1, 2, [3, 4, 5]]   ← 里层共享！a 也变了</code></pre></div>
+<p>真要把里层也复制干净，得用<strong>深拷贝</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import copy
+b = copy.deepcopy(a)    # 从里到外全部复制一份</code></pre></div>
+<p><strong>这个知识点直接解释了坑 8</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def analyze_student(student, universities):
+    return challenge_list, safe_list, not_recommended_list   # ❌ 返回的是全局对象本身</code></pre></div>
+<p>因为返回的是<strong>同一个列表</strong>，所以外面任何人 <code>safe_list.append(...)</code>，函数"返回的结果"也会跟着变——它们本来就是一个东西。<strong>在函数内部新建列表再返回</strong>，才是干净的写法。</p>
+<p><strong>顺便：<code>is</code> 的一个记忆陷阱</strong></p>
+<p>Python 对小整数（-5~256）和短字符串做了缓存，所以偶尔会出现：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">a = 256;  b = 256;  print(a is b)      # True（缓存）
+a = 1000; b = 1000; print(a is b)      # 可能是 False！</code></pre></div>
+<p>这就是为什么<strong>永远不要用 <code>is</code> 去比较数字或字符串</strong>，比数字就用 <code>==</code>。</p>
+<hr>
+<h3 id="3-3-哈希-hashable-为什么-set-里不能放-list">3.3 哈希（hashable）—— 为什么 set 里不能放 list</h3>
+<p><strong>"可哈希"= 能算出一个固定的"身份证号"</strong>，集合和字典就靠这个号来快速判断"你有没有出现过"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">hash("abc")        # ✅ 可以，返回一个整数
+hash((1, 2))       # ✅ 元组可以（前提是里面元素也都可哈希）
+hash([1, 2])       # ❌ TypeError: unhashable type: 'list'
+hash({"a": 1})     # ❌ 同样不行</code></pre></div>
+<p>所以：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">set([[1, 2], [3, 4]])     # ❌ 报错
+set([(1, 2), (3, 4)])     # ✅ 元组可以</code></pre></div>
+<p><strong>规律</strong>：<strong>可变的东西一般不可哈希，不可变的一般可哈希。</strong></p>
+<p>这条和 3.1 是同一件事的两种说法。</p>
+<p><strong>它还决定了 dict 的 key 能用什么</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">d = {}
+d["张三"] = 90            # ✅ 字符串作 key
+d[(1, 2)] = "坐标"         # ✅ 元组作 key
+d[[1, 2]] = "列表"         # ❌ 列表不能作 key</code></pre></div>
+<hr>
+<h3 id="3-4-容器选择-一套可以照着走的决策流程">3.4 容器选择：一套可以照着走的决策流程</h3>
+<p>写代码前，按顺序问自己这四个问题：</p>
+<ol><li><strong>这是"一个东西"还是"一堆东西"？</strong></li><li>一个东西 → 用 <code>str</code> / <code>int</code> 等基本类型</li><li>一堆东西 → 继续往下问</li><li><strong>需要"按名字查"吗？</strong>（比如 <code>student["姓名"]</code>、专业出现次数）</li><li>要 → 用 <code>dict</code></li><li><strong>需要"不能重复"吗？</strong>（去重、查重）</li><li>要 → 用 <code>set</code></li><li><strong>剩下的：需要能修改吗？</strong></li><li>能改 → <code>list</code></li><li>不能改（是"事实 / 常量"）→ <code>tuple</code></li></ol>
+<p><strong>放到本次作业里对照：</strong></p>
+<ul><li><code>student</code>：要按名字查"姓名""高考分数" → <strong>dict</strong></li><li><code>universities</code>：一堆"事实"，不该被改 → <strong>tuple</strong>（里面每条也是 tuple）</li><li><code>wish_list</code>：有顺序、可能要增删 → <strong>list</strong>（里面嵌套 list）</li><li>兴趣标签去重、推荐专业去重、志愿表查重 → <strong>set</strong></li><li><code>major_map</code>、专业出现次数 → <strong>dict</strong></li><li><code>student["姓名"]</code> → <strong>str</strong></li></ul>
+<hr>
+<h3 id="3-5-五种容器常用操作对照表">3.5 五种容器常用操作对照表</h3>
+<p><strong>list 列表</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>操作</th>
+<th>写法</th>
+<th>说明</th>
+</tr>
+<tr>
+<td>加一个</td>
+<td><code>lst.append(x)</code></td>
+<td>加到最后</td>
+</tr>
+<tr>
+<td>加一堆</td>
+<td><code>lst.extend([a, b])</code></td>
+<td>逐个加进去</td>
+</tr>
+<tr>
+<td>指定位置插入</td>
+<td><code>lst.insert(0, x)</code></td>
+<td>插到最前面</td>
+</tr>
+<tr>
+<td>按下标删</td>
+<td><code>lst.pop(0)</code></td>
+<td>删掉并<strong>返回</strong>它</td>
+</tr>
+<tr>
+<td>删最后一个</td>
+<td><code>lst.pop()</code></td>
+<td>最常用</td>
+</tr>
+<tr>
+<td>按值删</td>
+<td><code>lst.remove("提交志愿")</code></td>
+<td>删第一个匹配的值</td>
+</tr>
+<tr>
+<td>全清空</td>
+<td><code>lst.clear()</code></td>
+<td>本作业禁止用</td>
+</tr>
+<tr>
+<td>查位置</td>
+<td><code>lst.index(x)</code></td>
+<td>返回下标，找不到报错</td>
+</tr>
+<tr>
+<td>数个数</td>
+<td><code>lst.count(x)</code></td>
+<td>出现几次</td>
+</tr>
+<tr>
+<td>排序</td>
+<td><code>lst.sort()</code></td>
+<td><strong>原地</strong>排，返回 None</td>
+</tr>
+<tr>
+<td>倒过来</td>
+<td><code>lst.reverse()</code></td>
+<td><strong>原地</strong>倒，返回 None</td>
+</tr>
+<tr>
+<td>复制</td>
+<td><code>lst.copy()</code></td>
+<td>浅拷贝</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <code>sort()</code> / <code>reverse()</code> 是<strong>原地修改</strong>，返回值是 <code>None</code>。<br>所以 <code>lst = lst.sort()</code> 是错的（lst 会变成 None）！要新列表就用内置函数 <code>sorted(lst)</code> / <code>list(reversed(lst))</code>。</blockquote>
+<p><strong>tuple 元组</strong>：只能"查"，不能"改"</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">universities[0]        # ("清华大学", "北京", 700)
+universities[0][2]     # 700
+len(universities)      # 6</code></pre></div>
+<p>想改 → 只能造个新的元组。</p>
+<p><strong>str 字符串</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">s.strip()                    # 去首尾空白
+s.replace(" ", "")           # 替换
+s.split(",")                 # 按分隔符切成列表
+"、".join(["A", "B"])         # 把列表拼成字符串
+s.startswith("张")            # 是不是以...开头
+s.upper() / s.lower()        # 大小写
+s.find("三")                  # 找位置，找不到返回 -1
+"三" in s                     # 子串判断
+len(s)                       # 长度</code></pre></div>
+<p><strong>set 集合</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">st.add(x)                    # 加元素
+st.remove(x)                 # 删（不存在会报错）
+st.discard(x)                # 删（不存在也不报错）
+st &amp; other                   # 交集
+st | other                   # 并集
+st - other                   # 差集
+len(st)                      # 元素个数
+x in st                      # 判断有没有（很快）</code></pre></div>
+<p><strong>dict 字典</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">d["姓名"]                     # 取（键不存在会 KeyError）
+d.get("年龄", "未知")          # 取（取不到返回默认值，不报错）
+"姓名" in d                   # 判断"键"在不在
+d.keys()                     # 所有键
+d.values()                   # 所有值
+d.items()                    # 所有键值对 → for k, v in d.items():
+d[key] = value               # 新增或修改
+del d[key]                   # 删除</code></pre></div>
+<blockquote>💡 记住：<strong><code>in</code> 对字典判断的是"键"，不是"值"。</strong><br><code>"张三" in student</code> 判断的是有没有叫"张三"这个<strong>键</strong>，不是有没有这个值。</blockquote>
+<hr>
+<h3 id="3-6-真值判断-什么算-假">3.6 真值判断：什么算"假"</h3>
+<p>Python 里 <code>if</code> / <code>while</code> 后面不一定非得是 <code>True</code>/<code>False</code>，任何东西都能判真假：</p>
+<p><strong>会当成"假"的</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">False, None, 0, 0.0, "", [], (), {}, set()</code></pre></div>
+<p><strong>其余几乎都是"真"</strong>（包括 <code>-1</code>、<code>"False"</code>、<code>[0]</code>）。</p>
+<p>所以这几组是等价的：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if len(task_list) &gt; 0:   ≡   if task_list:
+if len(s) == 0:          ≡   if not s:
+while len(lst) &gt; 0:      ≡   while lst:</code></pre></div>
+<p><strong>这也解释了一个隐患</strong>：如果某个值可能是 <code>0</code>，就别写 <code>if x:</code> 来判断"有没有值"，因为 0 会被当成"没有"。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">score = 0
+if score:                 # ❌ 0 会被当成 False，进不去
+    print("有分数")</code></pre></div>
+<hr>
+<h3 id="3-7-比较运算符与链式比较">3.7 比较运算符与链式比较</h3>
+<p><strong>基本比较</strong>：<code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></p>
+<p>⚠️ <strong>易错</strong>：赋值是 <code>=</code>，比较是 <code>==</code>。写错不会报错（把比较结果赋给变量了），但逻辑全错。</p>
+<p><strong>链式比较</strong>是 Python 的特色，也是坑 1 的根源：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">0 &lt;= score &lt;= 100          # ✅ 等价于 (0 &lt;= score) and (score &lt;= 100)</code></pre></div>
+<p><strong>规则</strong>：<code>a op1 b op2 c</code> ≡ <code>(a op1 b) and (b op2 c)</code>，<strong>中间那个只算一次</strong>。</p>
+<p>参与链式比较的运算符包括：<code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>==</code> <code>!=</code> <strong>以及 <code>in</code> / <code>not in</code> / <code>is</code> / <code>is not</code></strong>。</p>
+<p>所以坑 1 那行才会变成"和 True 比较"：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if interest in major_map == True:
+#  ↓ 等价于
+if (interest in major_map) and (major_map == True):   # 后半永远为 False</code></pre></div>
+<p><strong>防坑写法</strong>：<strong>永远不要写 <code>== True</code> / <code>== False</code></strong>，直接用值本身。</p>
+<hr>
+<h3 id="3-8-in-的四种含义-很容易混">3.8 <code>in</code> 的四种含义（很容易混）</h3>
+<p><code>in</code> 在不同容器上判断的东西<strong>不一样</strong>：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>判断的是</th>
+<th>例子</th>
+</tr>
+<tr>
+<td><code>"三" in "张三"</code></td>
+<td><strong>子串</strong></td>
+<td>→ <code>True</code></td>
+</tr>
+<tr>
+<td><code>"计算机" in ["计算机", "AI"]</code></td>
+<td><strong>元素</strong></td>
+<td>→ <code>True</code></td>
+</tr>
+<tr>
+<td><code>"姓名" in student</code>（dict）</td>
+<td><strong>键</strong>（不是值！）</td>
+<td>→ <code>True</code></td>
+</tr>
+<tr>
+<td><code>"计算机" in major_map</code>（dict）</td>
+<td><strong>键</strong></td>
+<td>→ <code>True</code></td>
+</tr>
+<tr>
+<td><code>"计算机" in {"计算机", "AI"}</code>（set）</td>
+<td><strong>元素</strong></td>
+<td>→ <code>True</code></td>
+</tr>
+</table></div>
+<p>坑 1 里我用 <code>interest in major_map</code> 判断"这个兴趣标签有没有对应的专业"，用的正是<strong>字典判键</strong>，方向是对的——只是被 <code>== True</code> 毁了。</p>
+<hr>
+<h3 id="3-9-切片-slicing-完全指南">3.9 切片（slicing）完全指南</h3>
+<p>写法：<code>容器[起点 : 终点 : 步长]</code>，<strong>左闭右开</strong>，三个都可以省略。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">lst = ["a", "b", "c", "d", "e"]
+
+lst[1:3]      # ['b', 'c']        从 1 到 3（不含 3）
+lst[:2]       # ['a', 'b']        省略起点 = 从头开始
+lst[2:]       # ['c', 'd', 'e']  省略终点 = 到末尾
+lst[:]        # 整个列表的"浅拷贝"
+lst[-2:]      # ['d', 'e']        负数下标：从倒数第 2 个到末尾
+lst[:-2]      # ['a', 'b', 'c']  去掉最后两个
+
+lst[::-1]     # ['e','d','c','b','a']   倒序 ← 本作业常用
+lst[::2]      # ['a', 'c', 'e']         隔一个取一个
+lst[4:1:-1]   # ['e', 'd', 'c']         倒着取</code></pre></div>
+<p><strong>几个要点</strong>：</p>
+<ol><li><strong>字符串也能切片</strong>：<code>"张三丰"[1:]</code> → <code>"三丰"</code></li><li><strong>切片越界不报错</strong>，会自动截断：<code>lst[0:100]</code> → 整个列表</li><li><strong>但普通下标越界会报错</strong>：<code>lst[100]</code> → <code>IndexError</code></li><li><code>[::-1]</code> 是<strong>倒序</strong>的经典写法，但<strong>本作业任务 4 / 挑战 2 明确要求用 for + range</strong>，别用切片</li></ol>
+<hr>
+<h3 id="3-10-range-完全指南">3.10 <code>range</code> 完全指南</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">range(stop)                  # 0, 1, ..., stop-1
+range(start, stop)           # start, ..., stop-1
+range(start, stop, step)     # 按步长走</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">list(range(5))          # [0, 1, 2, 3, 4]
+list(range(1, 5))       # [1, 2, 3, 4]        左闭右开！
+list(range(0, 10, 3))   # [0, 3, 6, 9]
+list(range(5, 0, -1))   # [5, 4, 3, 2, 1]
+list(range(4, -1, -1))  # [4, 3, 2, 1, 0]     倒着走完 0</code></pre></div>
+<p><strong>倒序遍历下标的黄金公式</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for i in range(len(lst) - 1, -1, -1):
+    ...</code></pre></div>
+<p>拆开看：<code>len(lst) - 1</code> 是最后一个下标；<code>-1</code> 是终点（右开，所以 0 会被包含）；最后的 <code>-1</code> 是步长。</p>
+<p>⚠️ <code>range</code> 本身不是一个列表，是"惰性"的，直接 <code>print(range(5))</code> 会输出 <code>range(0, 5)</code>，想看内容要 <code>list(range(5))</code>。</p>
+<hr>
+<h3 id="3-11-for-while-break-continue">3.11 <code>for</code> / <code>while</code> / <code>break</code> / <code>continue</code></h3>
+<p><strong>什么时候用哪个？</strong></p>
+<ul><li><strong>已知要跑多少次 / 要遍历一个容器的每一个元素</strong> → 用 <code>for</code></li><li><strong>不知道要跑多少次，只知道"满足某条件就一直跑"</strong> → 用 <code>while</code></li></ul>
+<p>本次作业里的例子：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>任务</th>
+<th>用哪个</th>
+<th>为什么</th>
+</tr>
+<tr>
+<td>任务 3 清空列表</td>
+<td><code>while</code></td>
+<td>不知道要循环几次，只知道"还有元素就继续"</td>
+</tr>
+<tr>
+<td>任务 4 倒序复制</td>
+<td><code>for + range</code></td>
+<td>明确要遍历每个下标一次</td>
+</tr>
+<tr>
+<td>任务 5 分档</td>
+<td><code>for</code></td>
+<td>遍历 <code>universities</code> 每个元素</td>
+</tr>
+<tr>
+<td>挑战 3 计数</td>
+<td><code>for</code></td>
+<td>遍历每所大学、每个专业</td>
+</tr>
+</table></div>
+<p><strong><code>break</code> 和 <code>continue</code></strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for x in [1, 2, 3, 4, 5]:
+    if x == 3:
+        continue     # 跳过这一次，继续下一轮（3 不打印，4、5 照打）
+    if x == 5:
+        break        # 直接跳出整个循环
+    print(x)         # 输出 1 2 4</code></pre></div>
+<p><strong><code>for ... else</code>（少见但要认得）</strong>：<code>else</code> 在"循环正常跑完、没被 break 打断"时执行。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for x in lst:
+    if x == 目标:
+        print("找到了")
+        break
+else:
+    print("没找到")     # 只有循环没被 break 才执行</code></pre></div>
+<p><strong>还有个坑</strong>：<code>for</code> 的循环变量在循环结束后<strong>还存在</strong>（坑 3 里的 <code>x</code> 就是这么来的）。所以别在循环外依赖它——如果容器是空的，它根本没被定义过。</p>
+<hr>
+<h3 id="3-12-边遍历边修改-一个必须警惕的操作">3.12 边遍历边修改 —— 一个必须警惕的操作</h3>
+<p>坑 2 的本质。看这个"看起来没问题"的写法：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">lst = ["a", "b", "c", "d"]
+for x in lst:
+    if x in ("a", "b"):
+        lst.remove(x)
+print(lst)          # ['b', 'd']  ← 不是期待的 ['c', 'd']！</code></pre></div>
+<p><strong>为什么</strong>：<code>for</code> 内部是按<strong>下标</strong>往前走的；你删掉一个元素，后面的元素集体前移，序号就错位了。</p>
+<p><strong>三种正确做法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ① 遍历"副本"，改的却是原列表
+for x in lst[:]:
+    lst.remove(x)
+
+# ② 倒着遍历（倒着删不会影响还没处理的下标）
+for i in range(len(lst) - 1, -1, -1):
+    if 条件:
+        lst.pop(i)
+
+# ③ 直接重新构造（最推荐，最不容易错）
+lst = [x for x in lst if not 条件]</code></pre></div>
+<p><strong>一句话</strong>：<strong>要删东西，就倒着遍历，或者遍历副本，或者重建列表。</strong></p>
+<hr>
+<h3 id="3-13-列表推导式-认得就好-本作业别用">3.13 列表推导式（认得就好，本作业别用）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># 传统写法
+squares = []
+for x in range(5):
+    squares.append(x * x)
+
+# 推导式写法（等价）
+squares = [x * x for x in range(5)]</code></pre></div>
+<p>带条件的：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">names = [item[0] for item in wish_list]                  # 挑战 1 里取所有大学名
+big = [x for x in nums if x &gt; 10]                        # 只保留大于 10 的
+new  = [x[::-1] if isinstance(x, list) else x for x in my_list]   # 带 if/else 的</code></pre></div>
+<p><strong>但是</strong>：任务 4 和挑战 2 <strong>明确要求用 <code>for</code> + <code>range</code></strong>，就是为了考你基本功，所以那里<strong>不许</strong>用推导式或切片偷懒。</p>
+<hr>
+<h3 id="3-14-函数-参数-返回值-作用域">3.14 函数：参数、返回值、作用域</h3>
+<p><strong>函数的最小模型</strong>：<strong>你给我输入（参数），我还你输出（返回值）。</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def 函数名(参数1, 参数2):
+    """文档字符串：一句话说明这个函数干什么。"""
+    处理...
+    return 结果</code></pre></div>
+<p><strong>① 参数：函数的"入口"</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def analyze_student(student, universities):   # 两个入口
+    ...</code></pre></div>
+<p>调用时按顺序传进去：<code>analyze_student(student, universities)</code>。</p>
+<p>也可以按名字传（更清楚）：<code>analyze_student(universities=universities, student=student)</code>。</p>
+<p><strong>② 返回值：函数的"出口"</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def f():
+    print("我执行了")     # 只是显示，返回值是 None
+
+def g():
+    print("我执行了")
+    return 42            # 返回 42
+
+print(f())   # 打印"我执行了"，然后打印 None
+print(g())   # 打印"我执行了"，然后打印 42</code></pre></div>
+<p><strong>没有 <code>return</code> 的函数，返回值就是 <code>None</code></strong>（坑 3 的根源）。</p>
+<p><code>return</code> 还有两个作用：<strong>立刻结束函数</strong>（后面的代码不再执行）、<strong>把值交给调用者</strong>。</p>
+<p><strong>③ 多返回值 = 打包成元组</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def analyze_student(...):
+    return challenge_list, safe_list, not_recommended_list   # 本质是返回一个元组
+
+结果 = analyze_student(...)
+print(结果)                 # (['上海交通大学'], [...], ['清华大学'])
+print(结果[0])              # 也可以按下标取
+
+# 更常用的写法：解包
+challenge, safe, not_recommended = analyze_student(...)</code></pre></div>
+<p><strong>④ 作用域（LEGB）</strong>：变量按 <strong>局部 → 外层 → 全局 → 内置</strong> 的顺序查找。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">score = 686                  # 全局变量
+
+def show():
+    print(score)             # ✅ 读全局：允许
+
+def change():
+    score = 700              # ⚠️ 这不会改全局！只是新建了一个"局部变量"
+    print(score)             # 700（局部的）
+
+change()
+print(score)                 # 686（全局没变）</code></pre></div>
+<p>真想改全局要在函数里声明 <code>global score</code>——<strong>但强烈不推荐</strong>，那会让函数"偷偷改外面的世界"，很难调试。<strong>正确做法：需要什么当参数传进来，算完用 return 送出去。</strong></p>
+<p>这也正是坑 8 的教训。</p>
+<hr>
+<h3 id="3-15-函数是-一等公民-可以当参数传-回调函数">3.15 函数是"一等公民" —— 可以当参数传（回调函数）</h3>
+<p>这是坑 3 / 任务 9 的关键。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def say_hello():
+    print("你好")
+
+def run_twice(func):        # 参数是个函数
+    func()
+    func()
+
+run_twice(say_hello)        # ✅ 传"函数本身"（没有括号）</code></pre></div>
+<p><strong>秘诀就一句话：函数名后面加不加括号，含义完全不同。</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>含义</th>
+</tr>
+<tr>
+<td><code>say_hello</code></td>
+<td><strong>函数对象本身</strong>（一个"待执行的动作"）</td>
+</tr>
+<tr>
+<td><code>say_hello()</code></td>
+<td><strong>立刻执行它</strong>，得到它的返回值</td>
+</tr>
+</table></div>
+<p>所以任务 9：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">result = progress_function(0.05, final_analysis)     # ✅ 传进去，等进度条跑完再执行
+result = progress_function(0.05, final_analysis())   # ❌ 先执行完，再把结果传进去</code></pre></div>
+<p><code>progress_function</code> 的写法就是：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def progress_function(sleep_time, print_function):
+    ...画进度条...
+    return print_function()      # ← 在合适的时机"调用"它，并且把返回值交出去</code></pre></div>
+<blockquote>📌 顺便：<code>my_list</code> 里同时出现了 <code>progress_function</code>（函数本身）和 <code>progress_function(0.05, print)</code>（立刻执行）。这是题目故意留的对比。</blockquote>
+<hr>
+<h3 id="3-16-默认参数的陷阱-进阶-知道就好">3.16 默认参数的陷阱（进阶，知道就好）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def add_item(x, lst=[]):     # ❌ 危险！默认值只在定义时创建一次
+    lst.append(x)
+    return lst
+
+print(add_item(1))    # [1]
+print(add_item(2))    # [1, 2]   ← 咦？它不是应该重新开始吗？</code></pre></div>
+<p><strong>原因</strong>：默认参数 <code>[]</code> 是在<strong>函数定义时</strong>创建的<strong>同一个列表</strong>，被多次调用共享。</p>
+<p><strong>正确写法</strong>：用 <code>None</code> 当默认值，在函数里面再创建。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def add_item(x, lst=None):
+    if lst is None:
+        lst = []
+    lst.append(x)
+    return lst</code></pre></div>
+<blockquote>本次作业不会遇到，但以后写函数一定会踩，先记住。</blockquote>
+<hr>
+<h3 id="3-17-常见报错速查表-看报错不再发懵">3.17 常见报错速查表（看报错不再发懵）</h3>
+<p>Python 的报错信息<strong>从下往上看</strong>：最后一行是"错误类型 + 原因"，倒数第二行是"出错的文件和行号"。</p>
+<div class="tablewrap"><table>
+<tr>
+<th>报错</th>
+<th>中文意思</th>
+<th>常见原因</th>
+<th>怎么修</th>
+</tr>
+<tr>
+<td><code>SyntaxError</code></td>
+<td>语法错误</td>
+<td>少了冒号 <code>:</code>、括号 / 引号不配对</td>
+<td>看它标的位置<strong>前一行</strong></td>
+</tr>
+<tr>
+<td><code>IndentationError</code></td>
+<td>缩进错误</td>
+<td>该缩进没缩进，或者空格/Tab 混用</td>
+<td>统一用 4 个空格</td>
+</tr>
+<tr>
+<td><code>NameError</code></td>
+<td>名字不存在</td>
+<td>变量名拼错、变量还没定义就用了</td>
+<td>检查拼写；确认赋值在调用之前</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>类型不对</td>
+<td><code>"年龄" + 18</code>、<code>len(123)</code>、<code>unhashable type: 'list'</code></td>
+<td>先 <code>str()</code> / <code>int()</code> 转换；set/dict 别放 list</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td>值不对</td>
+<td><code>int("abc")</code>、<code>"1,2".split(",")</code> 用法错</td>
+<td>检查内容格式</td>
+</tr>
+<tr>
+<td><code>IndexError</code></td>
+<td>下标越界</td>
+<td><code>lst[5]</code> 但列表只有 3 个元素</td>
+<td>用 <code>len(lst)</code> 检查范围</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>字典没有这个键</td>
+<td><code>d["不存在的键"]</code></td>
+<td>先用 <code>in</code> 判断，或用 <code>d.get(键, 默认值)</code></td>
+</tr>
+<tr>
+<td><code>AttributeError</code></td>
+<td>对象没有这个属性/方法</td>
+<td>方法名拼错（<code>lst.apppend()</code>），或类型不对</td>
+<td>检查拼写、检查对象类型</td>
+</tr>
+<tr>
+<td><code>ZeroDivisionError</code></td>
+<td>除以 0</td>
+<td><code>10 / 0</code></td>
+<td>加判断</td>
+</tr>
+<tr>
+<td><code>UnboundLocalError</code></td>
+<td>局部变量还没赋值就用</td>
+<td>函数里既赋值又读同名全局变量</td>
+<td>见 3.14 作用域</td>
+</tr>
+</table></div>
+<p><strong>读报错的固定动作</strong>：看最后一行知道"错在哪类"，看倒数第二行知道"错在哪一行"，然后去那一行。</p>
+<hr>
+<h3 id="3-18-调试五步法">3.18 调试五步法</h3>
+<ol><li><strong>读报错</strong>：错误类型 + 行号（从下往上看）</li><li><strong>去那一行</strong>：看这一行用了哪些变量</li><li><strong>打印它们</strong>：<code>print(变量, type(变量))</code>，看值和类型对不对</li><li><strong>缩小范围</strong>：把没问题的部分先注释掉，二分定位</li><li><strong>手推一遍</strong>：拿纸画表格，把每一步的变量值写下来（坑 2 就是这么找到的）</li></ol>
+<p><strong>不报错但结果不对时</strong>，第 5 步最关键——因为这类 bug（坑 1、坑 6）<strong>只能靠对照题目要求的"目标效果"发现</strong>。</p>
+<p><strong><code>print</code> 调试模板</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">print("DEBUG 分数 =", student["高考分数"], "类型 =", type(student["高考分数"]))
+print("DEBUG 稳妥列表 =", safe_list)
+print("DEBUG major_map 里有计算机吗:", "计算机" in major_map)</code></pre></div>
+<blockquote>VS Code 里也可以点行号左边打<strong>断点</strong>，然后按 F5 单步执行，看变量面板——比 print 更直观，值得学。</blockquote>
+<hr>
+<h3 id="3-19-命名与注释规范-对应-优秀作业标准">3.19 命名与注释规范（对应"优秀作业标准"）</h3>
+<p><strong>命名</strong></p>
+<ul><li>变量 / 函数：<code>小写_加下划线</code>（snake_case），如 <code>safe_list</code>、<code>analyze_student</code></li><li>常量（不会变的值）：全大写，如 <code>MAX_SCORE = 750</code></li><li><strong>要有意义</strong>：<code>safe_list</code> 比 <code>a</code>、<code>list1</code> 好一万倍</li><li>不要用拼音、不要用中文变量名</li><li>别用 Python 内置名字当变量名：<code>list</code>、<code>dict</code>、<code>sum</code>、<code>max</code>、<code>str</code>、<code>input</code>、<code>print</code></li><li>单字母只用在短循环：<code>for i in range(...)</code></li></ul>
+<p><strong>注释</strong></p>
+<ul><li>函数用 <strong>docstring</strong>（三引号），说明：<strong>做什么、参数是什么、返回什么</strong></li><li>行内注释解释 <strong>为什么这么做</strong>，而不是复述代码</li><li>❌ <code>i += 1  # i 加 1</code></li><li>✅ <code>i += 1  # 指向下一个下标（注意：删除元素后要重新想清楚下标怎么走）</code></li><li>作业要求"<strong>所有函数和代码实现都需要有详细注释</strong>"，别偷懒</li><li><strong>别留一大片注释掉的废代码</strong>（坑 11）</li></ul>
+<p><strong>格式（PEP 8 摘要）</strong></p>
+<ul><li>缩进统一 4 个空格</li><li>逗号后面加一个空格：<code>[1, 2, 3]</code></li><li>运算符两边加空格：<code>a = b + c</code></li><li>函数之间空 2 行</li></ul>
+<hr>
+<h3 id="3-20-if-__name__-__main__-是干什么的">3.20 <code>if __name__ == "__main__":</code> 是干什么的</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def final_analysis():
+    ...
+
+if __name__ == "__main__":
+    result = progress_function(0.05, final_analysis)
+    print(result)</code></pre></div>
+<ul><li><strong>直接运行</strong> <code>python 文件.py</code> 时，Python 会给这个文件起名叫 <code>"__main__"</code> → <code>if</code> 成立 → 里面的代码执行</li><li><strong>被别的文件 <code>import</code></strong> 时，<code>__name__</code> 是模块名（比如 <code>"高考志愿冒险模拟器"</code>）→ <code>if</code> 不成立 → 里面的代码<strong>不执行</strong></li></ul>
+<p><strong>好处</strong>：别人想复用你写的 <code>analyze_student</code> 函数时，<code>import</code> 一下不会把整个程序连带跑一遍。</p>
+<blockquote>小实验：在文件最后加一行 <code>print("模块名是", __name__)</code>，直接运行会打印 <code>__main__</code>。</blockquote>
+<hr>
+<h2 id="四-语法速查卡">四、语法速查卡</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---------- 字符串 ----------
+s.strip()                # 去首尾空白（记得用 = 接住！）
+s.lstrip() / s.rstrip()  # 只去左边 / 只去右边
+s.replace(" ", "")       # 去掉所有空格
+s.split(",")             # 按分隔符切成列表
+"、".join(["A", "B"])     # → "A、B"（列表里必须都是字符串）
+s.startswith("张")        # 开头判断
+len(s)                   # 长度
+
+# ---------- 列表 ----------
+lst.append(x)            # 尾部加一个
+lst.extend([a, b])       # 把里面的逐个加进去
+lst.insert(0, x)         # 插到指定位置
+lst.pop()                # 删最后一个并返回
+lst.pop(0)               # 删第一个
+lst.remove(x)            # 按值删第一个匹配的
+lst.clear()              # 全清空（本作业任务 3 禁止用）
+lst.index(x) / lst.count(x)
+
+# ---------- 切片 ----------
+lst[::-1]                # 整个倒过来
+lst[a:b]                 # 左闭右开
+lst[start:stop:step]     # 完整写法
+lst[:]                   # 浅拷贝一份
+
+# ---------- range ----------
+range(n)                 # 0 .. n-1
+range(a, b)              # a .. b-1
+range(len(x) - 1, -1, -1)   # 下标倒着走
+
+# ---------- set ----------
+len(set(x)) == len(x)    # 判断有没有重复
+st.add(v)                # 加元素
+list(set(x))             # 转回列表（顺序会变）
+
+# ---------- dict ----------
+d[key]                   # 取不到会 KeyError
+key in d                 # 先判断在不在
+d.get(key, 默认值)        # 取不到给默认值
+d.items()                # 遍历"键, 值"
+
+# ---------- 字典计数（背下来）----------
+count = {}
+for 元素 in 一堆元素:
+    if 元素 in count:
+        count[元素] += 1
+    else:
+        count[元素] = 1
+# 简写：count[元素] = count.get(元素, 0) + 1
+
+# ---------- 类型判断 ----------
+isinstance(x, list)      # x 是不是列表
+
+# ---------- 元组解包 ----------
+for name, city, line in universities:            # 一行拆开三个
+challenge, safe, not_rec = analyze_student(...)  # 多返回值也是解包
+
+# ---------- 其他常用内置函数 ----------
+len(x) / sum(x) / max(x) / min(x)
+sorted(lst)              # 返回排好序的"新列表"（不改原列表）
+list(reversed(lst))      # 倒序的新列表
+enumerate(lst)           # for i, v in enumerate(lst):
+zip(a, b)                # for x, y in zip(a, b):
+str(686) / int("686")    # 类型转换</code></pre></div>
+<hr>
+<h2 id="五-交作业自检清单">五、交作业自检清单</h2>
+<ul><li>☐ 任务 4 用的是 <strong>for + range</strong>，不是 <code>[::-1]</code> 切片</li><li>☐ 任务 2 用了 <strong>set</strong>；挑战 2 用了 <strong>range 倒序</strong>（"必须用"的地方别换写法）</li><li>☐ 任务 9 的 <code>print(result)</code> 能打出<strong>完整报告</strong>，不是 <code>None</code></li><li>☐ 挑战 1 只打印<strong>一次</strong>，文案是「志愿表中存在重复大学 / 志愿表中没有重复大学」</li><li>☐ 挑战 3 能打印<strong>每一个</strong>专业</li><li>☐ 每一段代码都有<strong>详细注释</strong>（文档明确要求）</li><li>☐ 加了<strong>生成式 AI 辅助声明</strong>（文档第一条要求，按真实情况写）</li><li>☐ 没有拼写错误的变量名，没有一片注释掉的废代码</li><li>☐ 没有把 <code>list</code> / <code>dict</code> / <code>sum</code> 这些内置名字当变量名</li><li>☐ <code>python 文件名.py</code> 能一次跑通、不报错</li><li>☐ 打包成 <code>.zip</code>；邮件标题 <code>第3次作业_姓名_省份</code> → <code>EL@zju.edu.cn</code></li></ul>
+<hr>
+<h2 id="六-三条通用心法">六、三条通用心法</h2>
+<p><strong>1. 报错不可怕，"不报错但结果是错的"才可怕。</strong></p>
+<p>坑 1（链式比较）、坑 6（自己和自己比）都不报错，却让结果全错。</p>
+<p>👉 改完代码<strong>一定要看输出</strong>，对着题目要求的"目标效果"逐项核对。</p>
+<p><strong>2. 分清 <code>print</code> / <code>return</code> / "调用"。</strong></p>
+<ul><li><code>print(x)</code>：显示</li><li><code>return x</code>：交出去</li><li><code>f</code> 是"动作"，<code>f()</code> 才是"执行这个动作"</li></ul>
+<p><strong>3. 先想"这是什么容器、我该拿它做什么"，再动手写。</strong></p>
+<p>写代码前先问：这个数据是会变的列表，还是不变的元组？要查重吗？要按名字找吗？</p>
+<p>——想清楚这一步，这次作业 80% 的坑都不会踩。</p>
+<hr>
+<h2 id="七-核心术语定义表">七、核心术语定义表</h2>
+<blockquote>看懂术语，读文档、搜资料、看报错都会快很多。<strong>备注栏是"实战里要注意什么"</strong>。</blockquote>
+<div class="tablewrap"><table>
+<tr>
+<th>术语</th>
+<th>定义</th>
+<th>常用备注</th>
+</tr>
+<tr>
+<td><strong>变量</strong></td>
+<td>贴在对象上的一个"名字"，靠它访问对象</td>
+<td>变量本身<strong>没有类型</strong>，类型属于它指向的对象；<code>a = b</code> 不是复制</td>
+</tr>
+<tr>
+<td><strong>对象</strong></td>
+<td>内存里真实存在的数据实体</td>
+<td><code>id()</code> 看身份，<code>type()</code> 看类型</td>
+</tr>
+<tr>
+<td><strong>引用</strong></td>
+<td>变量"指向"某个对象的关系</td>
+<td>两个变量可指向同一对象，改一个另一个也变（见 3.2）</td>
+</tr>
+<tr>
+<td><strong>可变 / 不可变</strong></td>
+<td>能不能被"原地修改"</td>
+<td>可变：<code>list</code> <code>dict</code> <code>set</code>；不可变：<code>str</code> <code>int</code> <code>float</code> <code>tuple</code> <code>bool</code> <code>None</code></td>
+</tr>
+<tr>
+<td><strong>哈希（hashable）</strong></td>
+<td>能算出一个固定哈希值的性质</td>
+<td>可哈希才能当 set 元素 / dict 的 key；<code>list</code> <code>dict</code> <code>set</code> 不可哈希</td>
+</tr>
+<tr>
+<td><strong>字面量（literal）</strong></td>
+<td>代码里<strong>直接写出来</strong>的值</td>
+<td><code>[1,2]</code> 列表、<code>(1,2)</code> 元组、<code>{"a":1}</code> 字典、<code>{1,2}</code> 集合、<code>"abc"</code> 字符串</td>
+</tr>
+<tr>
+<td><strong>表达式 / 语句</strong></td>
+<td>表达式<strong>有值</strong>，语句是<strong>一个动作</strong></td>
+<td><code>1 + 1</code> 是表达式；<code>if</code> / <code>for</code> / <code>print()</code> 是语句</td>
+</tr>
+<tr>
+<td><strong>下标（索引）</strong></td>
+<td>用位置取元素</td>
+<td>从 <strong>0</strong> 开始；<code>lst[-1]</code> 是最后一个；越界报 <code>IndexError</code></td>
+</tr>
+<tr>
+<td><strong>切片（slice）</strong></td>
+<td>用 <code>[起:止:步]</code> 取一段</td>
+<td><strong>左闭右开</strong>；越界不报错；<code>[::-1]</code> 倒序</td>
+</tr>
+<tr>
+<td><strong>可迭代对象</strong></td>
+<td>能被 <code>for</code> 逐个取出的东西</td>
+<td>list / tuple / str / dict / set / range 都可以</td>
+</tr>
+<tr>
+<td><strong>迭代</strong></td>
+<td>用 <code>for</code> 逐个访问的过程</td>
+<td>遍历 dict 得到的是<strong>键</strong>，不是值</td>
+</tr>
+<tr>
+<td><strong>解包（unpacking）</strong></td>
+<td>把容器元素一次分给多个变量</td>
+<td><code>a, b = (1, 2)</code>；<strong>函数多返回值</strong>也靠它</td>
+</tr>
+<tr>
+<td><strong>真值判断</strong></td>
+<td>一个值"算真还是算假"</td>
+<td>假值只有这几种：<code>False None 0 0.0 "" [] () {} set()</code></td>
+</tr>
+<tr>
+<td><strong>函数（function）</strong></td>
+<td>一段可重复使用的代码，有输入有输出</td>
+<td>没有 <code>return</code> 就返回 <code>None</code></td>
+</tr>
+<tr>
+<td><strong>参数 / 实参</strong></td>
+<td>定义时写的是<strong>参数</strong>，调用时传的是<strong>实参</strong></td>
+<td>参数是函数的"入口"，别用它偷偷读全局变量</td>
+</tr>
+<tr>
+<td><strong>返回值</strong></td>
+<td><code>return</code> 交出去的结果</td>
+<td><strong><code>print</code> ≠ <code>return</code></strong>（坑 3）</td>
+</tr>
+<tr>
+<td><strong>作用域（scope）</strong></td>
+<td>变量能被访问到的范围</td>
+<td>查找顺序 LEGB；函数里赋值默认是<strong>局部</strong></td>
+</tr>
+<tr>
+<td><strong>回调函数（callback）</strong></td>
+<td>当作参数传进去、由别人在合适时机调用的函数</td>
+<td><code>progress_function(0.05, final_analysis)</code></td>
+</tr>
+<tr>
+<td><strong>一等公民</strong></td>
+<td>函数能像普通值一样被赋值、传递、返回</td>
+<td>所以函数能放进列表（<code>my_list</code> 里就有）</td>
+</tr>
+<tr>
+<td><strong>方法 / 函数</strong></td>
+<td><code>lst.append(x)</code> 是<strong>方法</strong>（长在对象上）；<code>len(lst)</code> 是<strong>函数</strong></td>
+<td>方法写作 <code>对象.方法名()</code></td>
+</tr>
+<tr>
+<td><strong>原地修改（in-place）</strong></td>
+<td>直接在原对象上改，不产生新对象</td>
+<td><code>append</code> / <code>sort</code> / <code>reverse</code> / <code>clear</code> 都是原地，<strong>返回 <code>None</code></strong></td>
+</tr>
+<tr>
+<td><strong>浅拷贝 / 深拷贝</strong></td>
+<td>浅：只复制最外层；深：连里层一起复制</td>
+<td><code>a.copy()</code> 是浅拷贝；<code>copy.deepcopy(a)</code> 才是深</td>
+</tr>
+<tr>
+<td><strong>推导式（comprehension）</strong></td>
+<td>用一行"描述"生成列表/字典/集合</td>
+<td>本作业任务 4、挑战 2 <strong>禁止</strong>用它代替 for</td>
+</tr>
+<tr>
+<td><strong>模块（module）</strong></td>
+<td>一个 <code>.py</code> 文件</td>
+<td><code>from progress_function import progress_function</code></td>
+</tr>
+<tr>
+<td><strong>异常（exception）</strong></td>
+<td>程序运行时出的错</td>
+<td>读报错：<strong>最后一行</strong>是错误类型，<strong>倒数第二行</strong>是位置</td>
+</tr>
+<tr>
+<td><strong><code>None</code></strong></td>
+<td>Python 表示"什么都没有"的值</td>
+<td>判断用 <code>is None</code>，不要写 <code>== None</code></td>
+</tr>
+<tr>
+<td><strong>语法糖</strong></td>
+<td>写起来更方便的等价写法</td>
+<td>切片、推导式、多返回值、<code>a, b = b, a</code> 都是</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="八-常用用法备注-按类型速查">八、常用用法备注（按类型速查）</h2>
+<blockquote>这一节是"<strong>平时写代码时最常忘的那些点</strong>"。符号含义：<br>✅ 推荐这么写　⚠️ 要注意　❌ 别这么写</blockquote>
+<h3 id="8-1-字符串-str">8.1 字符串 str</h3>
+<p><strong>定义</strong>：一串字符，<strong>不可变</strong>（不能原地修改）。</p>
+<ul><li>✅ 去空格后<strong>一定要接住</strong>：<code>s = s.strip()</code>，只写 <code>s.strip()</code> 等于没做</li><li>✅ 用 <code>"、".join(lst)</code> 拼多个字符串，比用 <code>+</code> 更清晰也更快</li><li>✅ <code>join</code> 的列表元素<strong>必须全是字符串</strong>，数字要先 <code>str(x)</code>（如 <code>str(686)</code>）</li><li>⚠️ <code>.replace(a, b)</code> 默认替换<strong>全部</strong>匹配，不是只换第一个</li><li>⚠️ <code>.split()</code> 不传参数 = 按<strong>任意空白</strong>切；<code>.split(",")</code> 按逗号切</li><li>⚠️ <code>.strip()</code> 只去<strong>首尾</strong>，不去中间的字符</li><li>❌ 别在循环里 <code>s = s + x</code> 拼长字符串（每次都在造新对象，很慢）</li></ul>
+<h3 id="8-2-列表-list">8.2 列表 list</h3>
+<p><strong>定义</strong>：<strong>有顺序、可修改、可重复</strong>的序列。</p>
+<ul><li>✅ 加<strong>一个</strong>用 <code>append(x)</code>，加<strong>一批</strong>用 <code>extend([...])</code></li><li>⚠️ <code>append([1,2])</code> 会把整个列表塞进去，变成嵌套（<code>[[1,2]]</code>）</li><li>✅ 删最后一个 <code>pop()</code>；删第一个 <code>pop(0)</code>；按值删 <code>remove(x)</code></li><li>✅ 复制一份用 <code>lst[:]</code> 或 <code>lst.copy()</code></li><li>⚠️ <code>sort()</code> / <code>reverse()</code> 是<strong>原地修改</strong>且<strong>返回 <code>None</code></strong> → <code>lst = lst.sort()</code> 是错的！</li><li>✅ 想要<strong>新列表</strong>用内置函数：<code>sorted(lst)</code>（排序）、<code>list(reversed(lst))</code>（倒序）</li><li>⚠️ 边遍历边删除会错位（见 3.12），要么倒着删、要么遍历副本</li><li>⚠️ <code>lst = lst2</code> 不复制，只多起了一个名字</li></ul>
+<h3 id="8-3-元组-tuple">8.3 元组 tuple</h3>
+<p><strong>定义</strong>：<strong>有顺序、不能修改</strong>的序列。</p>
+<ul><li>✅ 适合装"<strong>不该被改</strong>的常量数据" —— 本作业的 <code>universities</code> 就是</li><li>⚠️ 只含一个元素的元组要加逗号：<code>(1,)</code> 是元组，<code>(1)</code> 只是数字！</li><li>✅ 元组最适合<strong>解包</strong>：<code>for name, city, line in universities:</code></li><li>⚠️ "不能改"只到第一层：元组里如果放了列表，那个列表<strong>还是能改</strong>的</li></ul>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">t = (1, [2, 3])
+t[1].append(4)      # ✅ 可以！因为改的是里面的 list，不是元组本身</code></pre></div>
+<h3 id="8-4-集合-set">8.4 集合 set</h3>
+<p><strong>定义</strong>：一堆<strong>不重复、无序</strong>的元素。</p>
+<ul><li>✅ 去重：<code>list(set(lst))</code>（<strong>顺序会变</strong>，题目允许才算合格）</li><li>✅ 查重：<code>len(set(lst)) == len(lst)</code></li><li>✅ 判断在不在：<code>x in st</code>（比在 list 里找快得多）</li><li>⚠️ <strong>空集合只能写 <code>set()</code></strong> —— <code>{}</code> 是空<strong>字典</strong>！</li><li>⚠️ 不能放 <code>list</code> / <code>dict</code> / <code>set</code>（不可哈希）</li><li>⚠️ 不能用下标：<code>st[0]</code> 会报 <code>TypeError</code></li><li>✅ 交集 <code>&amp;</code>、并集 <code>|</code>、差集 <code>-</code></li></ul>
+<h3 id="8-5-字典-dict">8.5 字典 dict</h3>
+<p><strong>定义</strong>：<strong>键值对</strong>的集合，靠 key 找 value。</p>
+<ul><li>✅ 取可能不存在的键，用 <code>d.get(k, 默认值)</code>；直接写 <code>d[k]</code> 取不到会 <code>KeyError</code></li><li>⚠️ <code>k in d</code> 判断的是<strong>键</strong>，不是值</li><li>✅ <strong>计数三连</strong>（背下来）：</li></ul>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">if k in count:  count[k] += 1
+else:           count[k] = 1
+# 简写：count[k] = count.get(k, 0) + 1</code></pre></div>
+<ul><li>✅ 遍历方式：<code>for k in d</code> 得到<strong>键</strong>；<code>for k, v in d.items()</code> 得到<strong>键和值</strong></li><li>✅ Python 3.7+ 字典<strong>会保留插入顺序</strong>，但别把它当"有序容器"来用</li><li>⚠️ 键必须<strong>可哈希</strong>（不能是 list）</li><li>✅ 合并用 <code>d.update(other)</code></li></ul>
+<h3 id="8-6-range-与循环">8.6 range 与循环</h3>
+<ul><li>✅ <code>range(n)</code> 是 <code>0 … n-1</code>（<strong>左闭右开</strong>）</li><li>✅ 倒序黄金公式：<code>for i in range(len(x) - 1, -1, -1)</code></li><li>✅ 只想遍历元素：<code>for x in lst</code>（<strong>不需要下标就别用 range</strong>）</li><li>✅ 既要下标又要元素：<code>for i, x in enumerate(lst)</code></li><li>✅ 同时遍历两个列表：<code>for a, b in zip(list1, list2)</code></li><li>⚠️ 循环变量在循环结束后<strong>仍然存在</strong>（坑 3 的 <code>x</code> 就是这么来的）</li><li>⚠️ <code>while</code> 里的条件必须<strong>有机会变假</strong>，否则死循环</li><li>⚠️ 循环里别一边遍历一边删元素</li></ul>
+<h3 id="8-7-函数与返回值">8.7 函数与返回值</h3>
+<ul><li>✅ 函数的输入是<strong>参数</strong>，输出是 <strong><code>return</code></strong>；只认参数、不认全局</li><li>✅ <strong>多返回值</strong>其实就是返回元组，调用时解包：</li></ul>
+<p>  <code>challenge, safe, not_rec = analyze_student(...)</code></p>
+<ul><li>✅ 函数可以<strong>当参数传</strong>（回调）：<code>progress_function(0.05, final_analysis)</code></li><li>✅ 函数名<strong>加括号才是调用</strong>：<code>final_analysis</code> 是动作，<code>final_analysis()</code> 是执行</li><li>⚠️ <strong>没有 <code>return</code> 就返回 <code>None</code></strong>（坑 3）</li><li>⚠️ 函数里给变量赋值<strong>不会</strong>改到全局，除非写 <code>global</code>（不推荐）</li><li>⚠️ 默认参数<strong>别用可变对象</strong>（<code>lst=[]</code> 会被所有调用共享，见 3.16）</li><li>✅ 函数开头写 docstring：做什么 / 参数 / 返回什么</li></ul>
+<h3 id="8-8-输出与格式">8.8 输出与格式</h3>
+<ul><li>✅ 拼多行报告用 <code>"\n".join(行列表)</code>，比反复 <code>+=</code> 干净</li><li>✅ f-string 常用格式：<code>f"{x:3d}"</code>（右对齐 3 位）、<code>f"{p:.1f}"</code>（一位小数）</li><li>✅ 进度条"原地刷新"三件套：<code>\r</code>（回车）+ <code>end=""</code>（不换行）+ <code>flush=True</code>（立刻输出）</li><li>⚠️ <code>print()</code> 不传参数只输出一个<strong>空行</strong></li><li>⚠️ 中文/符号在不同终端宽度可能对不齐，别指望用空格硬对</li></ul>
+<h3 id="8-9-调试与排错">8.9 调试与排错</h3>
+<ul><li>✅ 读报错<strong>从下往上看</strong>：最后一行是类型，倒数第二行是文件和行号</li><li>✅ 不确定类型就 <code>print(type(x))</code></li><li>✅ 想看清空格/换行用 <code>print(repr(x))</code>（<code>strip()</code> 有没有生效一测就知道）</li><li>✅ 二分定位：把确定没问题的部分先注释掉，缩小范围</li><li>✅ 手推表格：把每一步的变量值写下来（坑 2 就是这么找到的）</li><li>⚠️ <strong>"不报错但结果错"最危险</strong>（坑 1、坑 6），只能靠对照题目的"目标效果"发现</li><li>⚠️ 变量名拼错导致 <code>NameError</code> 时，先看<strong>是不是拼写</strong>问题</li></ul>
+<h3 id="8-10-写代码前的一句话自问">8.10 写代码前的一句话自问</h3>
+<blockquote>这个数据 <strong>要顺序吗？要唯一吗？要按名字查吗？要能改吗？</strong><br>想清楚这四个问题，容器就选对了，这次作业 80% 的坑也就避开了。</blockquote>
+<hr>
+<h2 id="附录-12-个任务-涉及知识点对照表">附录：12 个任务 × 涉及知识点对照表</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>任务</th>
+<th>要求</th>
+<th>涉及知识点</th>
+</tr>
+<tr>
+<td>任务 1</td>
+<td>姓名去空格</td>
+<td><code>str.strip()</code>、字符串不可变、dict 取值与赋值</td>
+</tr>
+<tr>
+<td>任务 2</td>
+<td>兴趣标签去重</td>
+<td><code>set</code> 去重、无序性、hashable、<code>list()</code> 转换</td>
+</tr>
+<tr>
+<td>任务 3</td>
+<td>while 实现 clear</td>
+<td><code>while</code>、<code>len()</code>、<code>pop()</code>、<strong>下标位移</strong>（坑 2）</td>
+</tr>
+<tr>
+<td>任务 4</td>
+<td>for 倒序复制复杂列表</td>
+<td><code>for</code> + <code>range</code> 负步长、<code>isinstance</code>、切片 <code>[::-1]</code>（坑 9、10）</td>
+</tr>
+<tr>
+<td>任务 5</td>
+<td>大学冲 / 稳 / 保分档</td>
+<td>tuple 解包、<code>for</code>、<code>if/elif/else</code> 顺序、<code>append</code></td>
+</tr>
+<tr>
+<td>任务 6</td>
+<td>按兴趣推荐专业</td>
+<td>dict 查值、<code>in</code> 判键、<code>set</code> 去重、<code>extend</code>（坑 1、4）</td>
+</tr>
+<tr>
+<td>任务 7</td>
+<td>函数返回多个结果</td>
+<td>函数、参数、<code>return</code> 多返回值（元组）、作用域（坑 8）</td>
+</tr>
+<tr>
+<td>任务 8</td>
+<td>生成报告函数</td>
+<td>函数返回字符串、<code>join</code>、列表收集行、f-string</td>
+</tr>
+<tr>
+<td>任务 9</td>
+<td>进度条 + 最终分析</td>
+<td>函数作为参数（回调）、<code>return</code>、<code>print</code> 与 <code>return</code> 的区别（坑 3）</td>
+</tr>
+<tr>
+<td>挑战 1</td>
+<td>志愿表查重</td>
+<td><code>set</code>、<code>len()</code>、判断放在循环外（坑 5、6）</td>
+</tr>
+<tr>
+<td>挑战 2</td>
+<td>倒序输出志愿表</td>
+<td><code>range(len-1, -1, -1)</code>、下标访问、<code>print</code> 位置（坑 7、10）</td>
+</tr>
+<tr>
+<td>挑战 3</td>
+<td>统计专业出现次数</td>
+<td>dict 计数模式、嵌套 <code>for</code>、遍历字典、<code>print</code> 位置（坑 7）</td>
+</tr>
+</table></div>
+<hr>
+<p>*（本文件由 AI 助手根据我的作业错题整理，供复习使用。代码部分请以我自己重写的版本为准。）*</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

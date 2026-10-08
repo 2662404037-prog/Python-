@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05_网络安全第一课 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#先划一条法律红线">⚠️ 先划一条法律红线</a>
+<a class="toc-h2" href="#一-最容易搞混的两个概念-哈希-vs-加密">一、最容易搞混的两个概念：哈希 vs 加密</a>
+<a class="toc-h2" href="#二-hashlib-给文件算个-指纹">二、hashlib：给文件算个"指纹"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#它有什么用">它有什么用</a>
+<a class="toc-h3" href="#实战-给一个大文件算指纹-不用担心内存">实战：给一个大文件算指纹（不用担心内存）</a>
+<a class="toc-h2" href="#三-hmac-带-密钥-的指纹-防止别人伪造">三、hmac：带"密钥"的指纹，防止别人伪造</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#四-secrets-生成-猜不到-的随机值">四、secrets：生成"猜不到"的随机值</a>
+<a class="toc-h3" href="#一个高频事故">一个高频事故</a>
+<a class="toc-h2" href="#五-bcrypt-存密码的-唯一正确姿势">五、bcrypt：存密码的唯一正确姿势</a>
+<a class="toc-h3" href="#先看错误示范">先看错误示范</a>
+<a class="toc-h3" href="#正确姿势">正确姿势</a>
+<a class="toc-h3" href="#为什么-bcrypt-是对的">为什么 bcrypt 是对的</a>
+<a class="toc-h2" href="#六-cryptography-真正意义上的-加密">六、cryptography：真正意义上的"加密"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#三个必须知道的常识">三个必须知道的常识</a>
+<a class="toc-h3" href="#正确管理密钥的方式">正确管理密钥的方式</a>
+<a class="toc-h2" href="#七-socket-网络编程的-地基">七、socket：网络编程的"地基"</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h2" href="#八-更推荐的方向-做一个-防守的人">八、更推荐的方向：做一个"防守的人"</a>
+<a class="toc-h3" href="#一个正当又有意思的入门项目">一个正当又有意思的入门项目</a>
+<a class="toc-h2" href="#九-想走安全方向-这个顺序最稳">九、想走安全方向？这个顺序最稳</a>
+<a class="toc-h2" href="#附-安全相关的-常用工具速查">🧰 附：安全相关的「常用工具速查」</a>
+<a class="toc-h3" href="#hashlib-哈希-指纹">🔐 hashlib（哈希 / 指纹）</a>
+<a class="toc-h3" href="#secrets-安全随机">🎲 secrets（安全随机）</a>
+<a class="toc-h3" href="#bcrypt-存密码">🔑 bcrypt（存密码）</a>
+<a class="toc-h3" href="#cryptography-加密">🔒 cryptography（加密）</a>
+<a class="toc-h3" href="#socket-网络地基">🌐 socket（网络地基）</a>
+<a class="toc-h3" href="#防守方向的工具">🛡 防守方向的工具</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业-安全又实用">🎯 留个小作业（安全又实用）</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="网络安全第一课-先学会保护自己">网络安全第一课：先学会保护自己</h1>
+<div style="margin:6px 0 22px"><img src="covers/05_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：你写了人生第一个注册登录功能，把用户密码存进了数据库。<br>三年后数据库被拖库，你发现 —— <strong>所有人密码都是明文</strong>。<br>这不是段子，是真实发生过的无数次事故。<br>这篇讲程序员<strong>最该先学会的 5 件安全小事</strong>，以及"<strong>安全方向到底该学什么</strong>"。</blockquote>
+<hr>
+<h2 id="先划一条法律红线">⚠️ 先划一条法律红线</h2>
+<p>这篇会提到一些安全相关的库，它们都是<strong>双刃剑</strong>。</p>
+<p><strong>合法使用的前提，至少满足一个</strong>：</p>
+<ol><li>是<strong>你自己的</strong>设备或网络</li><li>你有<strong>书面授权</strong></li><li>在<strong>靶场 / CTF 比赛</strong>里练习</li></ol>
+<p><strong>扫描或攻击未授权的系统，在国内可能触犯《刑法》第 285 / 286 条。</strong></p>
+<p>合法练手平台（都免费）：</p>
+<ul><li><strong>PortSwigger Web Security Academy</strong> —— 全球公认最好的 Web 安全练习场</li><li><strong>OWASP Juice Shop</strong> —— 一个"故意写满漏洞"的购物网站</li><li><strong>Hack The Box / TryHackMe / PicoCTF</strong></li></ul>
+<blockquote>本文所有示例都写成"<strong>只打本机</strong>"的形式，你可以放心跑。</blockquote>
+<hr>
+<h2 id="一-最容易搞混的两个概念-哈希-vs-加密">一、最容易搞混的两个概念：哈希 vs 加密</h2>
+<p><strong>这是新手第一大认知错误</strong>，一定要分清：</p>
+<div class="tablewrap"><table>
+<tr>
+<th></th>
+<th>哈希（摘要）</th>
+<th>加密</th>
+</tr>
+<tr>
+<td>能还原吗</td>
+<td>❌ <strong>不能</strong>（单向）</td>
+<td>✅ 能（有钥匙就行）</td>
+</tr>
+<tr>
+<td>用来干什么</td>
+<td>校验、存密码、去重</td>
+<td>保护"必须还原"的数据</td>
+</tr>
+<tr>
+<td>例子</td>
+<td>SHA256、bcrypt</td>
+<td>AES、RSA</td>
+</tr>
+</table></div>
+<p>一句话：</p>
+<blockquote><strong>哈希 = 只能对指纹，不能反推原文。</strong><br><strong>加密 = 能上锁也能开锁。</strong></blockquote>
+<p>搞混这两个，就会写出"用 base64 当加密"、"用 MD5 存密码"这种经典事故。</p>
+<hr>
+<h2 id="二-hashlib-给文件算个-指纹">二、hashlib：给文件算个"指纹"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>把任意长度的内容压成一串固定长度的字符。<strong>同一个内容永远同一个指纹；改一个字，指纹完全不同。</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import hashlib
+
+print("sha256:", hashlib.sha256(b"hello").hexdigest())</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">sha256: 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code></pre></div>
+<h3 id="它有什么用">它有什么用</h3>
+<ul><li><strong>校验文件有没有被改过</strong>（下载大文件后比对 sha256）</li><li><strong>秒传 / 去重</strong>（内容一样 → 指纹一样）</li><li>校验数据完整性</li></ul>
+<h3 id="实战-给一个大文件算指纹-不用担心内存">实战：给一个大文件算指纹（不用担心内存）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import hashlib
+
+def file_sha256(path, chunk=8192):
+    h = hashlib.sha256()
+    with open(path, "rb") as fp:
+        while True:
+            b = fp.read(chunk)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+print(file_sha256("某个大文件.zip"))</code></pre></div>
+<blockquote>⚠️ <code>b"hello"</code> 前面的 <code>b</code> 表示<strong>字节</strong>。哈希只能处理字节，字符串要先 <code>.encode()</code>。</blockquote>
+<hr>
+<h2 id="三-hmac-带-密钥-的指纹-防止别人伪造">三、hmac：带"密钥"的指纹，防止别人伪造</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>普通哈希谁都能算 —— 那别人改了数据再算一次哈希，你就被骗了。</p>
+<p><code>hmac</code> 的做法是：<strong>加一把只有你知道的密钥</strong>，别人没有钥匙就算不出来。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import hmac, hashlib
+
+sig = hmac.new(b"我的密钥", b"要签名的数据", hashlib.sha256).hexdigest()
+print("签名:", sig)
+print("验证通过:", hmac.new(b"我的密钥", b"要签名的数据", hashlib.sha256).hexdigest() == sig)</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">签名: 5031fe3d989c6d1537a013fa6e739da2f6991c2a3dab0b0e5a2c1c9c36d3bb3e
+验证通过: True</code></pre></div>
+<p><strong>用途</strong>：接口签名（防止请求被篡改）、Webhook 验签（确认是对方发的）。</p>
+<hr>
+<h2 id="四-secrets-生成-猜不到-的随机值">四、secrets：生成"猜不到"的随机值</h2>
+<h3 id="一个高频事故">一个高频事故</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import random
+验证码 = random.randint(100000, 999999)   # ❌ 千万别这么写</code></pre></div>
+<p><strong>为什么不行</strong>：<code>random</code> 是<strong>伪随机</strong>，算法固定，只要知道种子就能预测出你生成的所有验证码。</p>
+<p><strong>正确写法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import secrets
+
+print("随机数:", secrets.randbelow(100))
+print("登录 Token:", secrets.token_urlsafe(12))
+print("6 位验证码:", "".join(str(secrets.randbelow(10)) for _ in range(6)))</code></pre></div>
+<p><strong>实测输出</strong>（每次都不一样，这就是重点）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">随机数: 37
+登录 Token: Y5zUIIfYx_N4zZKQ
+6 位验证码: 436911</code></pre></div>
+<div class="tablewrap"><table>
+<tr>
+<th>用途</th>
+<th>用哪个</th>
+</tr>
+<tr>
+<td>抽签、洗牌、游戏</td>
+<td><code>random</code> 就行</td>
+</tr>
+<tr>
+<td><strong>密码、Token、验证码、密钥</strong></td>
+<td><strong>必须用 <code>secrets</code></strong></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="五-bcrypt-存密码的-唯一正确姿势">五、bcrypt：存密码的<strong>唯一正确姿势</strong></h2>
+<h3 id="先看错误示范">先看错误示范</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import hashlib
+hashed = hashlib.md5(b"user123").hexdigest()   # ❌ 经典事故</code></pre></div>
+<p><strong>为什么错</strong>：</p>
+<ol><li>MD5 太快了 —— 现代显卡<strong>一秒能试几十亿次</strong></li><li>没有"盐" —— 所有人都用同一个密码，哈希值就一样，一查彩虹表全暴露</li></ol>
+<h3 id="正确姿势">正确姿势</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install bcrypt</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import bcrypt
+
+# 注册时：把密码变成哈希，存进数据库
+password = b"user-password-123"
+hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+print("存进数据库的:", hashed[:29], "...")
+
+# 登录时：拿用户输入去校验（哈希不可逆，不需要"解密"）
+print("密码对不对:", bcrypt.checkpw(b"user-password-123", hashed))   # True
+print("密码对不对:", bcrypt.checkpw(b"wrong-password", hashed))      # False</code></pre></div>
+<h3 id="为什么-bcrypt-是对的">为什么 bcrypt 是对的</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+<tr>
+<td><strong>故意很慢</strong></td>
+<td>一次要几十毫秒 → 暴力破解直接不现实</td>
+</tr>
+<tr>
+<td><strong>自动加盐</strong></td>
+<td>同一个密码，两个用户存出来的哈希也不同</td>
+</tr>
+<tr>
+<td><strong>自带成本参数</strong></td>
+<td>以后电脑变快了，调高参数即可</td>
+</tr>
+</table></div>
+<blockquote>💡 <strong>一句话记住</strong>：<strong>存密码只有一种正确答案 —— bcrypt 或 argon2。</strong><br>MD5 / SHA1 / SHA256 <strong>都不行</strong>。</blockquote>
+<hr>
+<h2 id="六-cryptography-真正意义上的-加密">六、cryptography：真正意义上的"加密"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>和哈希相反，<strong>加密是可逆的</strong>：有钥匙就能还原。用于保护"必须还原"的数据。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install cryptography</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from cryptography.fernet import Fernet
+
+key = Fernet.generate_key()          # 生成一把钥匙（一定要保存好！）
+f = Fernet(key)
+
+token = f.encrypt(b"我的秘密")
+print("密文:", token[:40], "...")
+print("解密:", f.decrypt(token))</code></pre></div>
+<h3 id="三个必须知道的常识">三个必须知道的常识</h3>
+<ol><li><strong>钥匙丢了，数据就永远打不开了</strong>（这不是 bug，是特性）</li><li><strong>别在代码里硬编码密钥</strong> —— 用环境变量或 <code>.env</code></li><li><strong>千万别用 <code>base64</code> 当"加密"</strong> —— 它只是编码，谁都能解开</li></ol>
+<h3 id="正确管理密钥的方式">正确管理密钥的方式</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install python-dotenv</code></pre></div>
+<p>新建一个 <code>.env</code> 文件：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">API_KEY=sk-xxxxxxxx
+DB_PASSWORD=my-secret</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import os
+from dotenv import load_dotenv
+
+load_dotenv()
+print("读到密钥:", os.getenv("API_KEY"))</code></pre></div>
+<p><strong>实测输出</strong>（<code>demo.env</code> 里写的是 <code>API_KEY=test-123</code> / <code>NAME=小李</code>）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">读到密钥: test-123
+读到名字: 小李</code></pre></div>
+<blockquote>🚨 <strong>一定要做</strong>：把 <code>.env</code> 加进 <code>.gitignore</code>！<br>不然你的密钥会跟着代码传到 GitHub 上，<strong>几分钟内就可能被盗用</strong>。<br>GitHub 上有专门的机器人，24 小时扫描新提交的 API Key。</blockquote>
+<hr>
+<h2 id="七-socket-网络编程的-地基">七、socket：网络编程的"地基"</h2>
+<h3 id="它是什么">它是什么</h3>
+<p><code>socket</code> 是操作系统留给程序的<strong>网络接口</strong>。你听到的所有网络词（TCP、端口、连接）最后都落到它身上。<strong>理解它，才知道 requests 和浏览器在背后干了什么。</strong></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import socket
+
+def check(host, port, timeout=1):
+    """能连上返回 True，连不上返回 False"""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        return s.connect_ex((host, port)) == 0
+
+print("本机 1 端口开放吗:", check("127.0.0.1", 1))
+print("本机 65500 端口开放吗:", check("127.0.0.1", 65500))
+print("本机 IP:", socket.gethostbyname(socket.gethostname()))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">本机 1 端口开放吗: False
+本机 65500 端口开放吗: False
+本机 IP: 10.120.0.140</code></pre></div>
+<blockquote>💡 <code>127.0.0.1</code> 就是"<strong>本机自己</strong>"。练手永远先拿它当目标。</blockquote>
+<hr>
+<h2 id="八-更推荐的方向-做一个-防守的人">八、更推荐的方向：<strong>做一个"防守的人"</strong></h2>
+<p>新手容易被"黑客技术"吸引，但<strong>安全行业真正缺人的是防守</strong>。而且这些技能<strong>正当、实用、还能写进简历</strong>：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>一句话用法</th>
+</tr>
+<tr>
+<td><strong>bandit</strong></td>
+<td>扫描<strong>你自己代码</strong>的安全漏洞</td>
+<td><code>bandit -r ./myproject</code></td>
+</tr>
+<tr>
+<td><strong>pip-audit</strong></td>
+<td>检查依赖库有没有已知漏洞</td>
+<td><code>pip-audit</code></td>
+</tr>
+<tr>
+<td><strong>yara-python</strong></td>
+<td>恶意样本特征匹配（<strong>防守核心技能</strong>）</td>
+<td>写规则扫可疑文件</td>
+</tr>
+<tr>
+<td><strong>osv-scanner / safety</strong></td>
+<td>依赖漏洞扫描</td>
+<td>上线前体检</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install bandit pip-audit
+bandit -r ./myproject     # 扫自己的代码
+pip-audit                 # 扫依赖</code></pre></div>
+<h3 id="一个正当又有意思的入门项目">一个正当又有意思的入门项目</h3>
+<p>用 <code>yara</code> 写一个"<strong>可疑文件快速体检脚本</strong>"，扫自己电脑的下载目录，检查有没有包含 "powershell + DownloadString" 这类特征。</p>
+<p>这比"学攻击"更适合写进简历，也不会踩法律红线。</p>
+<hr>
+<h2 id="九-想走安全方向-这个顺序最稳">九、想走安全方向？这个顺序最稳</h2>
+<ol><li><strong>计算机网络 + Linux 命令 + HTTP 协议</strong> ← 这三样比任何工具都重要 10 倍</li><li>Python 编程能力</li><li><code>socket</code> → <code>requests</code> → 手工测试（Burp Suite / OWASP ZAP）</li><li><strong>靶场刷题</strong>（PortSwigger 免费、Juice Shop、HTB）</li><li>选方向：Web 安全 / 渗透测试 / 二进制逆向 / 流量分析 / 应急响应 / 安全开发</li><li><strong>底线</strong>：只打靶场、只测授权目标、发现漏洞先报告不公开利用</li></ol>
+<hr>
+<h2 id="附-安全相关的-常用工具速查">🧰 附：安全相关的「常用工具速查」</h2>
+<blockquote>这几张表<strong>建议收藏</strong>——它们是写代码时会反复用到的。</blockquote>
+<h3 id="hashlib-哈希-指纹">🔐 hashlib（哈希 / 指纹）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>hashlib.sha256(数据).hexdigest()</code></td>
+<td>算 SHA256 指纹</td>
+<td>数据要 <code>b"…"</code> 或 <code>.encode()</code></td>
+</tr>
+<tr>
+<td><code>hashlib.md5()</code></td>
+<td>MD5（<strong>只用来校验文件，别存密码</strong>）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>h.update(块)</code></td>
+<td>分块喂数据</td>
+<td>大文件不占内存</td>
+</tr>
+<tr>
+<td><code>hashlib.file_digest(f, "sha256")</code></td>
+<td>一行算文件指纹</td>
+<td>Python 3.11+</td>
+</tr>
+<tr>
+<td><code>hmac.new(key, msg, hashlib.sha256)</code></td>
+<td><strong>带密钥的指纹</strong></td>
+<td>防伪造</td>
+</tr>
+<tr>
+<td><code>hmac.compare_digest(a, b)</code></td>
+<td>安全比较两个签名</td>
+<td>别用 <code>==</code></td>
+</tr>
+</table></div>
+<h3 id="secrets-安全随机">🎲 secrets（安全随机）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>secrets.token_urlsafe(24)</code></td>
+<td>生成<strong>登录 Token / 邀请码</strong></td>
+<td>最常用</td>
+</tr>
+<tr>
+<td><code>secrets.token_hex(16)</code></td>
+<td>生成十六进制密钥</td>
+<td>密钥、盐</td>
+</tr>
+<tr>
+<td><code>secrets.randbelow(100)</code></td>
+<td>0~99 的随机数</td>
+<td>抽奖</td>
+</tr>
+<tr>
+<td><code>secrets.choice(字符串)</code></td>
+<td>随机选一个字符</td>
+<td>生成密码</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <strong>别用 <code>random</code> 做这些</strong>——它可预测。<code>random</code> 只适合抽签、洗牌、造测试数据。</blockquote>
+<h3 id="bcrypt-存密码">🔑 bcrypt（存密码）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>bcrypt.gensalt()</code></td>
+<td>生成"盐"</td>
+<td><code>rounds=12</code> 可调难度</td>
+</tr>
+<tr>
+<td><code>bcrypt.hashpw(密码, 盐)</code></td>
+<td><strong>注册时</strong>：算出哈希存库</td>
+<td>密码要 <code>b"…"</code></td>
+</tr>
+<tr>
+<td><code>bcrypt.checkpw(输入, 哈希)</code></td>
+<td><strong>登录时</strong>：校验</td>
+<td>返回 True/False</td>
+</tr>
+</table></div>
+<blockquote>记住：<strong>哈希不可逆，所以是"校验"不是"解密"</strong>。</blockquote>
+<h3 id="cryptography-加密">🔒 cryptography（加密）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>Fernet.generate_key()</code></td>
+<td>生成对称密钥</td>
+<td><strong>丢了就解不开</strong></td>
+</tr>
+<tr>
+<td><code>Fernet(key).encrypt(数据)</code></td>
+<td>加密</td>
+<td>返回密文</td>
+</tr>
+<tr>
+<td><code>Fernet(key).decrypt(密文)</code></td>
+<td>解密</td>
+<td>密钥不对会报错</td>
+</tr>
+<tr>
+<td><code>rsa.generate_private_key()</code></td>
+<td>生成非对称密钥对</td>
+<td>公钥加密、私钥解密</td>
+</tr>
+<tr>
+<td><code>x509</code> 相关 API</td>
+<td>证书处理</td>
+<td>进阶用途</td>
+</tr>
+</table></div>
+<h3 id="socket-网络地基">🌐 socket（网络地基）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>socket.socket(AF_INET, SOCK_STREAM)</code></td>
+<td>建 TCP 插座</td>
+<td>IPv4 + TCP</td>
+</tr>
+<tr>
+<td><code>.connect_ex((host, port))</code></td>
+<td><strong>探端口</strong>（返回 0 = 通）</td>
+<td>只扫自己</td>
+</tr>
+<tr>
+<td><code>.settimeout(1)</code></td>
+<td>防卡死</td>
+<td>一定要设</td>
+</tr>
+<tr>
+<td><code>.bind() / .listen() / .accept()</code></td>
+<td>写服务端</td>
+<td>被动等连接</td>
+</tr>
+<tr>
+<td><code>.sendall() / .recv()</code></td>
+<td>收发数据</td>
+<td>字节流</td>
+</tr>
+<tr>
+<td><code>socket.gethostbyname(域名)</code></td>
+<td>域名 → IP</td>
+<td>快速查解析</td>
+</tr>
+</table></div>
+<h3 id="防守方向的工具">🛡 防守方向的工具</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型命令</th>
+</tr>
+<tr>
+<td><code>bandit</code></td>
+<td>扫<strong>自己代码</strong>的安全问题</td>
+<td><code>bandit -r ./myproject</code></td>
+</tr>
+<tr>
+<td><code>pip-audit</code></td>
+<td>扫依赖库的已知漏洞</td>
+<td><code>pip-audit</code></td>
+</tr>
+<tr>
+<td><code>yara-python</code></td>
+<td>恶意文件特征匹配</td>
+<td>自己写规则扫文件</td>
+</tr>
+<tr>
+<td><code>faker</code></td>
+<td>造假数据（<strong>别拿真实数据练</strong>）</td>
+<td><code>Faker("zh_CN").name()</code></td>
+</tr>
+<tr>
+<td><code>mitmproxy</code></td>
+<td>看自己 App 的请求</td>
+<td><code>mitmweb</code></td>
+</tr>
+</table></div>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>概念</th>
+<th>正确做法</th>
+</tr>
+<tr>
+<td>存密码</td>
+<td><strong>bcrypt / argon2</strong>（绝不用 MD5）</td>
+</tr>
+<tr>
+<td>生成验证码 / Token</td>
+<td><strong>secrets</strong>（绝不用 random）</td>
+</tr>
+<tr>
+<td>校验数据没被改</td>
+<td><strong>hashlib / hmac</strong></td>
+</tr>
+<tr>
+<td>加密敏感数据</td>
+<td><strong>cryptography</strong>（不是 base64！）</td>
+</tr>
+<tr>
+<td>管理密钥</td>
+<td><strong>.env + python-dotenv + .gitignore</strong></td>
+</tr>
+<tr>
+<td>学习攻击技术</td>
+<td><strong>只在靶场 / 授权目标</strong></td>
+</tr>
+</table></div>
+<h2 id="留个小作业-安全又实用">🎯 留个小作业（安全又实用）</h2>
+<p>写一个"<strong>文件指纹校验器</strong>"：</p>
+<ol><li>给一个文件夹里的所有文件算 SHA256</li><li>输出成一张表（文件名 + 指纹）</li><li>下次再跑，<strong>自动找出哪些文件被改过</strong></li></ol>
+<p>这个脚本可以直接用来防止"重要文件被偷偷改了"。</p>
+<hr>
+<p><strong>下一篇</strong>：《AI 入门：从"中文分词"到"调用大模型"》</p>
+<p>👉 如果这篇帮你避开了"MD5 存密码"这个大坑，<strong>点个「赞」</strong>，也转发给你的开发同事 —— 这个错误每年都还在发生。</p>
+<p>👉 <strong>关注我</strong>，下一篇讲 AI：<strong>不训练模型，也能做出 AI 应用</strong>。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

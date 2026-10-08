@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02_数据处理三件套 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#一-numpy-让数字-整体-运算">一、numpy：让数字"整体"运算</a>
+<a class="toc-h3" href="#先看一个反直觉的现象">先看一个反直觉的现象</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#逐行解释">逐行解释</a>
+<a class="toc-h3" href="#动手改一改">🎯 动手改一改</a>
+<a class="toc-h2" href="#二-pandas-Python-里的-Excel">二、pandas：Python 里的 Excel</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#最小可用例子">最小可用例子</a>
+<a class="toc-h3" href="#逐行解释">逐行解释</a>
+<a class="toc-h3" href="#四个你会用到-90-时间的方法">四个你会用到 90% 时间的方法</a>
+<a class="toc-h3" href="#坑王榜-2-中文导出全是乱码">🐛 坑王榜 #2：中文导出全是乱码</a>
+<a class="toc-h2" href="#三-matplotlib-把数字画成图">三、matplotlib：把数字画成图</a>
+<a class="toc-h3" href="#它是什么">它是什么</a>
+<a class="toc-h3" href="#三个必踩的坑-我都踩过">三个必踩的坑（我都踩过）</a>
+<a class="toc-h3" href="#换个图形只改一个词">换个图形只改一个词</a>
+<a class="toc-h2" href="#四-把三个库串起来-一个真实小任务">四、把三个库串起来：一个真实小任务</a>
+<a class="toc-h2" href="#附-本文库的-常用工具速查">🧰 附：本文库的「常用工具速查」</a>
+<a class="toc-h3" href="#numpy">🔢 numpy</a>
+<a class="toc-h3" href="#pandas">🐼 pandas</a>
+<a class="toc-h3" href="#matplotlib">📈 matplotlib</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业">🎯 留个小作业</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="Python-数据处理三件套-让数字自己算">Python 数据处理三件套：让数字自己算</h1>
+<div style="margin:6px 0 22px"><img src="covers/02_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：老板发来一个 5000 行的 Excel，让你"统计一下每个城市的平均分，顺便画个图"。<br>你打开 Excel 开始手动筛选……半小时后，老板说："数据更新了，重新算一遍。"<br>这篇讲三个库，让你把这件事变成 <strong>10 行代码、5 秒出结果</strong>。</blockquote>
+<hr>
+<h2 id="一-numpy-让数字-整体-运算">一、numpy：让数字"整体"运算</h2>
+<h3 id="先看一个反直觉的现象">先看一个反直觉的现象</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">普通列表 = [1, 2, 3, 4]
+print(普通列表 * 2)</code></pre></div>
+<p>输出是：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">[1, 2, 3, 4, 1, 2, 3, 4]</code></pre></div>
+<p><strong>列表乘以 2 等于"重复两遍"</strong>，不是每个数乘 2。这就是为什么需要 numpy。</p>
+<h3 id="它是什么">它是什么</h3>
+<p>numpy 给 Python 加了一种新容器：<strong>数组（array）</strong>。它的核心特点是 —— <strong>整体运算</strong>。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install numpy</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import numpy as np
+
+a = np.array([1, 2, 3, 4])
+print("整体乘 2:", a * 2)
+print("均值/最大:", a.mean(), a.max())
+
+m = np.arange(6).reshape(2, 3)      # 0~5 排成 2 行 3 列
+print("2x3 矩阵:")
+print(m)
+print("每列求和:", m.sum(axis=0))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">整体乘 2: [2 4 6 8]
+均值/最大: 2.5 4
+2x3 矩阵:
+[[0 1 2]
+ [3 4 5]]
+每列求和: [3 5 7]</code></pre></div>
+<h3 id="逐行解释">逐行解释</h3>
+<ul><li><code>np.array([1,2,3,4])</code> —— 把列表变成数组，这是 numpy 的基本单位</li><li><code>a * 2</code> —— <strong>每个元素都乘 2</strong>（对比上面列表的行为）</li><li><code>a.mean()</code> / <code>a.max()</code> —— 直接求平均、求最大，不用写循环</li><li><code>np.arange(6)</code> —— 生成 0,1,2,3,4,5</li><li><code>.reshape(2,3)</code> —— 把它排成 2 行 3 列</li><li><code>.sum(axis=0)</code> —— 沿"第 0 轴"求和 = 每列的和（改成 <code>axis=1</code> 就是每行）</li></ul>
+<blockquote>💡 <strong>一句话记住</strong>：<strong>numpy 快，是因为它不写 for 循环。</strong></blockquote>
+<h3 id="动手改一改">🎯 动手改一改</h3>
+<ol><li>把 <code>a * 2</code> 改成 <code>a + 100</code>、<code>a ** 2</code>（平方）</li><li>把 <code>.reshape(2,3)</code> 改成 <code>.reshape(3,2)</code></li><li>把 <code>axis=0</code> 改成 <code>axis=1</code></li></ol>
+<p><strong>为什么要会这些</strong>：numpy 是 pandas、OpenCV、PyTorch 的<strong>共同底层</strong>。学会它，后面那些库都顺手。</p>
+<hr>
+<h2 id="二-pandas-Python-里的-Excel">二、pandas：Python 里的 Excel</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>pandas 把数据变成<strong>带表头的表格</strong>（叫 DataFrame），然后你就能像在 Excel 里那样筛选、排序、分组、统计 —— 只是全部用代码，而且能处理几十万行。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install pandas openpyxl</code></pre></div>
+<h3 id="最小可用例子">最小可用例子</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+
+df = pd.DataFrame({
+    "姓名": ["张三", "李四", "王五"],
+    "分数": [686, 655, 700],
+    "城市": ["杭州", "武汉", "北京"],
+})
+print(df)
+print("平均分:", round(df["分数"].mean(), 1))
+print("筛选 &gt;=680:")
+print(df[df["分数"] &gt;= 680][["姓名", "分数"]])
+print("按城市分组均值:", df.groupby("城市")["分数"].mean().to_dict())</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">   姓名   分数  城市
+0  张三  686  杭州
+1  李四  655  武汉
+2  王五  700  北京
+平均分: 680.3
+筛选 &gt;=680:
+   姓名   分数
+0  张三  686
+2  王五  700
+按城市分组均值: {'北京': 700.0, '杭州': 686.0, '武汉': 655.0}</code></pre></div>
+<h3 id="逐行解释">逐行解释</h3>
+<ul><li><code>pd.DataFrame({...})</code> —— 把字典变成表格；<strong>字典的键变成表头</strong></li><li><code>df["分数"].mean()</code> —— 选出"分数"这一列求平均</li><li><code>round(x, 1)</code> —— 保留 1 位小数</li><li><code>df[df["分数"] &gt;= 680]</code> —— <strong>按条件筛选行</strong>，这是 pandas 的灵魂，先记住这个形状</li><li><code>[["姓名", "分数"]]</code> —— 只要这两列</li><li><code>groupby("城市")</code> —— 按城市分组，算"每个城市的平均分"</li></ul>
+<h3 id="四个你会用到-90-时间的方法">四个你会用到 90% 时间的方法</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>想干什么</th>
+<th>写法</th>
+</tr>
+<tr>
+<td>求平均 / 最大</td>
+<td><code>df["列"].mean()</code> / <code>df["列"].max()</code></td>
+</tr>
+<tr>
+<td>数每个值出现几次</td>
+<td><code>df["列"].value_counts()</code></td>
+</tr>
+<tr>
+<td>按某列分组统计</td>
+<td><code>df.groupby("列")["另一列"].mean()</code></td>
+</tr>
+<tr>
+<td>按条件筛选</td>
+<td><code>df[df["列"] &gt; 值]</code></td>
+</tr>
+</table></div>
+<h3 id="坑王榜-2-中文导出全是乱码">🐛 坑王榜 #2：中文导出全是乱码</h3>
+<p><strong>症状</strong>：<code>df.to_csv("成绩.csv")</code> 之后，用 Excel 打开全是乱码。</p>
+<p><strong>原因</strong>：Excel 默认用 GBK 打开 CSV，而 pandas 写的是 UTF-8。</p>
+<p><strong>怎么修</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">df.to_csv("成绩.csv", index=False, encoding="utf-8-sig")   # ★ 加这个</code></pre></div>
+<p><code>utf-8-sig</code> 会多写一个 BOM，Excel 就认得出来了。</p>
+<hr>
+<h2 id="三-matplotlib-把数字画成图">三、matplotlib：把数字画成图</h2>
+<h3 id="它是什么">它是什么</h3>
+<p>把数据画成折线、柱状、散点、直方图，然后导出成图片放进报告或论文。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install matplotlib</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import matplotlib
+matplotlib.use("Agg")                     # 只保存文件，不弹窗（脚本必备）
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]   # ★ 中文不乱码
+plt.rcParams["axes.unicode_minus"] = False              # ★ 负号不乱码
+
+fig, ax = plt.subplots(figsize=(4, 3))
+ax.bar(["张三", "李四", "王五"], [686, 655, 700], color="#4f81bd")
+ax.set_title("三个人考了多少分")
+ax.set_ylabel("分数")
+
+plt.savefig("chart.png", dpi=120, bbox_inches="tight")
+plt.close(fig)
+print("图已保存")</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">已保存: chart_demo.png  大小: 13125 字节</code></pre></div>
+<h3 id="三个必踩的坑-我都踩过">三个必踩的坑（我都踩过）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>坑</th>
+<th>症状</th>
+<th>怎么修</th>
+</tr>
+<tr>
+<td><strong>中文变方框</strong></td>
+<td>标题是一排 □□□</td>
+<td><code>plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]</code></td>
+</tr>
+<tr>
+<td><strong>保存的图是空白</strong></td>
+<td>打开图片全白</td>
+<td><code>savefig</code> 必须写在 <code>plt.show()</code> <strong>之前</strong></td>
+</tr>
+<tr>
+<td><strong>服务器上报错</strong></td>
+<td>提示找不到显示设备</td>
+<td>开头加 <code>matplotlib.use("Agg")</code></td>
+</tr>
+</table></div>
+<h3 id="换个图形只改一个词">换个图形只改一个词</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>想要的图</th>
+<th>写法</th>
+</tr>
+<tr>
+<td>柱状图</td>
+<td><code>ax.bar(标签, 数值)</code></td>
+</tr>
+<tr>
+<td>折线图</td>
+<td><code>ax.plot(x, y)</code></td>
+</tr>
+<tr>
+<td>散点图</td>
+<td><code>ax.scatter(x, y)</code></td>
+</tr>
+<tr>
+<td>直方图（看分布）</td>
+<td><code>ax.hist(一堆数字, bins=20)</code></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="四-把三个库串起来-一个真实小任务">四、把三个库串起来：一个真实小任务</h2>
+<p><strong>任务</strong>：读一个 CSV，算平均分，画一张图。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]
+
+# ① 读数据
+df = pd.read_csv("成绩.csv")
+
+# ② 算
+print("平均分:", round(df["分数"].mean(), 1))
+print("最高的三个:")
+print(df.nlargest(3, "分数")[["姓名", "分数"]])
+
+# ③ 画
+fig, ax = plt.subplots(figsize=(5, 3))
+ax.bar(df["姓名"], df["分数"], color="#4f81bd")
+ax.axhline(df["分数"].mean(), color="red", linestyle="--", label="平均线")
+ax.set_title("成绩对比"); ax.legend()
+plt.savefig("成绩图.png", dpi=120, bbox_inches="tight")
+print("图已保存")</code></pre></div>
+<p><strong>这段代码干完的活</strong>：原本要手动筛选 + 算平均 + 做成图表，现在<strong>一次运行 2 秒</strong>。</p>
+<hr>
+<h2 id="附-本文库的-常用工具速查">🧰 附：本文库的「常用工具速查」</h2>
+<blockquote>这三张表建议<strong>贴在编辑器旁边</strong>。90% 的数据处理，用到的就是这些。</blockquote>
+<h3 id="numpy">🔢 numpy</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>np.array(列表)</code></td>
+<td>列表 → 数组</td>
+<td>一切的开始</td>
+</tr>
+<tr>
+<td>整体运算</td>
+<td>每个元素一起算</td>
+<td><code>a * 2</code>、<code>a + 10</code>、<code>a ** 2</code></td>
+</tr>
+<tr>
+<td><code>a.mean() / a.sum() / a.max() / a.min()</code></td>
+<td>统计四件套</td>
+<td>不用写循环</td>
+</tr>
+<tr>
+<td><code>a.sum(axis=0)</code></td>
+<td>按列求和</td>
+<td><code>axis=1</code> 是按行</td>
+</tr>
+<tr>
+<td><code>np.arange(n)</code></td>
+<td>生成 0~n-1</td>
+<td>配合 reshape</td>
+</tr>
+<tr>
+<td><code>.reshape(行, 列)</code></td>
+<td>变成矩阵</td>
+<td><code>np.arange(6).reshape(2,3)</code></td>
+</tr>
+<tr>
+<td><code>a[a &gt; 5]</code></td>
+<td><strong>按条件筛选</strong></td>
+<td>比 pandas 还快</td>
+</tr>
+<tr>
+<td><code>np.linspace(0, 1, 5)</code></td>
+<td>等间隔数列</td>
+<td>画图常用</td>
+</tr>
+<tr>
+<td><code>np.random.rand(3)</code></td>
+<td>随机数</td>
+<td>造测试数据</td>
+</tr>
+</table></div>
+<h3 id="pandas">🐼 pandas</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>pd.DataFrame({...})</code></td>
+<td>造表</td>
+<td>字典的键变表头</td>
+</tr>
+<tr>
+<td><code>pd.read_csv() / read_excel()</code></td>
+<td>读文件</td>
+<td>加 <code>encoding="utf-8-sig"</code> 读中文 CSV</td>
+</tr>
+<tr>
+<td><code>df.head() / df.info() / df.shape</code></td>
+<td><strong>先看一眼数据</strong></td>
+<td>拿数据集第一件事</td>
+</tr>
+<tr>
+<td><code>df["列"]</code></td>
+<td>取一列</td>
+<td><code>df[["A","B"]]</code> 取多列</td>
+</tr>
+<tr>
+<td><code>df[df["分数"] &gt; 660]</code></td>
+<td><strong>筛选行</strong>（灵魂）</td>
+<td>多条件用 <code>&amp;</code> 和「或」符号连接（记得加括号）</td>
+</tr>
+<tr>
+<td><code>df.mean() / sum() / max()</code></td>
+<td>统计</td>
+<td>可对整表或单列</td>
+</tr>
+<tr>
+<td><code>df.value_counts()</code></td>
+<td>数出现次数</td>
+<td>看分布最快</td>
+</tr>
+<tr>
+<td><code>df.groupby("列").mean()</code></td>
+<td><strong>分组统计</strong></td>
+<td>最常用的一招</td>
+</tr>
+<tr>
+<td><code>df.sort_values("列", ascending=False)</code></td>
+<td>排序</td>
+<td>排行榜</td>
+</tr>
+<tr>
+<td><code>df.dropna() / fillna(0)</code></td>
+<td>处理空值</td>
+<td>数据清洗必用</td>
+</tr>
+<tr>
+<td><code>df.to_excel("x.xlsx", index=False)</code></td>
+<td>导出</td>
+<td>加 <code>index=False</code> 去掉行号</td>
+</tr>
+</table></div>
+<h3 id="matplotlib">📈 matplotlib</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>plt.plot(x, y)</code></td>
+<td>折线图</td>
+<td>趋势</td>
+</tr>
+<tr>
+<td><code>plt.bar(标签, 值)</code></td>
+<td>柱状图</td>
+<td>对比</td>
+</tr>
+<tr>
+<td><code>plt.hist(数据, bins=20)</code></td>
+<td>直方图</td>
+<td>看分布</td>
+</tr>
+<tr>
+<td><code>plt.scatter(x, y)</code></td>
+<td>散点图</td>
+<td>看相关性</td>
+</tr>
+<tr>
+<td><code>plt.pie(值, labels=标签)</code></td>
+<td>饼图</td>
+<td>占比</td>
+</tr>
+<tr>
+<td><code>plt.title/xlabel/ylabel</code></td>
+<td>标题 / 轴名</td>
+<td><strong>中文要先设字体</strong></td>
+</tr>
+<tr>
+<td><code>plt.rcParams["font.sans-serif"]</code></td>
+<td>设中文字体</td>
+<td><code>["Microsoft YaHei"]</code></td>
+</tr>
+<tr>
+<td><code>plt.legend() / grid(True)</code></td>
+<td>图例 / 网格</td>
+<td>别忘加</td>
+</tr>
+<tr>
+<td><code>plt.savefig("x.png", dpi=150, bbox_inches="tight")</code></td>
+<td>保存</td>
+<td><strong>必须在 show 之前</strong></td>
+</tr>
+</table></div>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<ul><li><code>numpy</code>：<strong>整体运算</strong>，不写循环（它还是其他库的底层）</li><li><code>pandas</code>：筛选 <code>df[条件]</code>、统计 <code>.mean() .value_counts() .groupby()</code></li><li><code>matplotlib</code>：画图 + <strong>中文显示 + savefig 顺序</strong>两个必踩的坑</li><li>导出 CSV 一定要 <code>.to_csv(..., encoding="utf-8-sig")</code></li></ul>
+<h2 id="留个小作业">🎯 留个小作业</h2>
+<p>用 <code>pandas</code> 读一个 CSV，找出"分数最高的 3 个人"，再用 <code>matplotlib</code> 画一张柱状图，<strong>平均线用红色虚线标出来</strong>。</p>
+<hr>
+<p><strong>下一篇</strong>：《Python 自带的 7 件算法神器，能让你的代码快 1 万倍》</p>
+<p>👉 这篇要是帮你省下了手动整理表格的时间，<strong>点个「赞」</strong>，转发给你的同事 —— 他们大概也在手动筛选 Excel。</p>
+<p>👉 <strong>关注我</strong>，下一篇讲的是"<strong>为什么别人 1 秒跑完，你要跑 1 分钟</strong>"。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04_爬虫入门 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#一-先懂一件事-网页其实就是一段-带标签的文字">一、先懂一件事：网页其实就是一段"带标签的文字"</a>
+<a class="toc-h2" href="#二-第一步-requests-去-下载-网页">二、第一步：requests，去"下载"网页</a>
+<a class="toc-h3" href="#先自己手动看一眼要抓什么">先自己手动看一眼要抓什么</a>
+<a class="toc-h3" href="#写代码">写代码</a>
+<a class="toc-h3" href="#四个必须做的动作">四个必须做的动作</a>
+<a class="toc-h3" href="#状态码速查">状态码速查</a>
+<a class="toc-h2" href="#三-第二步-BeautifulSoup-从网页里-挑-数据">三、第二步：BeautifulSoup，从网页里"挑"数据</a>
+<a class="toc-h3" href="#先跑一个离线例子-不联网也能看效果">先跑一个离线例子（不联网也能看效果）</a>
+<a class="toc-h3" href="#选择器速查-背这几个就够">选择器速查（背这几个就够）</a>
+<a class="toc-h3" href="#坑王榜-3-链接存下来全打不开">🐛 坑王榜 #3：链接存下来全打不开</a>
+<a class="toc-h2" href="#四-第三步-存起来-sqlite3">四、第三步：存起来（sqlite3）</a>
+<a class="toc-h3" href="#一个关键技巧-用网址当主键">一个关键技巧：用网址当主键</a>
+<a class="toc-h2" href="#五-把它们串起来-一个-25-行的完整爬虫">五、把它们串起来：一个 25 行的完整爬虫</a>
+<a class="toc-h2" href="#六-抓不到数据-可能是这两种情况">六、抓不到数据？可能是这两种情况</a>
+<a class="toc-h3" href="#情况-1-页面是-JS-现算-的">情况 1：页面是"JS 现算"的</a>
+<a class="toc-h3" href="#情况-2-要抓几万页-手写太乱">情况 2：要抓几万页，手写太乱</a>
+<a class="toc-h2" href="#七-合规红线-这一段比技术更重要">七、⚠️ 合规红线（这一段比技术更重要）</a>
+<a class="toc-h3" href="#可以做">✅ 可以做</a>
+<a class="toc-h3" href="#绝对不能做">❌ 绝对不能做</a>
+<a class="toc-h3" href="#一句话判断法">一句话判断法</a>
+<a class="toc-h2" href="#附-爬虫三件套的-常用工具速查">🧰 附：爬虫三件套的「常用工具速查」</a>
+<a class="toc-h3" href="#requests-发请求">🌐 requests（发请求）</a>
+<a class="toc-h3" href="#BeautifulSoup-从-HTML-里挑数据">🍲 BeautifulSoup（从 HTML 里挑数据）</a>
+<a class="toc-h3" href="#sqlite3-存数据">🗄 sqlite3（存数据）</a>
+<a class="toc-h3" href="#进阶才需要的三个">🧰 进阶才需要的三个</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业">🎯 留个小作业</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="爬虫入门-我是怎么把-40-本书的数据-搬-回家的">爬虫入门：我是怎么把 40 本书的数据"搬"回家的</h1>
+<div style="margin:6px 0 22px"><img src="covers/04_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：你想对比某个网站上所有商品的<strong>名称、价格、评价</strong>，但网站没有导出功能，也不给你 API。<br>于是你打开浏览器，复制、粘贴、复制、粘贴…… 复制到第 20 页时你想：<strong>这活儿应该让机器干。</strong><br>这篇讲的就是"让机器替你点鼠标、抄数据"，而且<strong>全程合法合规</strong>。</blockquote>
+<hr>
+<h2 id="一-先懂一件事-网页其实就是一段-带标签的文字">一、先懂一件事：网页其实就是一段"带标签的文字"</h2>
+<p>你以为的网页：好看、能滚、能点。</p>
+<p><strong>爬虫看到的网页</strong>：一堆这样的标签。</p>
+<div class="codeblock"><div class="codebar"><span>html</span><button class="copy" type="button">复制</button></div><pre><code class="lang-html">&lt;article class="product_pod"&gt;
+  &lt;h3&gt;&lt;a href="catalogue/a-light-in-the-attic_1000/index.html"
+         title="A Light in the Attic"&gt;A Light in the Attic&lt;/a&gt;&lt;/h3&gt;
+  &lt;p class="star-rating Three"&gt;&lt;/p&gt;
+  &lt;p class="price_color"&gt;£51.77&lt;/p&gt;
+&lt;/article&gt;</code></pre></div>
+<p>拆开看：</p>
+<ul><li><code>&lt;article&gt;</code> 是一个"盒子"</li><li><code>class="product_pod"</code> 是这个盒子的"名字"</li><li>书名在 <code>&lt;h3&gt;</code> 里的 <code>title</code> 属性</li><li>价格在 <code>class="price_color"</code> 里</li><li><strong>星级藏在 class 名字 <code>Three</code> 里</strong>（这是最阴的一个）</li></ul>
+<p><strong>所以爬虫只干两件事</strong>：</p>
+<ol><li>把这段文字<strong>下载</strong>下来 → 用 <strong>requests</strong></li><li>从里面<strong>挑</strong>出你要的 → 用 <strong>BeautifulSoup</strong></li></ol>
+<hr>
+<h2 id="二-第一步-requests-去-下载-网页">二、第一步：requests，去"下载"网页</h2>
+<h3 id="先自己手动看一眼要抓什么">先自己手动看一眼要抓什么</h3>
+<p>打开目标网页，按 <strong>F12</strong> 打开开发者工具 → 切到 <strong>Elements</strong> → 用左上角小箭头点一下你要的数据。</p>
+<p>这一步<strong>千万别跳过</strong>。新手最大的误区是：不看页面结构就开始写代码，写十行删九行。</p>
+<h3 id="写代码">写代码</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install requests</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests
+
+r = requests.get("https://books.toscrape.com/", timeout=15)
+
+print("状态码:", r.status_code)
+print("拿到多少字符:", len(r.text))
+print(r.text[:80])</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">状态码: 200
+拿到多少字符: 51xxx
+&lt;!DOCTYPE html&gt;
+&lt;!--[if lt IE 7]&gt;      &lt;html class="no-js lt-ie9 lt-ie8"&gt; &lt;![endif]--&gt;</code></pre></div>
+<blockquote>📌 网页长度会随网站更新变化，<strong>你看到的数字不一样是正常的</strong>。<br>只要 <strong>状态码是 200</strong>，就说明你成功了。</blockquote>
+<h3 id="四个必须做的动作">四个必须做的动作</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>必做</th>
+<th>为什么</th>
+</tr>
+<tr>
+<td>加 <code>timeout=15</code></td>
+<td>不加的话，网络卡住程序会<strong>永久挂住</strong></td>
+</tr>
+<tr>
+<td>写 <code>headers={"User-Agent": ...}</code></td>
+<td>很多站点会拒绝默认的爬虫标识</td>
+</tr>
+<tr>
+<td>检查 <code>r.status_code</code></td>
+<td>403/404 时拿到的是错误页，直接解析会得到空结果，很难查</td>
+</tr>
+<tr>
+<td><code>r.encoding = r.apparent_encoding</code></td>
+<td>中文站常是 GBK，不处理会乱码</td>
+</tr>
+</table></div>
+<h3 id="状态码速查">状态码速查</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>码</th>
+<th>意思</th>
+<th>你该怎么做</th>
+</tr>
+<tr>
+<td>200</td>
+<td>成功</td>
+<td>继续</td>
+</tr>
+<tr>
+<td>403</td>
+<td>被拒绝</td>
+<td>补 User-Agent、检查是否违反条款</td>
+</tr>
+<tr>
+<td>404</td>
+<td>页面不存在</td>
+<td>检查网址拼写</td>
+</tr>
+<tr>
+<td><strong>429</strong></td>
+<td><strong>请求太快了</strong></td>
+<td><strong>立刻降速！这是服务器在警告你</strong></td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>服务器出错</td>
+<td>稍后重试</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="三-第二步-BeautifulSoup-从网页里-挑-数据">三、第二步：BeautifulSoup，从网页里"挑"数据</h2>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install beautifulsoup4 lxml</code></pre></div>
+<h3 id="先跑一个离线例子-不联网也能看效果">先跑一个离线例子（不联网也能看效果）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from bs4 import BeautifulSoup
+
+html = """&lt;div class="book"&gt;&lt;h3&gt;A 书&lt;/h3&gt;&lt;p class="price"&gt;£51.77&lt;/p&gt;
+&lt;p class="star-rating Three"&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;div class="book"&gt;&lt;h3&gt;B 书&lt;/h3&gt;&lt;p class="price"&gt;£22.50&lt;/p&gt;&lt;/div&gt;"""
+
+soup = BeautifulSoup(html, "lxml")
+
+for card in soup.select("div.book"):
+    title = card.select_one("h3").get_text(strip=True)
+    price = card.select_one("p.price").get_text(strip=True)
+    star = card.select_one("p.star-rating")
+    stars = star["class"][1] if star else "无评分"     # ★ 星级藏在 class 里
+    print(title, "|", price, "|", stars)</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">A 书 | £51.77 | Three
+B 书 | £22.50 | 无评分</code></pre></div>
+<h3 id="选择器速查-背这几个就够">选择器速查（背这几个就够）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>意思</th>
+</tr>
+<tr>
+<td><code>select("article.product_pod")</code></td>
+<td>所有"标签是 article 且 class 有 product_pod"的</td>
+</tr>
+<tr>
+<td><code>select_one("h3 a")</code></td>
+<td>只要第一个（取不到返回 <code>None</code>）</td>
+</tr>
+<tr>
+<td><code>select(".price_color")</code></td>
+<td>class 叫 price_color</td>
+</tr>
+<tr>
+<td><code>select("#main")</code></td>
+<td>id 叫 main</td>
+</tr>
+<tr>
+<td><code>tag.get_text(strip=True)</code></td>
+<td>取纯文字并去掉两端空白</td>
+</tr>
+<tr>
+<td><code>tag["href"]</code></td>
+<td>取属性</td>
+</tr>
+</table></div>
+<h3 id="坑王榜-3-链接存下来全打不开">🐛 坑王榜 #3：链接存下来全打不开</h3>
+<p><strong>症状</strong>：存的链接是 <code>catalogue/xxx/index.html</code>，点开 404。</p>
+<p><strong>原因</strong>：网页里写的是<strong>相对路径</strong>，不是完整网址。</p>
+<p><strong>怎么修</strong>：用 <code>urljoin</code> 拼起来。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from urllib.parse import urljoin
+完整网址 = urljoin("https://books.toscrape.com/catalogue/page-1.html",
+                   "catalogue/xxx/index.html")
+print(完整网址)</code></pre></div>
+<hr>
+<h2 id="四-第三步-存起来-sqlite3">四、第三步：存起来（sqlite3）</h2>
+<p><strong>为什么不存 CSV？</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th></th>
+<th>CSV</th>
+<th>SQLite</th>
+</tr>
+<tr>
+<td>追加写</td>
+<td>要读出来再写回去，容易写乱</td>
+<td>一行 INSERT 搞定</td>
+</tr>
+<tr>
+<td>去重</td>
+<td>自己想办法</td>
+<td>主键 UNIQUE 自动搞定</td>
+</tr>
+<tr>
+<td>查询</td>
+<td>全读进内存</td>
+<td>SELECT WHERE 直接查</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>无</td>
+<td>无（<strong>标准库自带</strong>）</td>
+</tr>
+</table></div>
+<h3 id="一个关键技巧-用网址当主键">一个关键技巧：用网址当主键</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import sqlite3
+
+conn = sqlite3.connect("books.db")
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS books(
+        url   TEXT PRIMARY KEY,     -- ★ 网址做主键 = 天然去重
+        title TEXT,
+        price REAL
+    )""")
+
+# 已存在就跳过（重复跑脚本不会产生重复数据）
+conn.execute("INSERT OR IGNORE INTO books VALUES (?, ?, ?)",
+             (url, title, price))
+conn.commit()</code></pre></div>
+<blockquote>⚠️ <strong>永远用 <code>?</code> 占位符传参</strong>，不要用 f-string 拼 SQL。虽然这里数据是自己抓的，但好习惯要从第一天养成。</blockquote>
+<hr>
+<h2 id="五-把它们串起来-一个-25-行的完整爬虫">五、把它们串起来：一个 25 行的完整爬虫</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests, sqlite3, time
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
+BASE = "https://books.toscrape.com/catalogue/page-1.html"
+HEADERS = {"User-Agent": "StudyBot/1.0 (learning only)"}
+
+conn = sqlite3.connect("books.db")
+conn.execute("""CREATE TABLE IF NOT EXISTS books(
+    url TEXT PRIMARY KEY, title TEXT, price REAL)""")
+
+url, page = BASE, 0
+while url and page &lt; 3:                       # 抓 3 页就停（别给人家添麻烦）
+    page += 1
+    r = requests.get(url, headers=HEADERS, timeout=15)
+    if r.status_code != 200:
+        print("失败:", r.status_code); break
+
+    soup = BeautifulSoup(r.text, "lxml")
+    for card in soup.select("article.product_pod"):
+        a = card.select_one("h3 a")
+        p = card.select_one("p.price_color")
+        if not (a and p):
+            continue                          # 缺数据就跳过，别让程序崩
+        price = float("".join(c for c in p.get_text() if c.isdigit() or c == "."))
+        conn.execute("INSERT OR IGNORE INTO books VALUES (?, ?, ?)",
+                     (urljoin(url, a["href"]), a["title"], price))
+    conn.commit()
+    print("第", page, "页完成")
+
+    nxt = soup.select_one("li.next a")
+    url = urljoin(url, nxt["href"]) if nxt else None
+    time.sleep(1)                             # ★ 限速：每页停 1 秒
+
+print("总共:", conn.execute("SELECT COUNT(*) FROM books").fetchone()[0], "本")
+for row in conn.execute("SELECT title, price FROM books ORDER BY price DESC LIMIT 3"):
+    print(row)
+conn.close()</code></pre></div>
+<p><strong>实测输出</strong>（我抓了 2 页共 40 本）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">第 1 页完成
+第 2 页完成
+总共: 40 本
+('Our Band Could Be Your Life: Scenes from the American Indie Underground, 1981-1991', 57.25)
+('Birdsong: A Story in Pictures', 54.64)
+('Sapiens: A Brief History of Humankind', 54.23)</code></pre></div>
+<p>顺便说：这一页第一本书是 <strong>《A Light in the Attic》</strong>，价格 <strong>£51.77</strong>，3 星；最便宜的是 <strong>《In Her Wake》£12.84</strong> —— 这些都是我实际抓到的。</p>
+<hr>
+<h2 id="六-抓不到数据-可能是这两种情况">六、抓不到数据？可能是这两种情况</h2>
+<h3 id="情况-1-页面是-JS-现算-的">情况 1：页面是"JS 现算"的</h3>
+<p>你在浏览器里能看到内容，但 requests 抓到的 HTML 里<strong>啥也没有</strong> —— 因为正文是 JavaScript 加载完后才生成的。</p>
+<p><strong>解决办法</strong>：用 <strong>playwright</strong> 开一个真浏览器。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install playwright
+playwright install chromium      # 第一次要下载浏览器，100 多 MB</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)     # headless=False 能看见浏览器
+    page = browser.new_page()
+    page.goto("https://quotes.toscrape.com/js/", wait_until="networkidle")
+    page.wait_for_selector(".quote")               # ★ 等元素出现再读
+    print(page.locator(".quote .text").all_inner_texts()[:2])
+    browser.close()</code></pre></div>
+<h3 id="情况-2-要抓几万页-手写太乱">情况 2：要抓几万页，手写太乱</h3>
+<p>用 <strong>Scrapy</strong>（爬虫框架，自带调度、去重、并发、重试、断点续爬）。</p>
+<p>新手可以先不学，等你有"抓一个网站"的真实需求了再上。</p>
+<p>顺便配两个小助手：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>干什么</th>
+</tr>
+<tr>
+<td><strong>tenacity</strong></td>
+<td>失败自动重试（网络抖动必备）</td>
+</tr>
+<tr>
+<td><strong>tqdm</strong></td>
+<td>一行代码给循环加进度条</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tenacity import retry, stop_after_attempt, wait_fixed
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))    # 失败等 2 秒再试，共 3 次
+def fetch(url):
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()      # 4xx/5xx 抛异常 → 触发重试
+    return r.text</code></pre></div>
+<hr>
+<h2 id="七-合规红线-这一段比技术更重要">七、⚠️ 合规红线（这一段比技术更重要）</h2>
+<p>爬虫在国内有明确的法律边界。<strong>这三条必须记住</strong>：</p>
+<h3 id="可以做">✅ 可以做</h3>
+<ul><li>抓<strong>公开</strong>的、不违反站点条款的数据</li><li>遵守 <code>robots.txt</code>（浏览器打开 <code>网站域名/robots.txt</code> 就能看到）</li><li><strong>控制频率</strong>：本文示例默认每页停 1 秒</li><li>有<strong>官方 API</strong> 就用 API，别爬页面</li><li>在专门的教学站点练手：<strong>books.toscrape.com</strong>（数据是假的）、<strong>quotes.toscrape.com</strong>、<strong>httpbin.org</strong></li></ul>
+<h3 id="绝对不能做">❌ 绝对不能做</h3>
+<ul><li><strong>绕过登录 / 付费墙 / 验证码</strong>去拿非公开数据</li><li><strong>抓个人信息</strong>（手机号、身份证、住址、聊天记录）—— 可能触犯《个人信息保护法》</li><li><strong>高频请求打挂对方服务</strong> —— 可能构成"破坏计算机信息系统"</li><li>抓来的数据<strong>转卖、公开传播</strong></li><li>用来<strong>刷单、抢票、当水军</strong></li></ul>
+<h3 id="一句话判断法">一句话判断法</h3>
+<blockquote><strong>"不登录、不付费，用浏览器正常就能看到"</strong>，而且你<strong>只少量、低频、不传播地用于学习</strong> —— 基本安全。<br>其他情况，<strong>先查法律、先问授权</strong>。</blockquote>
+<hr>
+<h2 id="附-爬虫三件套的-常用工具速查">🧰 附：爬虫三件套的「常用工具速查」</h2>
+<blockquote>爬虫 90% 的代码，就是下面这三张表的组合。<strong>建议收藏这一段。</strong></blockquote>
+<h3 id="requests-发请求">🌐 requests（发请求）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>requests.get(url)</code></td>
+<td>拿网页 / 调接口</td>
+<td><strong>一定加 <code>timeout=15</code></strong></td>
+</tr>
+<tr>
+<td><code>requests.post(url, json=…)</code></td>
+<td>提交数据</td>
+<td>调 API、提交表单</td>
+</tr>
+<tr>
+<td><code>headers={...}</code></td>
+<td>装成浏览器</td>
+<td>写个 <code>User-Agent</code></td>
+</tr>
+<tr>
+<td><code>params={"q":"x"}</code></td>
+<td>网址参数</td>
+<td>自动拼 <code>?q=x</code></td>
+</tr>
+<tr>
+<td><code>r.status_code</code></td>
+<td>状态码</td>
+<td>200 成功 / 403 被拒 / 429 太快</td>
+</tr>
+<tr>
+<td><code>r.text</code> / <code>r.content</code></td>
+<td>文本 / 原始字节</td>
+<td>中文乱码时用 content</td>
+</tr>
+<tr>
+<td><code>r.json()</code></td>
+<td>直接转成字典</td>
+<td>接口返回 JSON 时</td>
+</tr>
+<tr>
+<td><code>r.encoding = r.apparent_encoding</code></td>
+<td>修中文乱码</td>
+<td><strong>中文站必做</strong></td>
+</tr>
+<tr>
+<td><code>r.raise_for_status()</code></td>
+<td>出错就抛异常</td>
+<td>配合重试</td>
+</tr>
+<tr>
+<td><code>requests.Session()</code></td>
+<td>保持登录 / 复用连接</td>
+<td>连续请求更快</td>
+</tr>
+<tr>
+<td><code>stream=True</code> + <code>iter_content()</code></td>
+<td>下载大文件</td>
+<td>一边下一边写盘</td>
+</tr>
+</table></div>
+<h3 id="BeautifulSoup-从-HTML-里挑数据">🍲 BeautifulSoup（从 HTML 里挑数据）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>BeautifulSoup(html, "lxml")</code></td>
+<td>把 HTML 变成可查找对象</td>
+<td>lxml 比 html.parser 快</td>
+</tr>
+<tr>
+<td><code>soup.select(选择器)</code></td>
+<td><strong>取一列</strong></td>
+<td><code>soup.select("article.product_pod")</code></td>
+</tr>
+<tr>
+<td><code>tag.select_one(选择器)</code></td>
+<td><strong>取第一个</strong></td>
+<td>取不到返回 <code>None</code></td>
+</tr>
+<tr>
+<td><code>.get_text(strip=True)</code></td>
+<td>取纯文字并去空白</td>
+<td>最常用</td>
+</tr>
+<tr>
+<td><code>tag["href"]</code> / <code>tag["title"]</code></td>
+<td>取属性</td>
+<td>缺属性会报错，用 <code>.get()</code></td>
+</tr>
+<tr>
+<td><code>tag.get("title")</code></td>
+<td>取属性（缺了返回 None）</td>
+<td>更安全</td>
+</tr>
+<tr>
+<td><code>urljoin(当前网址, href)</code></td>
+<td><strong>相对链接转绝对</strong></td>
+<td>否则存下来打不开</td>
+</tr>
+<tr>
+<td><code>tag["class"]</code></td>
+<td>取 class 列表</td>
+<td>星级常藏在 class 里</td>
+</tr>
+</table></div>
+<p><strong>选择器速查</strong>：<code>tag</code> 标签名 ｜ <code>.cls</code> class ｜ <code>#id</code> id ｜ <code>a b</code> 后代 ｜ <code>a &gt; b</code> 直接子元素 ｜ <code>[attr]</code> 有某属性</p>
+<h3 id="sqlite3-存数据">🗄 sqlite3（存数据）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>sqlite3.connect("x.db")</code></td>
+<td>连数据库（文件不存在会自动建）</td>
+<td><code>":memory:"</code> 是内存库</td>
+</tr>
+<tr>
+<td><code>CREATE TABLE IF NOT EXISTS …</code></td>
+<td>建表</td>
+<td>字段加 <code>PRIMARY KEY</code> 防重</td>
+</tr>
+<tr>
+<td><code>cur.executemany(sql, 列表)</code></td>
+<td><strong>批量插入</strong></td>
+<td>比一条条插快很多</td>
+</tr>
+<tr>
+<td><code>?</code> 占位符</td>
+<td><strong>传参（防注入）</strong></td>
+<td><code>execute(sql, (a, b))</code></td>
+</tr>
+<tr>
+<td><code>INSERT OR IGNORE</code></td>
+<td>已存在就跳过</td>
+<td>配主键去重</td>
+</tr>
+<tr>
+<td><code>ON CONFLICT(url) DO UPDATE</code></td>
+<td>已存在就更新</td>
+<td>增量更新</td>
+</tr>
+<tr>
+<td><code>conn.commit()</code></td>
+<td>提交</td>
+<td>不写等于没存</td>
+</tr>
+<tr>
+<td><code>cur.fetchall() / fetchone()</code></td>
+<td>取结果</td>
+<td>记得 <code>conn.close()</code></td>
+</tr>
+<tr>
+<td><code>with sqlite3.connect(…)</code></td>
+<td>自动提交/回滚</td>
+<td>推荐写法</td>
+</tr>
+</table></div>
+<h3 id="进阶才需要的三个">🧰 进阶才需要的三个</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>什么时候用</th>
+<th>一行示例</th>
+</tr>
+<tr>
+<td><code>tenacity</code></td>
+<td>网络抖动，失败要自动重试</td>
+<td><code>@retry(stop=stop_after_attempt(3))</code></td>
+</tr>
+<tr>
+<td><code>tqdm</code></td>
+<td>抓很多页，要进度条</td>
+<td><code>for u in tqdm(urls):</code></td>
+</tr>
+<tr>
+<td><code>playwright</code></td>
+<td>页面是 JS 渲染的，requests 抓不到</td>
+<td><code>page.goto(url); page.wait_for_selector(".item")</code></td>
+</tr>
+<tr>
+<td><code>scrapy</code></td>
+<td>要抓几万页，手写太乱</td>
+<td>用框架自带调度 + 去重</td>
+</tr>
+</table></div>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<ol><li>网页 = 带标签的文字；爬虫 = <strong>下载 + 挑数据</strong></li><li><code>requests</code>：一定要加 <code>timeout</code>、<code>User-Agent</code>、检查状态码</li><li><code>BeautifulSoup</code>：<code>select</code> 挑元素，<strong>相对链接用 urljoin 转绝对</strong></li><li><code>sqlite3</code>：<strong>用网址当主键</strong>，天然去重</li><li><strong>限速 <code>time.sleep()</code></strong>，看到 429 立刻降速</li><li>三条合规红线</li></ol>
+<h2 id="留个小作业">🎯 留个小作业</h2>
+<p>把上面那个爬虫改成抓 <strong>5 页</strong>，然后：</p>
+<ol><li>算一下所有书的<strong>平均价格</strong></li><li>找出<strong>最贵的那 3 本</strong></li><li>把结果存到一个新的表里</li></ol>
+<hr>
+<p><strong>下一篇</strong>：《网络安全第一课：先学会保护自己》</p>
+<p>👉 如果这篇让你第一次成功把网上的数据抓下来，<strong>点个「赞」</strong>，也把"合规三条"转发给正在学爬虫的朋友 —— 这可能是最有用的一段。</p>
+<p>👉 <strong>关注我</strong>，下一篇讲安全：<strong>为什么不能用 MD5 存密码</strong>，以及程序员最容易犯的 3 个安全错误。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

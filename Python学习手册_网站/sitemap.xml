@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 部署后：把下面的 YOUR-SITE 全部替换成你的真实站点名 -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://YOUR-SITE.netlify.app/index.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/tools.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/tutorial.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/reference.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/spider.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/basics.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/series.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/wechat.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s01.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s02.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s03.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s04.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s05.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s06.html</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://YOUR-SITE.netlify.app/s07.html</loc><changefreq>monthly</changefreq></url>
+</urlset>

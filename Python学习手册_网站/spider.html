@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>爬虫实战 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#全局流程图-先看这张图">🗺️ 全局流程图（先看这张图）</a>
+<a class="toc-h2" href="#0-你会做出什么">0. 你会做出什么</a>
+<a class="toc-h2" href="#1-三十秒环境准备">1. 三十秒环境准备</a>
+<a class="toc-h2" href="#2-第-①-步-先看懂目标网站-最容易被跳过-但最重要">2. 第 ① 步：先看懂目标网站（最容易被跳过，但最重要）</a>
+<a class="toc-h2" href="#3-第-②-步-发请求-requests">3. 第 ② 步：发请求（requests）</a>
+<a class="toc-h2" href="#4-第-③-步-解析-HTML-BeautifulSoup">4. 第 ③ 步：解析 HTML（BeautifulSoup）</a>
+<a class="toc-h3" href="#逐段解释">逐段解释</a>
+<a class="toc-h3" href="#CSS-选择器速查">CSS 选择器速查</a>
+<a class="toc-h2" href="#5-第-④-步-翻页-while-下一页-按钮">5. 第 ④ 步：翻页（while + "下一页"按钮）</a>
+<a class="toc-h2" href="#6-第-⑤-步-存起来-SQLite">6. 第 ⑤ 步：存起来（SQLite）</a>
+<a class="toc-h2" href="#7-第-⑥-步-分析-pandas">7. 第 ⑥ 步：分析（pandas）</a>
+<a class="toc-h2" href="#8-第-⑦-步-出图-matplotlib">8. 第 ⑦ 步：出图（matplotlib）</a>
+<a class="toc-h2" href="#9-第-⑧-步-出报告-openpyxl-python-docx">9. 第 ⑧ 步：出报告（openpyxl + python-docx）</a>
+<a class="toc-h3" href="#9-1-Excel-多个-sheet-排版">9.1 Excel：多个 sheet + 排版</a>
+<a class="toc-h3" href="#9-2-Word-标题-表格-插图">9.2 Word：标题 + 表格 + 插图</a>
+<a class="toc-h2" href="#10-第-⑨-步-串起来">10. 第 ⑨ 步：串起来</a>
+<a class="toc-h2" href="#11-第-⑩-步-让它更健壮-这才是-能用的爬虫">11. 第 ⑩ 步：让它更健壮（这才是"能用的爬虫"）</a>
+<a class="toc-h3" href="#11-1-失败自动重试-tenacity">11.1 失败自动重试（tenacity）</a>
+<a class="toc-h3" href="#11-2-日志-loguru">11.2 日志（loguru）</a>
+<a class="toc-h3" href="#11-3-进度条-tqdm">11.3 进度条（tqdm）</a>
+<a class="toc-h3" href="#11-4-断点续爬">11.4 断点续爬</a>
+<a class="toc-h3" href="#11-5-数据落盘策略">11.5 数据落盘策略</a>
+<a class="toc-h2" href="#12-报错排查表-遇到问题先查这里">12. 报错排查表（遇到问题先查这里）</a>
+<a class="toc-h2" href="#13-合规红线-必读-比技术更重要">13. ⚠️ 合规红线（必读，比技术更重要）</a>
+<a class="toc-h2" href="#14-进阶方向-学完这份-下一步往哪走">14. 进阶方向（学完这份，下一步往哪走）</a>
+<a class="toc-h2" href="#15-自测题-做完就算掌握了">15. 自测题（做完就算掌握了）</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="爬虫实战-从-0-到-1-做一个-采集-入库-分析-出报告-小程序">爬虫实战：从 0 到 1 做一个「采集 → 入库 → 分析 → 出报告」小程序</h1>
+<blockquote>这是一份<strong>能跑起来</strong>的实战教程，不是概念罗列。<br>配套代码就在同一个文件夹里：<code>爬虫实战_代码\</code>（<code>main.py</code> + <code>requirements.txt</code>），<strong>已经实测跑通</strong>。</blockquote>
+<hr>
+<h2 id="全局流程图-先看这张图">🗺️ 全局流程图（先看这张图）</h2>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart TD
+  A["① 看懂网站&lt;br/&gt;F12 找数据位置"] --&gt; B["② requests 发请求&lt;br/&gt;timeout 头部 状态码 编码"]
+  B --&gt; C["③ BeautifulSoup 解析&lt;br/&gt;CSS 选择器取字段"]
+  C --&gt; D["④ 翻页 while + next&lt;br/&gt;限速 sleep"]
+  D --&gt; E["⑤ 存 SQLite&lt;br/&gt;url 主键去重 UPSERT"]
+  E --&gt; F["⑥ pandas 分析&lt;br/&gt;mean groupby value_counts"]
+  F --&gt; G["⑦ matplotlib 出图&lt;br/&gt;中文字体 savefig"]
+  G --&gt; H["⑧ openpyxl 出 Excel&lt;br/&gt;python-docx 出 Word"]
+  H --&gt; I["⑨ 加 tenacity 重试&lt;br/&gt;loguru 日志 tqdm 进度"]</code></pre></div>
+<hr>
+<h2 id="0-你会做出什么">0. 你会做出什么</h2>
+<p>一条命令：</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">python main.py --pages 5</code></pre></div>
+<p>屏幕会显示：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">抓取进度: 100%|██████████| 5/5 [00:10&lt;00:00, 2.0s/页, 本页=20, 累计=100]
+17:07:20 | SUCCESS | 抓取完成，共处理 100 条记录
+17:07:20 | INFO    | 共 100 本书，均价 34.96，最贵 57.25
+17:07:21 | SUCCESS | Excel 已生成: out\books.xlsx
+17:07:21 | SUCCESS | Word 已生成: out\report.docx
+
+===== 汇总 =====
+总数量      100
+平均价格     34.96
+最高价格     57.25
+最低价格     12.84
+平均星级     3.05
+有货比例     100.0</code></pre></div>
+<p>文件夹里多出 4 个产物：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>产物</th>
+<th>内容</th>
+</tr>
+<tr>
+<td><code>data/books.db</code></td>
+<td>SQLite 数据库（原始数据，可反复查询）</td>
+</tr>
+<tr>
+<td><code>out/price.png</code></td>
+<td>价格分布 + 星级分布图（中文标题）</td>
+</tr>
+<tr>
+<td><code>out/books.xlsx</code></td>
+<td>Excel 报表（概览 / 全部图书 / 按星级统计 三个 sheet）</td>
+</tr>
+<tr>
+<td><code>out/report.docx</code></td>
+<td>Word 分析报告（含表格和插图）</td>
+</tr>
+</table></div>
+<p><strong>技术栈</strong>：<code>requests</code>（抓）→ <code>BeautifulSoup</code>（解析）→ <code>sqlite3</code>（存）→ <code>pandas</code>（分析）→ <code>matplotlib</code>（图）→ <code>openpyxl</code>/<code>python-docx</code>（报告）→ <code>tenacity</code>/<code>loguru</code>/<code>tqdm</code>（工程化）</p>
+<p><strong>练习站点</strong>：<code>books.toscrape.com</code> —— 这是官方专门给爬虫练习用的站点（书是假的、价格是假的、没有反爬），可以放心练。</p>
+<hr>
+<h2 id="1-三十秒环境准备">1. 三十秒环境准备</h2>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash"># ① 建虚拟环境（每个项目都该这么做）
+python -m venv .venv
+.venv\Scripts\activate            # Windows
+# source .venv/bin/activate        # macOS / Linux
+
+# ② 装依赖
+pip install -r requirements.txt
+#   国内加速：加 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# ③ 跑起来
+python main.py --pages 2</code></pre></div>
+<p><strong>项目结构</strong>（就两个文件，别怕）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">爬虫实战_代码/
+├── main.py            ← 全部逻辑都在这（约 300 行，分 9 个小节）
+├── requirements.txt   ← 依赖清单
+├── data/              ← 自动创建：books.db + spider.log
+└── out/               ← 自动创建：png / xlsx / docx</code></pre></div>
+<p><strong>为什么用虚拟环境</strong>：爬虫的依赖更新很快，全局装容易和别的项目打架。见《常用第三方库速查》1.2 节。</p>
+<hr>
+<h2 id="2-第-①-步-先看懂目标网站-最容易被跳过-但最重要">2. 第 ① 步：先看懂目标网站（最容易被跳过，但最重要）</h2>
+<p><strong>别急着写代码。</strong> 先花 5 分钟搞清楚"数据在哪、长什么样"。</p>
+<ol><li>浏览器打开 <code>https://books.toscrape.com/</code></li><li>按 <strong>F12</strong> 打开开发者工具 → 切到 <strong>Elements（元素）</strong> 面板</li><li>点左上角的"小箭头"图标，去点页面上的一本书的标题</li></ol>
+<p>你会看到这样的结构：</p>
+<div class="codeblock"><div class="codebar"><span>html</span><button class="copy" type="button">复制</button></div><pre><code class="lang-html">&lt;article class="product_pod"&gt;
+    &lt;h3&gt;&lt;a href="catalogue/a-light-in-the-attic_1000/index.html" title="A Light in the Attic"&gt;A Light in the Attic&lt;/a&gt;&lt;/h3&gt;
+    &lt;p class="star-rating Three"&gt;&lt;/p&gt;            &lt;!-- 星级藏在 class 里！ --&gt;
+    &lt;div class="product_price"&gt;
+        &lt;p class="price_color"&gt;£51.77&lt;/p&gt;         &lt;!-- 价格带英镑符号 --&gt;
+        &lt;p class="instock availability"&gt;In stock&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/article&gt;</code></pre></div>
+<p><strong>这一步要产出三个结论</strong>（写在纸上或注释里）：</p>
+<ol><li><strong>一页有多少条</strong> → 20 条，外层容器是 <code>article.product_pod</code></li><li><strong>要抓哪些字段、分别在哪</strong> → 标题在 <code>h3 a</code>、价格在 <code>p.price_color</code>、库存 <code>p.instock</code>、星级在 <code>p.star-rating</code> 的 <strong>class</strong> 里</li><li><strong>怎么翻页</strong> → 页面底部有 <code>&lt;li class="next"&gt;&lt;a href="page-2.html"&gt;next&lt;/a&gt;&lt;/li&gt;</code></li></ol>
+<blockquote>💡 <strong>新手最大的误区</strong>：不看页面结构就开始写 <code>find</code>，写十行删九行。<br>先看清结构，代码只有几行。</blockquote>
+<hr>
+<h2 id="3-第-②-步-发请求-requests">3. 第 ② 步：发请求（requests）</h2>
+<p>最小可用版本：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests
+
+url = "https://books.toscrape.com/catalogue/page-1.html"
+resp = requests.get(url, timeout=15)
+print(resp.status_code)      # 200
+print(resp.text[:300])       # 看前 300 个字符</code></pre></div>
+<p><strong>但能跑 ≠ 专业。</strong> 一个"不容易出事"的请求必须做这 4 件事：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">HEADERS = {"User-Agent": "StudyBot/1.0 (learning crawler; for practice site only)"}
+
+resp = requests.get(url, headers=HEADERS, timeout=15)
+
+if resp.status_code == 200:
+    resp.encoding = resp.apparent_encoding      # ① 防中文乱码
+    html = resp.text</code></pre></div>
+<div class="tablewrap"><table>
+<tr>
+<th>必做</th>
+<th>为什么</th>
+</tr>
+<tr>
+<td><code>timeout=15</code></td>
+<td>没超时，遇到卡住的连接<strong>程序会永久挂住</strong></td>
+</tr>
+<tr>
+<td><code>headers=...</code></td>
+<td>默认 UA 是 <code>python-requests/2.x</code>，很多站点会直接拒绝；写明身份也更礼貌</td>
+</tr>
+<tr>
+<td>检查 <code>status_code</code></td>
+<td>404/403 时 <code>resp.text</code> 是错误页，直接解析会得到空结果，很难排查</td>
+</tr>
+<tr>
+<td><code>apparent_encoding</code></td>
+<td>中文站常是 GBK，用默认编码会得到一堆乱码</td>
+</tr>
+</table></div>
+<p><strong>常见状态码</strong></p>
+<ul><li><code>200</code> 正常</li><li><code>403</code> 被拒绝（多半是 UA 或 IP 的问题）</li><li><code>404</code> 页面不存在（检查 URL 拼写）</li><li><code>429</code> 请求太频繁（<strong>必须降速</strong>，这是服务器在警告你）</li><li><code>5xx</code> 服务器出错（可以稍后重试）</li></ul>
+<hr>
+<h2 id="4-第-③-步-解析-HTML-BeautifulSoup">4. 第 ③ 步：解析 HTML（BeautifulSoup）</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+
+RATING_MAP = {"One": 1, "Two": 2, "Three": 3, "Four": 4, "Five": 5}
+
+def parse_page(html, page_url):
+    soup = BeautifulSoup(html, "lxml")        # lxml 比 html.parser 快
+    books = []
+
+    for card in soup.select("article.product_pod"):        # ① 遍历每一本书
+        title_tag = card.select_one("h3 a")
+        price_tag = card.select_one("p.price_color")
+        stock_tag = card.select_one("p.instock.availability")
+        rating_tag = card.select_one("p.star-rating")
+
+        if not (title_tag and price_tag):                  # ② 结构不对就跳过
+            continue
+
+        raw_price = price_tag.get_text(strip=True)         # "£51.77"
+        price = float("".join(c for c in raw_price
+                              if c.isdigit() or c == "."))  # → 51.77
+
+        stars = 0                                          # ③ class 里找星级
+        if rating_tag:
+            for cls in rating_tag.get("class", []):
+                if cls in RATING_MAP:
+                    stars = RATING_MAP[cls]
+
+        books.append({
+            "title": title_tag.get("title") or title_tag.get_text(strip=True),
+            "price": price,
+            "rating": stars,
+            "in_stock": 1 if stock_tag and "In stock" in stock_tag.get_text() else 0,
+            "url": urljoin(page_url, title_tag["href"]),   # ④ 相对链接转绝对
+        })
+    return books</code></pre></div>
+<h3 id="逐段解释">逐段解释</h3>
+<p><strong>① <code>soup.select("article.product_pod")</code></strong></p>
+<p>CSS 选择器，<code>article.product_pod</code> 意思是"标签是 article 且 class 里有 product_pod"。返回<strong>列表</strong>，所以能 <code>for</code> 遍历。<code>select_one</code> 只取第一个。</p>
+<p><strong>② 为什么要 <code>if not (...)</code> 判断</strong></p>
+<p>网页随时可能改版、某条数据可能缺字段。<strong>直接 <code>title_tag.get_text()</code> 会在数据缺失时抛 AttributeError 让整个程序崩掉</strong>，一条脏数据毁掉一整轮抓取，很不划算。习惯是"缺了就跳过，并记日志"。</p>
+<p><strong>③ 星级为什么这么麻烦</strong></p>
+<p><code>&lt;p class="star-rating Three"&gt;</code> —— 星级不是文字，而是写在 <strong>class 名字</strong>里（One~Five）。</p>
+<p>所以取 <code>tag["class"]</code>（返回列表如 <code>["star-rating", "Three"]</code>），逐个比对映射表。</p>
+<p>这类"数据藏在属性里"的情况非常常见，比如 <code>&lt;span data-score="4.5"&gt;</code>。</p>
+<p><strong>④ urljoin 一定要会</strong></p>
+<p>页面上写的是<strong>相对路径</strong> <code>catalogue/xxx/index.html</code>，直接存进数据库没法用。</p>
+<p><code>urljoin("https://books.toscrape.com/catalogue/page-1.html", "catalogue/xxx/index.html")</code> 会正确拼成完整 URL。</p>
+<p><strong>新手常犯的错</strong>：手动写 <code>BASE + href</code>，结果多一个斜杠、少一层目录，全 404。</p>
+<h3 id="CSS-选择器速查">CSS 选择器速查</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>标签名</td>
+<td><code>select("a")</code></td>
+</tr>
+<tr>
+<td><code>.cls</code></td>
+<td>class</td>
+<td><code>select(".price_color")</code></td>
+</tr>
+<tr>
+<td><code>#id</code></td>
+<td>id</td>
+<td><code>select("#main")</code></td>
+</tr>
+<tr>
+<td><code>a b</code></td>
+<td>后代（任意层级）</td>
+<td><code>select("div.product_price p")</code></td>
+</tr>
+<tr>
+<td><code>a &gt; b</code></td>
+<td>直接子元素</td>
+<td><code>select("ul &gt; li")</code></td>
+</tr>
+<tr>
+<td><code>[attr]</code></td>
+<td>有某属性</td>
+<td><code>select("a[href]")</code></td>
+</tr>
+<tr>
+<td><code>[attr=值]</code></td>
+<td>属性等于</td>
+<td><code>select("a[title='X']")</code></td>
+</tr>
+</table></div>
+<p><strong>取内容的三兄弟</strong>：<code>tag.get_text(strip=True)</code> 取纯文本、<code>tag["href"]</code> 取属性、<code>tag.get("title")</code> 取属性（没有返回 None 而不报错）。</p>
+<hr>
+<h2 id="5-第-④-步-翻页-while-下一页-按钮">5. 第 ④ 步：翻页（while + "下一页"按钮）</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def next_page_url(html, page_url):
+    soup = BeautifulSoup(html, "lxml")
+    nxt = soup.select_one("li.next a")
+    return urljoin(page_url, nxt["href"]) if nxt else None   # 没有就返回 None
+
+url, page = START_URL, 0
+while url and page &lt; max_pages:          # ← 两个退出条件，缺一不可
+    page += 1
+    html = fetch(url)
+    rows = parse_page(html, url)
+    save_books(conn, rows)
+    time.sleep(1.0)                      # ★ 限速
+    url = next_page_url(html, url)       # 更新为下一页</code></pre></div>
+<p><strong>三个坑</strong></p>
+<ol><li><strong>最后一页没有"next"按钮</strong> → select_one 返回 None → <code>nxt["href"]</code> 会 TypeError。</li></ol>
+<p>   正确做法：用 <code>if nxt else None</code> 让 while 自然结束。</p>
+<ol><li><strong>死循环</strong>：如果"下一页"的链接永远指向自己（有的站分页写错），<code>while url</code> 会转到天荒地老。</li></ol>
+<p>   所以一定要加 <code>page &lt; max_pages</code> 这个上限兜底。</p>
+<ol><li><strong>不给服务器喘气</strong>：一秒钟发几十个请求 = 事实上的 DoS，会被封 IP，也很不道德。</li></ol>
+<p>   本项目默认每页停 1 秒（<code>time.sleep(1.0)</code>）。</p>
+<blockquote><strong>翻页的另外两种常见形态</strong><br>- <strong>URL 有规律</strong>：<code>?page=1,2,3...</code> → 直接 <code>for i in range(1, 51)</code> 拼 URL，不需要解析"下一页"<br>- <strong>滚不到底</strong>：瀑布流、无限滚动 → 用 <code>playwright</code> 滚动加载，或直接找它背后的 <strong>JSON 接口</strong>（DevTools 的 Network 面板筛 Fetch/XHR）</blockquote>
+<hr>
+<h2 id="6-第-⑤-步-存起来-SQLite">6. 第 ⑤ 步：存起来（SQLite）</h2>
+<p><strong>为什么不直接存 CSV？</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th></th>
+<th>CSV</th>
+<th>SQLite</th>
+</tr>
+<tr>
+<td>追加写入</td>
+<td>要读出来再写回去，容易写乱</td>
+<td>INSERT 一行即可</td>
+</tr>
+<tr>
+<td>去重</td>
+<td>自己想办法</td>
+<td>主键 UNIQUE + ON CONFLICT 自动搞定</td>
+</tr>
+<tr>
+<td>查询</td>
+<td>全读进内存</td>
+<td>SELECT ... WHERE 直接查</td>
+</tr>
+<tr>
+<td>中途崩了</td>
+<td>文件可能写坏</td>
+<td>有事务保护</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>无</td>
+<td>无（<strong>标准库自带</strong>）</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import sqlite3
+
+conn = sqlite3.connect("data/books.db")
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS books(
+        url        TEXT PRIMARY KEY,     -- ★ 用网址做主键，天然去重
+        title      TEXT NOT NULL,
+        price      REAL,
+        rating     INTEGER,
+        in_stock   INTEGER,
+        crawled_at TEXT
+    )""")
+conn.commit()
+
+rows = [(r["url"], r["title"], r["price"], r["rating"], r["in_stock"], now) for r in data]
+conn.executemany("""
+    INSERT INTO books(url, title, price, rating, in_stock, crawled_at)
+    VALUES (?, ?, ?, ?, ?, ?)
+    ON CONFLICT(url) DO UPDATE SET
+        title=excluded.title, price=excluded.price,
+        rating=excluded.rating, in_stock=excluded.in_stock,
+        crawled_at=excluded.crawled_at
+""", rows)
+conn.commit()</code></pre></div>
+<p><strong>三个要点</strong></p>
+<ol><li><strong>url 当主键</strong>：同一个 URL 只会有一行。<strong>这样重复跑脚本也不会产生重复数据</strong>，这是爬虫最实用的技巧之一。</li><li><strong>INSERT ... ON CONFLICT DO UPDATE（UPSERT）</strong>：已存在就更新。想"已存在就跳过"用 <code>INSERT OR IGNORE</code>。</li><li><strong>问号占位符</strong>：<code>executemany</code> 的第二个参数。<strong>永远不要用 f-string 拼 SQL</strong>，那是 SQL 注入的入口（虽然这里数据是自己抓的，但习惯要从第一天养成）。</li></ol>
+<p><strong>看看数据对不对</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">for row in conn.execute("SELECT title, price, rating FROM books ORDER BY price DESC LIMIT 5"):
+    print(row)</code></pre></div>
+<hr>
+<h2 id="7-第-⑥-步-分析-pandas">7. 第 ⑥ 步：分析（pandas）</h2>
+<p>爬虫只负责"拿到数据"，<strong>价值在分析</strong>。数据进库后就是最普通的表格分析了：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd, sqlite3
+
+conn = sqlite3.connect("data/books.db")
+df = pd.read_sql_query("SELECT * FROM books", conn)     # 一行读出整张表
+conn.close()
+
+# 清洗
+df = df.dropna(subset=["title", "price"])
+df["price"] = df["price"].astype(float)
+
+# 统计
+print(len(df))                                # 多少本
+print(df["price"].mean())                     # 均价
+print(df["rating"].value_counts())            # 各星级数量
+print(df.groupby("rating")["price"].mean())   # 每个星级的均价
+print(df.sort_values("price", ascending=False).head(5)[["title", "price"]])</code></pre></div>
+<p><strong>这四行你会在 90% 的数据分析里用到</strong>：len / mean / value_counts / groupby。</p>
+<hr>
+<h2 id="8-第-⑦-步-出图-matplotlib">8. 第 ⑦ 步：出图（matplotlib）</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import matplotlib
+matplotlib.use("Agg")                     # ★ 不弹窗，只存文件（脚本/服务器必备）
+import matplotlib.pyplot as plt
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]    # ★ 中文标题别变方框
+plt.rcParams["axes.unicode_minus"] = False
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+axes[0].hist(df["price"], bins=20, color="#4f81bd", edgecolor="white")
+axes[0].set_title("价格分布"); axes[0].set_xlabel("价格 (£)"); axes[0].set_ylabel("数量")
+
+counts = df["rating"].value_counts().sort_index()
+axes[1].bar(counts.index.astype(str), counts.values, color="#c0504d")
+axes[1].set_title("星级分布")
+
+plt.tight_layout()
+plt.savefig("out/price.png", dpi=150, bbox_inches="tight")   # ★ 在 show 之前保存
+plt.close(fig)</code></pre></div>
+<p><strong>三个必踩的坑</strong>（我都踩过）</p>
+<ul><li><strong>中文变方框</strong> → 必须设 <code>font.sans-serif</code>（Windows 用 Microsoft YaHei，macOS 用 Arial Unicode MS）</li><li><strong>保存的图是空的</strong> → <code>plt.savefig</code> 必须写在 <code>plt.show()</code> <strong>之前</strong>（show 之后画布就清了）</li><li><strong>Agg 是干嘛的</strong> → 没装图形界面的机器（服务器）上默认后端会报错，Agg 表示"只画到文件"</li></ul>
+<hr>
+<h2 id="9-第-⑧-步-出报告-openpyxl-python-docx">9. 第 ⑧ 步：出报告（openpyxl + python-docx）</h2>
+<p>数据抓回来、分析完，最后要能"交出去"。</p>
+<h3 id="9-1-Excel-多个-sheet-排版">9.1 Excel：多个 sheet + 排版</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+
+with pd.ExcelWriter("out/books.xlsx", engine="openpyxl") as writer:
+    pd.DataFrame(list(stats.items()), columns=["指标", "数值"]).to_excel(
+        writer, sheet_name="概览", index=False)                  # sheet 1
+    df.sort_values("price", ascending=False).to_excel(
+        writer, sheet_name="全部图书", index=False)               # sheet 2
+    df.groupby("rating")["price"].agg(["count", "mean"]).round(2).to_excel(
+        writer, sheet_name="按星级统计")                          # sheet 3</code></pre></div>
+<p><code>index=False</code> 非常关键 —— 不然 Excel 里会多出一列没用的行号。</p>
+<h3 id="9-2-Word-标题-表格-插图">9.2 Word：标题 + 表格 + 插图</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from docx import Document
+from datetime import datetime
+
+doc = Document()
+doc.add_heading("图书数据采集分析报告", level=1)
+doc.add_paragraph("生成时间：" + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+# 表格
+table = doc.add_table(rows=1, cols=2)
+table.style = "Table Grid"
+table.rows[0].cells[0].text = "指标"
+table.rows[0].cells[1].text = "数值"
+for k, v in stats.items():
+    cells = table.add_row().cells
+    cells[0].text, cells[1].text = str(k), str(v)
+
+# 项目符号列表
+for _, row in top5.iterrows():
+    doc.add_paragraph("%s —— £%.2f" % (row["title"], row["price"]), style="List Bullet")
+
+# 插图
+doc.add_picture("out/price.png")
+
+doc.save("out/report.docx")</code></pre></div>
+<p>常见 <code>style</code> 值：<code>"List Bullet"</code>（圆点）、<code>"List Number"</code>（编号）、<code>"Intense Quote"</code>（强调引用）。</p>
+<hr>
+<h2 id="10-第-⑨-步-串起来">10. 第 ⑨ 步：串起来</h2>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">def main():
+    ap = argparse.ArgumentParser(description="图书数据采集与分析")
+    ap.add_argument("--pages", type=int, default=5, help="抓取页数（每页 20 本）")
+    ap.add_argument("--skip-crawl", action="store_true", help="跳过抓取，只用已有数据出报告")
+    args = ap.parse_args()
+
+    if not args.skip_crawl:
+        crawl(args.pages)          # ① 抓
+
+    df = load_data()               # ② 读
+    stats = summarize(df)          # ③ 分析
+    chart = make_chart(df)         # ④ 画图
+    make_excel(df, stats, ...)     # ⑤ 出 Excel
+    make_word(stats, ..., chart)   # ⑥ 出 Word
+
+if __name__ == "__main__":
+    main()</code></pre></div>
+<p><strong><code>--skip-crawl</code> 是很有用的设计</strong>：调整报告样式时不用重新爬一遍，几秒就能看效果。</p>
+<p><strong>完整代码</strong>在 <code>爬虫实战_代码\main.py</code>（约 300 行，分成 9 个小节，每节都有中文注释）。</p>
+<hr>
+<h2 id="11-第-⑩-步-让它更健壮-这才是-能用的爬虫">11. 第 ⑩ 步：让它更健壮（这才是"能用的爬虫"）</h2>
+<h3 id="11-1-失败自动重试-tenacity">11.1 失败自动重试（tenacity）</h3>
+<p>网络抖动、超时、偶发 5xx 都太常见了，<strong>不要一失败就退出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type
+
+class RetryableError(Exception):
+    """网络类错误，交给 tenacity 重试"""
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2),
+       retry=retry_if_exception_type(RetryableError), reraise=True)
+def fetch(url):
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+    except requests.RequestException as exc:
+        raise RetryableError(str(exc)) from exc     # 可重试的错误
+    if resp.status_code &gt;= 500:
+        raise RetryableError("HTTP %d" % resp.status_code)
+    if resp.status_code != 200:
+        raise RuntimeError("HTTP %d" % resp.status_code)   # 4xx 不重试
+    return resp.text</code></pre></div>
+<p><strong>关键设计</strong>：区分"<strong>值得重试</strong>"（超时、5xx）和"<strong>重试也没用</strong>"（404、403、解析失败）。全都重试只会浪费时间和被封。</p>
+<h3 id="11-2-日志-loguru">11.2 日志（loguru）</h3>
+<p>别再用 print 调试了，日志能落盘、能分级、能带时间：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from loguru import logger
+logger.add("data/spider.log", rotation="5 MB", encoding="utf-8")
+
+logger.info("抓取第 {} 页: {}", page, url)
+logger.success("抓取完成，共 {} 条", total)
+try:
+    ...
+except Exception:
+    logger.exception("这一页出问题了")     # 自动附带完整堆栈</code></pre></div>
+<p><code>rotation="5 MB"</code> 表示日志超过 5MB 自动换新文件，不会把磁盘写爆。</p>
+<h3 id="11-3-进度条-tqdm">11.3 进度条（tqdm）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tqdm import tqdm
+bar = tqdm(total=max_pages, desc="抓取进度", unit="页")
+while ...:
+    bar.update(1)
+    bar.set_postfix(本页=len(rows), 累计=total)
+bar.close()</code></pre></div>
+<h3 id="11-4-断点续爬">11.4 断点续爬</h3>
+<p>因为 <code>url</code> 是主键 + UPSERT，<strong>直接重新跑就会自动"续爬"</strong>（已抓的更新，没抓的补上），不需要额外的断点文件。</p>
+<p>想更省流量，可以只抓"还没抓过的 URL"：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">done = {row[0] for row in conn.execute("SELECT url FROM books")}
+if book["url"] in done:
+    continue          # 跳过已抓过的</code></pre></div>
+<h3 id="11-5-数据落盘策略">11.5 数据落盘策略</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>方式</th>
+<th>适合</th>
+</tr>
+<tr>
+<td>SQLite</td>
+<td>结构化、要反复查、要增量更新 ← <strong>本项目</strong></td>
+</tr>
+<tr>
+<td>CSV / Excel</td>
+<td>一次性导出给别人看</td>
+</tr>
+<tr>
+<td>JSON / JSONL</td>
+<td>字段不固定、要给别的程序读</td>
+</tr>
+<tr>
+<td>MongoDB</td>
+<td>文档结构差异大、数据量很大</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="12-报错排查表-遇到问题先查这里">12. 报错排查表（遇到问题先查这里）</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>报错 / 现象</th>
+<th>原因</th>
+<th>怎么办</th>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: No module named 'bs4'</code></td>
+<td>没装库 / 装到了别的环境</td>
+<td>确认虚拟环境已激活，<code>pip install beautifulsoup4</code></td>
+</tr>
+<tr>
+<td><code>requests.exceptions.ConnectTimeout</code></td>
+<td>网络慢或被墙</td>
+<td>加大 timeout、加重试、检查代理</td>
+</tr>
+<tr>
+<td><code>SSLError</code></td>
+<td>证书问题</td>
+<td>别用 <code>verify=False</code> 糊过去；升级 <code>certifi</code></td>
+</tr>
+<tr>
+<td>状态码 403</td>
+<td>被拒绝（UA / 频率）</td>
+<td>补 <code>User-Agent</code>、降速、检查是否违反条款</td>
+</tr>
+<tr>
+<td>状态码 429</td>
+<td>请求太频繁</td>
+<td><strong>立刻降速</strong>，加 <code>time.sleep</code></td>
+</tr>
+<tr>
+<td><code>AttributeError: 'NoneType' object has no attribute ...</code></td>
+<td><code>select_one</code> 没找到</td>
+<td>打印 HTML 确认选择器；加 <code>if tag:</code> 判断</td>
+</tr>
+<tr>
+<td>解析结果是空的</td>
+<td>页面是 <strong>JS 渲染</strong>的</td>
+<td>换 <code>playwright</code>/<code>selenium</code>，或找背后的 JSON 接口</td>
+</tr>
+<tr>
+<td>中文乱码</td>
+<td>编码不对</td>
+<td><code>resp.encoding = resp.apparent_encoding</code></td>
+</tr>
+<tr>
+<td>数据只有第一页</td>
+<td>翻页逻辑没走通</td>
+<td>打印 <code>next_page_url</code> 的返回值看看</td>
+</tr>
+<tr>
+<td>图里中文是方框</td>
+<td>没设字体</td>
+<td><code>plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]</code></td>
+</tr>
+<tr>
+<td>保存的图是空白</td>
+<td>savefig 在 show 之后</td>
+<td>把 savefig 挪到 show 之前</td>
+</tr>
+<tr>
+<td>Word 里图片太大/太小</td>
+<td>没设宽高</td>
+<td><code>doc.add_picture(path, width=Inches(6))</code></td>
+</tr>
+<tr>
+<td><code>sqlite3.OperationalError: database is locked</code></td>
+<td>多个进程同时写</td>
+<td>写的时候别开多个程序；用完 <code>conn.close()</code></td>
+</tr>
+</table></div>
+<p><strong>通用的排查三步</strong>：① 看报错的<strong>最后一行</strong>（错误类型）和<strong>倒数第二行</strong>（行号）；</p>
+<p>② 在出错前 <code>print</code> 出关键变量（尤其是选择器的返回值和类型）；③ 用浏览器 DevTools 重新确认页面结构。</p>
+<hr>
+<h2 id="13-合规红线-必读-比技术更重要">13. ⚠️ 合规红线（必读，比技术更重要）</h2>
+<p>爬虫在中国是有明确法律边界的，<strong>这几条必须记住</strong>：</p>
+<p><strong>✅ 可以做</strong></p>
+<ul><li>抓取<strong>公开</strong>的、不违反站点条款的数据</li><li>遵守 <code>robots.txt</code></li><li>控制频率（本教程默认每页 1 秒）</li><li>用站点的<strong>官方 API</strong>（有 API 就别爬）</li><li>在专门的教学站点上练习（books.toscrape.com、quotes.toscrape.com、httpbin.org）</li></ul>
+<p><strong>❌ 绝对不能做</strong></p>
+<ul><li><strong>绕过登录 / 付费墙 / 验证码</strong> 去拿非公开数据</li><li><strong>抓取个人信息</strong>（手机号、身份证、住址、聊天记录）—— 可能触犯《个人信息保护法》《刑法》253 条之一</li><li><strong>高频请求打挂对方服务</strong> —— 可能构成《刑法》285/286 条的"破坏计算机信息系统"</li><li>抓来的数据<strong>转卖、公开传播</strong></li><li>用爬虫做<strong>刷单、抢票、水军</strong>等</li></ul>
+<p><strong>一句话判断法</strong>：</p>
+<blockquote>如果你要爬的东西，<strong>"用浏览器正常点开、不登录、不付费就能看到"</strong>，并且<strong>你只少量、低频、不传播地用于学习</strong>——那基本安全。<br>其他情况，<strong>先查法律、先问授权</strong>。</blockquote>
+<hr>
+<h2 id="14-进阶方向-学完这份-下一步往哪走">14. 进阶方向（学完这份，下一步往哪走）</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>方向</th>
+<th>学什么</th>
+<th>用什么</th>
+</tr>
+<tr>
+<td>处理 JS 页面</td>
+<td>等待、点击、滚动、截屏</td>
+<td><code>playwright</code></td>
+</tr>
+<tr>
+<td>工程化爬虫</td>
+<td>队列、去重、并发、中间件</td>
+<td><code>scrapy</code></td>
+</tr>
+<tr>
+<td>大规模并发</td>
+<td>async 并发请求</td>
+<td><code>httpx</code> + <code>asyncio</code></td>
+</tr>
+<tr>
+<td>反爬对抗（合规范围内）</td>
+<td>代理池、请求头、频率控制</td>
+<td><code>httpx</code>、<code>fake-useragent</code></td>
+</tr>
+<tr>
+<td>数据存储升级</td>
+<td>数据库、增量、分表</td>
+<td><code>pymysql</code> / <code>pymongo</code></td>
+</tr>
+<tr>
+<td>数据展示</td>
+<td>交互式图表、看板</td>
+<td><code>plotly</code> / <code>streamlit</code></td>
+</tr>
+<tr>
+<td>定时运行</td>
+<td>每天自动抓一次</td>
+<td><code>schedule</code> / 系统计划任务</td>
+</tr>
+<tr>
+<td>自动化操作</td>
+<td>抢不到的按钮就模拟点击</td>
+<td><code>playwright</code> / <code>pyautogui</code></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="15-自测题-做完就算掌握了">15. 自测题（做完就算掌握了）</h2>
+<ol><li>为什么 <code>requests.get</code> 一定要加 <code>timeout</code>？</li><li><code>select("h3 a")</code> 和 <code>select_one("h3 a")</code> 有什么区别？</li><li><code>urljoin</code> 解决的是什么问题？手动拼字符串会出什么错？</li><li>为什么要用 <code>url</code> 当数据库主键？</li><li><code>INSERT OR IGNORE</code> 和 <code>INSERT ... ON CONFLICT DO UPDATE</code> 有什么区别？各适合什么场景？</li><li>为什么 <code>plt.savefig</code> 必须写在 <code>plt.show()</code> 之前？</li><li>429 状态码在表达什么？你应该怎么做？</li><li>页面用 JS 渲染时，<code>requests</code> 为什么抓不到数据？有哪两种解决办法？</li><li>什么是"合理的请求频率"？怎么实现？</li><li>举出三种<strong>绝对不能爬</strong>的数据类型。</li></ol>
+<blockquote>答案都能在上面的正文里找到。做不出来就回去翻对应小节。</blockquote>
+<hr>
+<p>*（本教程由 AI 助手整理，配套代码已实测运行通过；请仅用于合法合规的学习场景。）*</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

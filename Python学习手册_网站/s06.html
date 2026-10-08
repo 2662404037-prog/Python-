@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06_AI入门 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#先说结论-AI-应用有三条路-难度完全不同">先说结论：AI 应用有三条路，难度完全不同</a>
+<a class="toc-h2" href="#一-中文处理-先让程序-看懂-中文">一、中文处理：先让程序"看懂"中文</a>
+<a class="toc-h3" href="#1-1-jieba-中文分词">1.1 jieba —— 中文分词</a>
+<a class="toc-h3" href="#1-2-pypinyin-汉字转拼音">1.2 pypinyin —— 汉字转拼音</a>
+<a class="toc-h3" href="#1-3-snownlp-中文情感分析-好评还是差评">1.3 snownlp —— 中文情感分析（好评还是差评）</a>
+<a class="toc-h2" href="#二-表格数据预测-scikit-learn-三行训练一个模型">二、表格数据预测：scikit-learn 三行训练一个模型</a>
+<a class="toc-h3" href="#2-1-先理解-机器学习-在干什么">2.1 先理解"机器学习"在干什么</a>
+<a class="toc-h3" href="#2-2-它是什么">2.2 它是什么</a>
+<a class="toc-h3" href="#2-3-完整例子-能直接跑">2.3 完整例子（能直接跑）</a>
+<a class="toc-h3" href="#2-4-逐行解释-重点看这三行">2.4 逐行解释（重点看这三行）</a>
+<a class="toc-h3" href="#2-5-想让准确率再高一点">2.5 想让准确率再高一点</a>
+<a class="toc-h2" href="#三-调用大模型-真正的-10-分钟出成果">三、调用大模型：真正的"10 分钟出成果"</a>
+<a class="toc-h3" href="#3-1-它是什么">3.1 它是什么</a>
+<a class="toc-h3" href="#3-2-但有个前提-绝对不能把-API-Key-写在代码里">3.2 🚨 但有个前提：绝对不能把 API Key 写在代码里</a>
+<a class="toc-h3" href="#3-3-算清楚要花多少钱-tiktoken">3.3 算清楚要花多少钱：tiktoken</a>
+<a class="toc-h3" href="#3-4-本地跑模型-transformers">3.4 本地跑模型：transformers</a>
+<a class="toc-h3" href="#3-5-语义搜索-sentence-transformers">3.5 语义搜索：sentence-transformers</a>
+<a class="toc-h2" href="#四-AI-学习顺序-别跳步">四、AI 学习顺序（别跳步）</a>
+<a class="toc-h2" href="#附-AI-相关的-常用工具速查">🧰 附：AI 相关的「常用工具速查」</a>
+<a class="toc-h3" href="#中文处理">🇨🇳 中文处理</a>
+<a class="toc-h3" href="#scikit-learn-表格预测">🤖 scikit-learn（表格预测）</a>
+<a class="toc-h3" href="#大模型与向量">💬 大模型与向量</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业-30-分钟能做完">🎯 留个小作业（30 分钟能做完）</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="AI-入门-不训练模型-我也能做出-AI-应用">AI 入门：不训练模型，我也能做出 AI 应用</h1>
+<div style="margin:6px 0 22px"><img src="covers/06_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：你想做点"AI 的东西"，但一看教程："先装 CUDA、配置显卡、准备 10 万条数据、训练 12 小时……"<br>然后你就放弃了。<br>其实 <strong>90% 的 AI 应用根本不需要你训练模型</strong>。这篇讲三种"<strong>拿来就能用</strong>"的路线，<strong>10 行代码出成果</strong>。</blockquote>
+<hr>
+<h2 id="先说结论-AI-应用有三条路-难度完全不同">先说结论：AI 应用有三条路，难度完全不同</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>路线</th>
+<th>要做什么</th>
+<th>难度</th>
+<th>出成果速度</th>
+</tr>
+<tr>
+<td>① 调用大模型 API</td>
+<td>拿一段文字让 GPT 处理</td>
+<td>⭐</td>
+<td><strong>10 分钟</strong></td>
+</tr>
+<tr>
+<td>② 用现成模型做预测</td>
+<td>拿表格数据训练个小模型</td>
+<td>⭐⭐</td>
+<td><strong>1 天</strong></td>
+</tr>
+<tr>
+<td>③ 自己训练深度模型</td>
+<td>训练神经网络</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>几周</td>
+</tr>
+</table></div>
+<p><strong>新手一定要从 ① 和 ② 开始</strong>。这篇就讲这两个。</p>
+<hr>
+<h2 id="一-中文处理-先让程序-看懂-中文">一、中文处理：先让程序"看懂"中文</h2>
+<h3 id="1-1-jieba-中文分词">1.1 jieba —— 中文分词</h3>
+<p><strong>为什么需要它</strong>：英文有空格，<code>"I love you".split()</code> 就行。</p>
+<p><strong>中文不行</strong> —— <code>'我爱编程'</code> 切不出来，程序不知道"爱"是一个词还是"爱编"是一个词。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install jieba</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import jieba
+
+s = "高考志愿填报要综合考虑分数、城市和专业"
+print("精确模式:", "/".join(jieba.cut(s)))
+print("搜索模式:", "/".join(jieba.lcut_for_search(s)))</code></pre></div>
+<p><strong>输出形如</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">精确模式: 高考/志愿/填报/要/综合/考虑/分数/、/城市/和/专业
+搜索模式: 高考/志愿/填报/要/综合/考虑/分数/城市/专业</code></pre></div>
+<blockquote>💡 第一次运行会花一两秒"加载词典"，这是正常的。</blockquote>
+<p><strong>能干什么</strong>：统计词频、提取关键词、做词云、评论分析。</p>
+<h3 id="1-2-pypinyin-汉字转拼音">1.2 pypinyin —— 汉字转拼音</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from pypinyin import lazy_pinyin, Style
+
+print("普通拼音:", lazy_pinyin("志愿填报"))
+print("首字母  :", lazy_pinyin("志愿填报", style=Style.FIRST_LETTER))</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">普通拼音: ['zhi', 'yuan', 'tian', 'bao']
+首字母  : ['z', 'y', 't', 'b']</code></pre></div>
+<p><strong>用途</strong>：通讯录按拼音排序、检索、注音。</p>
+<h3 id="1-3-snownlp-中文情感分析-好评还是差评">1.3 snownlp —— 中文情感分析（好评还是差评）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from snownlp import SnowNLP
+
+print("好评程度:", round(SnowNLP("这门课太棒了，学到很多").sentiments, 3))
+print("差评程度:", round(SnowNLP("太糟糕了，完全听不懂").sentiments, 3))</code></pre></div>
+<p><strong>结果会是</strong>：前者接近 1（正面），后者接近 0（负面）。</p>
+<p><strong>用途</strong>：电商评论监控、舆情分析、用户反馈分类。</p>
+<hr>
+<h2 id="二-表格数据预测-scikit-learn-三行训练一个模型">二、表格数据预测：scikit-learn 三行训练一个模型</h2>
+<h3 id="2-1-先理解-机器学习-在干什么">2.1 先理解"机器学习"在干什么</h3>
+<p><strong>一句话</strong>：<strong>给它一堆"已知答案"的例子，让它自己找规律，然后预测"未知答案"的例子。</strong></p>
+<p>举个直观的例子：</p>
+<blockquote>你给它 1000 个学生的"学习时长、出勤率、作业完成度 + 最终分数"，<br>它学会规律后，你给它一个新学生的前三项，它能<strong>预测</strong>这个人的分数。</blockquote>
+<h3 id="2-2-它是什么">2.2 它是什么</h3>
+<p><code>scikit-learn</code> 是<strong>传统机器学习</strong>的标准库。分类、回归、聚类、降维、模型评估全都有，而且：</p>
+<blockquote><strong>所有模型的用法几乎一样：<code>fit()</code> 训练 → <code>predict()</code> 预测 → <code>score()</code> 打分。</strong><br>换模型常常只改一行代码。<strong>记住这个套路，你就入门了。</strong></blockquote>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install scikit-learn</code></pre></div>
+<h3 id="2-3-完整例子-能直接跑">2.3 完整例子（能直接跑）</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# ① 拿数据（sklearn 自带鸢尾花数据集，150 条）
+X, y = load_iris(return_X_y=True)
+
+# ② 切分：80% 训练，20% 考试
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ③ 选模型 + 训练
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(Xtr, ytr)                    # 学习规律
+
+# ④ 预测 + 打分
+pred = model.predict(Xte)
+print("准确率:", round(accuracy_score(yte, pred), 4))
+print("预测前 5 个:", pred[:5], " 真实答案:", yte[:5])</code></pre></div>
+<p><strong>实测输出</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">准确率: 1.0
+预测前 5 个: [1 0 2 1 1]  真实答案: [1 0 2 1 1]</code></pre></div>
+<h3 id="2-4-逐行解释-重点看这三行">2.4 逐行解释（重点看这三行）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>代码</th>
+<th>在干什么</th>
+<th>为什么重要</th>
+</tr>
+<tr>
+<td><code>train_test_split</code></td>
+<td>把数据切成两份</td>
+<td><strong>绝不能拿训练过的数据考自己</strong> —— 那叫作弊</td>
+</tr>
+<tr>
+<td><code>model.fit(Xtr, ytr)</code></td>
+<td>用训练集学规律</td>
+<td>这一步可能要几秒到几分钟</td>
+</tr>
+<tr>
+<td><code>model.predict(Xte)</code></td>
+<td>拿没见过的新数据预测</td>
+<td>这才是"真实使用"的场景</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <strong>新手最常见的错误</strong>：不切分数据，直接 <code>fit</code> 完就 <code>predict</code> 同一批数据，然后惊讶"准确率 100%"。<br>这叫<strong>过拟合的假象</strong>，真实场景会一塌糊涂。</blockquote>
+<h3 id="2-5-想让准确率再高一点">2.5 想让准确率再高一点</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>是什么</th>
+<th>什么时候用</th>
+</tr>
+<tr>
+<td><strong>xgboost / lightgbm</strong></td>
+<td>梯度提升树，<strong>表格数据的擂台冠军</strong></td>
+<td>Kaggle 竞赛标配</td>
+</tr>
+<tr>
+<td><strong>seaborn</strong></td>
+<td>看数据分布，快速找特征</td>
+<td>做特征工程前</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import xgboost as xgb
+model = xgb.XGBClassifier(
+    n_estimators=300,      # 300 棵树
+    learning_rate=0.05,    # 学习率：越小越稳
+    max_depth=5,
+    eval_metric="auc",
+    early_stopping_rounds=30,   # 验证集不提升就自动停
+)</code></pre></div>
+<blockquote>💡 <strong>重要判断</strong>：<strong>表格数据先用 sklearn / xgboost，别一上来就上深度学习。</strong><br>大多数实际问题数据量只有几千到几万条，XGBoost 就够了，而且训练只要几秒。</blockquote>
+<hr>
+<h2 id="三-调用大模型-真正的-10-分钟出成果">三、调用大模型：真正的"10 分钟出成果"</h2>
+<h3 id="3-1-它是什么">3.1 它是什么</h3>
+<p>不想自己训模型？直接<strong>调用别人训练好的大模型</strong>。<code>openai</code> 就是官方"打电话"的工具。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install openai</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import os
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])   # ★ 从环境变量读
+
+resp = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "用一句话解释什么是元组"}],
+)
+print(resp.choices[0].message.content)</code></pre></div>
+<p><strong>结果就是模型给你的那句回答</strong>（每次内容不同）。</p>
+<h3 id="3-2-但有个前提-绝对不能把-API-Key-写在代码里">3.2 🚨 但有个前提：绝对不能把 API Key 写在代码里</h3>
+<p><strong>错误示范</strong>（每年都有人这么干，然后被盗刷）：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">client = OpenAI(api_key="sk-proj-xxxxxxxxxx")   # ❌ 一提交到 GitHub 就完了</code></pre></div>
+<p><strong>正确做法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install python-dotenv</code></pre></div>
+<p>新建 <code>.env</code> 文件（<strong>不要提交</strong>）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">OPENAI_API_KEY=sk-xxxxx</code></pre></div>
+<p>代码里：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import os
+from dotenv import load_dotenv
+load_dotenv()                                   # 从 .env 读
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))</code></pre></div>
+<p>别忘了把 <code>.env</code> 加进 <code>.gitignore</code>。</p>
+<h3 id="3-3-算清楚要花多少钱-tiktoken">3.3 算清楚要花多少钱：tiktoken</h3>
+<p>大模型是按 <strong>token</strong> 计费的。<code>tiktoken</code> 能帮你提前估算。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import tiktoken
+
+enc = tiktoken.get_encoding("cl100k_base")
+text = "Python 是一门很好学的编程语言"
+print("token 数:", len(enc.encode(text)))
+print("切出来的 token:", enc.encode(text))</code></pre></div>
+<blockquote>💡 粗略经验：<strong>1 个中文字 ≈ 1~2 个 token，1 个英文单词 ≈ 1~1.5 个 token</strong>。</blockquote>
+<h3 id="3-4-本地跑模型-transformers">3.4 本地跑模型：transformers</h3>
+<p>如果不想用 API（或者没网），可以用 <code>transformers</code> 在本地跑预训练模型。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install transformers</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from transformers import pipeline
+
+# 情感分析（第一次运行会自动下载模型，几百 MB）
+clf = pipeline("sentiment-analysis",
+               model="distilbert-base-uncased-finetuned-sst-2-english")
+print(clf("I love Python!"))       # [{'label': 'POSITIVE', 'score': 0.999...}]
+print(clf("This is terrible."))    # [{'label': 'NEGATIVE', 'score': 0.999...}]</code></pre></div>
+<p><strong>换个任务只要改一个参数</strong>：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>任务</th>
+<th>写法</th>
+</tr>
+<tr>
+<td>文本分类</td>
+<td><code>pipeline("sentiment-analysis")</code></td>
+</tr>
+<tr>
+<td>文本生成</td>
+<td><code>pipeline("text-generation")</code></td>
+</tr>
+<tr>
+<td>摘要</td>
+<td><code>pipeline("summarization")</code></td>
+</tr>
+<tr>
+<td>翻译</td>
+<td><code>pipeline("translation")</code></td>
+</tr>
+<tr>
+<td>问答</td>
+<td><code>pipeline("question-answering")</code></td>
+</tr>
+</table></div>
+<h3 id="3-5-语义搜索-sentence-transformers">3.5 语义搜索：sentence-transformers</h3>
+<p><strong>它是什么</strong>：把<strong>句子变成一串数字（向量）</strong>，然后算"两句话有多像"。</p>
+<p><strong>用途</strong>：语义搜索（搜"怎么退钱"能找到"申请退款流程"）、找重复问题、文本聚类、给 RAG 做检索。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install sentence-transformers</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sentence_transformers import SentenceTransformer
+from sentence_transformers.util import cos_sim
+
+m = SentenceTransformer("all-MiniLM-L6-v2")
+v = m.encode(["我爱编程", "我喜歡寫程式", "今天天气不错"])
+
+print("第1句 vs 第2句（意思相近）:", round(cos_sim(v[0], v[1]).item(), 3))
+print("第1句 vs 第3句（不相关）  :", round(cos_sim(v[0], v[2]).item(), 3))</code></pre></div>
+<p><strong>结果</strong>：第一组接近 1（很像），第二组明显更小。</p>
+<blockquote>💡 这就是现在很火的 <strong>RAG（知识库问答）</strong> 的底层原理：<br>把你的文档切成段 → 每段变成向量 → 用户提问时找最像的几段 → 塞给大模型回答。</blockquote>
+<hr>
+<h2 id="四-AI-学习顺序-别跳步">四、AI 学习顺序（别跳步）</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>阶段</th>
+<th>学什么</th>
+<th>花多久</th>
+<th>能做出什么</th>
+</tr>
+<tr>
+<td>1️⃣</td>
+<td><strong>pandas 把数据弄干净</strong></td>
+<td>1~2 周</td>
+<td>——（但这步占实际工作 90% 时间）</td>
+</tr>
+<tr>
+<td>2️⃣</td>
+<td><strong>scikit-learn 走通完整流程</strong></td>
+<td>1~2 周</td>
+<td>房价预测、客户流失预测</td>
+</tr>
+<tr>
+<td>3️⃣</td>
+<td><strong>xgboost 提分</strong></td>
+<td>3~5 天</td>
+<td>比赛级别的基础模型</td>
+</tr>
+<tr>
+<td>4️⃣</td>
+<td><strong>openai API + langchain</strong></td>
+<td>1~2 周</td>
+<td>知识库问答、文档助手</td>
+</tr>
+<tr>
+<td>5️⃣</td>
+<td><strong>transformers / 向量检索</strong></td>
+<td>2~4 周</td>
+<td>语义搜索、分类器</td>
+</tr>
+<tr>
+<td>6️⃣</td>
+<td><strong>PyTorch</strong>（想做图像/微调再学）</td>
+<td>1~2 个月</td>
+<td>自己的神经网络</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <strong>最大的弯路</strong>：一上来就学 PyTorch，看完卷积神经网络还是不会解决自己的问题。<br><strong>先把 1~3 走通</strong>，你就有"能用 AI 解决实际问题"的能力了。</blockquote>
+<hr>
+<h2 id="附-AI-相关的-常用工具速查">🧰 附：AI 相关的「常用工具速查」</h2>
+<blockquote>三条路线（中文处理 / 表格预测 / 大模型）的工具都在这。</blockquote>
+<h3 id="中文处理">🇨🇳 中文处理</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>常用工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><strong>jieba</strong></td>
+<td><code>jieba.cut(句子)</code></td>
+<td>精确分词</td>
+<td><code>"/".join(jieba.cut(s))</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>jieba.lcut(s)</code></td>
+<td>直接返回列表</td>
+<td>最常用</td>
+</tr>
+<tr>
+<td></td>
+<td><code>jieba.lcut_for_search(s)</code></td>
+<td>搜索引擎模式</td>
+<td>更细的切分</td>
+</tr>
+<tr>
+<td></td>
+<td><code>jieba.add_word("新词")</code></td>
+<td>加自定义词</td>
+<td>人名/专业词</td>
+</tr>
+<tr>
+<td></td>
+<td><code>jieba.analyse.extract_tags(s, topK=10)</code></td>
+<td><strong>关键词提取</strong></td>
+<td>找重点词</td>
+</tr>
+<tr>
+<td><strong>pypinyin</strong></td>
+<td><code>lazy_pinyin(汉字)</code></td>
+<td>转拼音</td>
+<td><code>['zhi','yuan']</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>style=Style.FIRST_LETTER</code></td>
+<td>只要首字母</td>
+<td>排序、检索</td>
+</tr>
+<tr>
+<td><strong>snownlp</strong></td>
+<td><code>SnowNLP(文本).sentiments</code></td>
+<td>情感值（0 负 ~ 1 正）</td>
+<td>评论分析</td>
+</tr>
+</table></div>
+<h3 id="scikit-learn-表格预测">🤖 scikit-learn（表格预测）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>train_test_split(X, y, test_size=0.2)</code></td>
+<td><strong>切分训练/测试集</strong></td>
+<td>别用训练集考自己</td>
+</tr>
+<tr>
+<td><code>模型.fit(X, y)</code></td>
+<td>训练</td>
+<td>所有模型都一样</td>
+</tr>
+<tr>
+<td><code>模型.predict(X)</code></td>
+<td>预测</td>
+<td>出结果</td>
+</tr>
+<tr>
+<td><code>模型.predict_proba(X)</code></td>
+<td>输出概率</td>
+<td>想要"有多确定"</td>
+</tr>
+<tr>
+<td><code>accuracy_score(y, pred)</code></td>
+<td>准确率</td>
+<td>最简单的评估</td>
+</tr>
+<tr>
+<td><code>classification_report()</code></td>
+<td>精确率/召回率/F1</td>
+<td><strong>比准确率更靠谱</strong></td>
+</tr>
+<tr>
+<td><code>RandomForestClassifier()</code></td>
+<td>随机森林（首选）</td>
+<td>表格数据好用</td>
+</tr>
+<tr>
+<td><code>StandardScaler()</code></td>
+<td>特征标准化</td>
+<td>训练集 fit，测试集 transform</td>
+</tr>
+<tr>
+<td><code>RandomizedSearchCV / GridSearchCV</code></td>
+<td>自动调参</td>
+<td>进阶提分</td>
+</tr>
+</table></div>
+<h3 id="大模型与向量">💬 大模型与向量</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>常用工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><strong>openai</strong></td>
+<td><code>OpenAI(api_key=…)</code></td>
+<td>建客户端</td>
+<td>密钥从环境变量读</td>
+</tr>
+<tr>
+<td></td>
+<td><code>chat.completions.create()</code></td>
+<td>对话补全</td>
+<td>传 <code>model</code> + <code>messages</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>messages=[{"role":"user",...}]</code></td>
+<td>组织对话</td>
+<td>system 可设人设</td>
+</tr>
+<tr>
+<td></td>
+<td><code>response_format={"type":"json_object"}</code></td>
+<td>强制返回 JSON</td>
+<td>结构化输出</td>
+</tr>
+<tr>
+<td><strong>tiktoken</strong></td>
+<td><code>encoding_for_model("gpt-4o")</code></td>
+<td>按模型取编码器</td>
+<td>算费用</td>
+</tr>
+<tr>
+<td></td>
+<td><code>enc.encode(text)</code></td>
+<td>文本 → token 列表</td>
+<td>数长度</td>
+</tr>
+<tr>
+<td><strong>transformers</strong></td>
+<td><code>pipeline("任务")</code></td>
+<td><strong>一行跑各种任务</strong></td>
+<td>情感/摘要/翻译/问答</td>
+</tr>
+<tr>
+<td></td>
+<td><code>AutoTokenizer / AutoModel</code></td>
+<td>精细控制</td>
+<td>微调时用</td>
+</tr>
+<tr>
+<td><strong>sentence-transformers</strong></td>
+<td><code>SentenceTransformer(模型)</code></td>
+<td>句向量</td>
+<td><code>all-MiniLM-L6-v2</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>model.encode([句子…])</code></td>
+<td>批量转向量</td>
+<td>做检索</td>
+</tr>
+<tr>
+<td></td>
+<td><code>cos_sim(v1, v2)</code></td>
+<td>算相似度</td>
+<td>接近 1 = 很像</td>
+</tr>
+</table></div>
+<blockquote>⚠️ <strong>API Key 三不原则</strong>：不写死在代码里、不提交到 GitHub、不外发。用 <code>.env</code> + <code>python-dotenv</code> 读。</blockquote>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<ul><li><strong>三条路线</strong>：调 API（10 分钟）→ 训小模型（1 天）→ 训深度模型（几周）。<strong>从第一条开始。</strong></li><li>中文处理：<code>jieba</code> 分词、<code>pypinyin</code> 拼音、<code>snownlp</code> 情感</li><li><code>scikit-learn</code> 的固定套路：<strong>切分 → fit → predict → 评估</strong>（绝不能拿训练集考自己）</li><li>调大模型：<strong>API Key 必须放 .env</strong>，用 <code>tiktoken</code> 估费用</li><li>语义相似度是 RAG 的基础</li></ul>
+<h2 id="留个小作业-30-分钟能做完">🎯 留个小作业（30 分钟能做完）</h2>
+<p>写一个"<strong>评论情感分析器</strong>"：</p>
+<ol><li>准备 10 条中文评论（好评差评混着）</li><li>用 <code>snownlp</code> 给每条打分</li><li>打印出"最正面"和"最负面"的各一条</li></ol>
+<p>进阶：把 <code>jieba</code> 分词 + <code>Counter</code> 结合起来，找出这些评论里出现最多的 5 个词。</p>
+<hr>
+<p><strong>下一篇（完结篇）</strong>：《办公自动化 + 工程化：把重复工作交给代码，让代码看起来像老手》</p>
+<p>👉 如果这篇帮你打破了"做 AI 必须会训练模型"的心理门槛，<strong>点个「赞」</strong>。</p>
+<p>👉 <strong>关注我</strong>，下一篇是收尾：<strong>一套完整的自动化工作流 + 让代码专业的工具箱 + 120 个库的全景地图</strong>。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

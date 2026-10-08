@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01_学完Python语法就卡住？你缺的是库 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#一-先想明白一件事-语法是工具-库是家具">一、先想明白一件事：语法是工具，库是家具</a>
+<a class="toc-h2" href="#二-库分两种-先分清楚">二、库分两种，先分清楚</a>
+<a class="toc-h2" href="#三-装库-就一条命令">三、装库：就一条命令</a>
+<a class="toc-h2" href="#四-虚拟环境-新手最容易忽略-也最该学的一步">四、虚拟环境：新手最容易忽略、也最该学的一步</a>
+<a class="toc-h3" href="#坑王榜-1-装完了还说找不到">🐛 坑王榜 #1：装完了还说找不到</a>
+<a class="toc-h2" href="#五-报错怎么看-这一步学会-能省一半时间">五、报错怎么看：这一步学会，能省一半时间</a>
+<a class="toc-h2" href="#六-三个-马上能看到效果-的库-先找点成就感">六、三个"马上能看到效果"的库，先找点成就感</a>
+<a class="toc-h3" href="#1-用-openpyxl-生成一张-Excel">1️⃣ 用 openpyxl 生成一张 Excel</a>
+<a class="toc-h3" href="#2-用-Pillow-给图片加字">2️⃣ 用 Pillow 给图片加字</a>
+<a class="toc-h3" href="#3-用-qrcode-生成二维码">3️⃣ 用 qrcode 生成二维码</a>
+<a class="toc-h2" href="#七-数据处理三件套-预告">七、数据处理三件套（预告）</a>
+<a class="toc-h2" href="#附-本文出现过的库-常用工具速查">🧰 附：本文出现过的库 · 常用工具速查</a>
+<a class="toc-h3" href="#pip-装库">📦 pip（装库）</a>
+<a class="toc-h3" href="#openpyxl-写-Excel">📊 openpyxl（写 Excel）</a>
+<a class="toc-h3" href="#Pillow-改图片">🖼 Pillow（改图片）</a>
+<a class="toc-h3" href="#qrcode-生成二维码">🔳 qrcode（生成二维码）</a>
+<a class="toc-h2" href="#这篇你学到了">📌 这篇你学到了</a>
+<a class="toc-h2" href="#留个小作业">🎯 留个小作业</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="学完-Python-语法就卡住了-你缺的不是知识-是-库">学完 Python 语法就卡住了？你缺的不是知识，是"库"</h1>
+<div style="margin:6px 0 22px"><img src="covers/01_big_900x383.jpg" alt="封面" style="width:100%;border-radius:12px;display:block"></div>
+<blockquote>🎬 <strong>场景</strong>：你把变量、循环、函数、类都学了一遍，跟着教程写了几个小练习……<br>然后打开编辑器，发现自己<strong>什么都做不出来</strong>。<br>这不是你的问题，是因为没人告诉你：<strong>Python 真正的威力，在"库"里。</strong></blockquote>
+<hr>
+<h2 id="一-先想明白一件事-语法是工具-库是家具">一、先想明白一件事：语法是工具，库是家具</h2>
+<p>很多人学 Python 的路径是这样的：</p>
+<p><strong>变量 → 循环 → 函数 → 类 → 然后卡住。</strong></p>
+<p>因为在大多数教程里，Python 被讲成了一个"数学练习本"：算个阶乘、打印个三角形、写个猜数字游戏。学完你还是不知道它能干嘛。</p>
+<p>打个比方：</p>
+<blockquote><strong>语法</strong> = 你会用锤子、锯子、螺丝刀。<br><strong>库</strong> = 一整个成品家具仓库。<br>你想做个书架，不需要从砍树开始 —— 挑一块现成的板子拼上去就行。</blockquote>
+<p>举三个真实的例子，你感受一下"有库"和"没库"的差距：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>你想做的事</th>
+<th>没库的做法</th>
+<th>有库的做法</th>
+</tr>
+<tr>
+<td>抓一个网页的数据</td>
+<td>自己写 HTTP 协议、处理编码、解析标签</td>
+<td><code>requests</code> + <code>BeautifulSoup</code> ，<strong>十行代码</strong></td>
+</tr>
+<tr>
+<td>分析一份 5000 行的 Excel</td>
+<td>手算 / 写一堆循环</td>
+<td><code>pandas</code> ，<strong>一行读出整张表</strong></td>
+</tr>
+<tr>
+<td>给 100 张图片加水印</td>
+<td>用 PS 一张张点</td>
+<td><code>Pillow</code> ，<strong>一个循环搞定</strong></td>
+</tr>
+</table></div>
+<p><strong>"会不会用库"，基本等于"能不能真的用 Python 干活"。</strong></p>
+<hr>
+<h2 id="二-库分两种-先分清楚">二、库分两种，先分清楚</h2>
+<div class="tablewrap"><table>
+<tr>
+<th></th>
+<th>标准库</th>
+<th>第三方库</th>
+</tr>
+<tr>
+<td>是什么</td>
+<td>Python 自带的</td>
+<td>别人写好、要自己装的</td>
+</tr>
+<tr>
+<td>要装吗</td>
+<td><strong>不用</strong></td>
+<td>要 <code>pip install</code></td>
+</tr>
+<tr>
+<td>例子</td>
+<td><code>json</code>、<code>sqlite3</code>、<code>collections</code>、<code>pathlib</code>、<code>itertools</code></td>
+<td><code>requests</code>、<code>pandas</code>、<code>numpy</code>、<code>openpyxl</code></td>
+</tr>
+<tr>
+<td>优先级</td>
+<td><strong>能用的先用它</strong></td>
+<td>标准库不够时再装</td>
+</tr>
+</table></div>
+<p><strong>怎么判断？</strong> 写一行 <code>import xxx</code> 试试：报 <code>ModuleNotFoundError</code> 就是第三方库，需要装。</p>
+<blockquote>💡 很多人不知道：<strong>Python 自带的标准库已经能解决大量问题</strong>（读写文件、JSON、正则、数据库、日期、压缩包、命令行参数……），而且零依赖、不会被版本坑。</blockquote>
+<hr>
+<h2 id="三-装库-就一条命令">三、装库：就一条命令</h2>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install 库名</code></pre></div>
+<p>常用的几条：</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install requests              # 装
+pip install requests==2.32.3      # 装指定版本
+pip install -U requests           # 升级
+pip uninstall requests            # 卸载
+pip list                          # 看装了什么</code></pre></div>
+<p><strong>国内下载慢？加个镜像源，快 10 倍：</strong></p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple</code></pre></div>
+<hr>
+<h2 id="四-虚拟环境-新手最容易忽略-也最该学的一步">四、虚拟环境：新手最容易忽略、也最该学的一步</h2>
+<p><strong>先说人话</strong>：虚拟环境就是给每个项目一个<strong>独立的调料柜</strong>。</p>
+<p>为什么需要？因为 A 项目要 <code>numpy 1.x</code>、B 项目要 <code>numpy 2.x</code> —— 装在同一个锅里就会打架，报各种莫名其妙的错。</p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">python -m venv .venv          # 在项目文件夹里执行一次
+.venv\Scripts\activate        # Windows 激活
+source .venv/bin/activate     # macOS / Linux
+deactivate                    # 退出</code></pre></div>
+<p>激活成功后，命令行前面会出现 <code>(.venv)</code> 字样 —— 说明你现在在自己的调料柜里。</p>
+<blockquote>✅ <strong>记住这一条就够了</strong>：<strong>每开一个新项目，先建虚拟环境，再 pip install。</strong></blockquote>
+<h3 id="坑王榜-1-装完了还说找不到">🐛 坑王榜 #1：装完了还说找不到</h3>
+<p><strong>症状</strong>：<code>pip install requests</code> 明明成功了，运行还是报 <code>ModuleNotFoundError</code>。</p>
+<p><strong>原因</strong>：你装到了 A 环境（比如全局 Python），但运行代码用的是 B 环境（比如编辑器选的另一个解释器）。</p>
+<p><strong>怎么修</strong>：</p>
+<ol><li>看一眼终端前面有没有 <code>(.venv)</code></li><li>VS Code 里按 <code>Ctrl+Shift+P</code> → 输入 <code>Python: Select Interpreter</code> → 选中你的 <code>.venv</code></li></ol>
+<hr>
+<h2 id="五-报错怎么看-这一步学会-能省一半时间">五、报错怎么看：这一步学会，能省一半时间</h2>
+<p>Python 的报错信息<strong>从下往上看</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">Traceback (most recent call last):
+  File "test.py", line 3, in &lt;module&gt;
+    print(1 / 0)
+ZeroDivisionError: division by zero</code></pre></div>
+<ul><li><strong>最后一行</strong> = 错在哪类（<code>ZeroDivisionError</code> = 除以 0）</li><li><strong>倒数第二行</strong> = 错在哪一行（<code>line 3</code>）</li><li>中间的 <code>File "xxx", line N</code> = 出错的文件和位置</li></ul>
+<p><strong>新手最常遇到的 6 个报错，建议截图存下来：</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>报错</th>
+<th>人话翻译</th>
+<th>怎么改</th>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: No module named 'requests'</code></td>
+<td>没装这个库</td>
+<td><code>pip install requests</code>（注意在正确的环境里）</td>
+</tr>
+<tr>
+<td><code>NameError: name 'df' is not defined</code></td>
+<td>变量名写错 / 还没定义</td>
+<td>检查拼写和顺序</td>
+</tr>
+<tr>
+<td><code>TypeError: can only concatenate str (not "int") to str</code></td>
+<td>字符串和数字相加了</td>
+<td>用 <code>str(数字)</code> 转一下</td>
+</tr>
+<tr>
+<td><code>IndentationError</code></td>
+<td>缩进错了</td>
+<td>统一用 4 个空格，别混 Tab</td>
+</tr>
+<tr>
+<td><code>KeyError: 'xxx'</code></td>
+<td>字典里没这个键</td>
+<td>用 <code>d.get("xxx", 默认值)</code></td>
+</tr>
+<tr>
+<td><code>AttributeError: 'NoneType' object has no attribute ...</code></td>
+<td>上一步返回了 None，你还接着用它</td>
+<td>往上一行找，看哪个函数没返回东西</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="六-三个-马上能看到效果-的库-先找点成就感">六、三个"马上能看到效果"的库，先找点成就感</h2>
+<p>学东西最怕没反馈。先玩这三个，你会立刻觉得"值了"：</p>
+<h3 id="1-用-openpyxl-生成一张-Excel">1️⃣ 用 openpyxl 生成一张 Excel</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install openpyxl</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl import Workbook, load_workbook
+
+wb = Workbook()
+ws = wb.active
+ws.title = "成绩"
+
+ws.append(["姓名", "分数", "评价"])
+for name, score in [("张三", 686), ("李四", 655)]:
+    ws.append([name, score, "优秀" if score &gt;= 660 else "良好"])
+
+wb.save("成绩表.xlsx")
+
+# 读回来验证
+wb2 = load_workbook("成绩表.xlsx")
+for row in wb2["成绩"].iter_rows(values_only=True):
+    print(row)</code></pre></div>
+<p><strong>你会看到</strong>（实测）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">('姓名', '分数', '评价')
+('张三', 686, '优秀')
+('李四', 655, '良好')</code></pre></div>
+<p><strong>这里面发生了什么</strong>：<code>ws.append([...])</code> 就是"往表格里追加一行"；<code>wb.save()</code> 落盘。</p>
+<p><strong>建议立刻改一改</strong>：加一行自己名字，把"优秀"的门槛改成 680。</p>
+<h3 id="2-用-Pillow-给图片加字">2️⃣ 用 Pillow 给图片加字</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install pillow</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from PIL import Image, ImageDraw, ImageFont
+
+img = Image.new("RGB", (300, 120), "#4f81bd")       # 新建一张蓝色图
+d = ImageDraw.Draw(img)
+font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 28)   # ★ 中文必须指定字体
+d.text((30, 40), "你好 Python", font=font, fill="white")
+img.save("我的图.png")
+print("生成成功，尺寸:", Image.open("我的图.png").size)</code></pre></div>
+<p><strong>你会看到</strong>：<code>生成成功，尺寸: (300, 120)</code></p>
+<h3 id="3-用-qrcode-生成二维码">3️⃣ 用 qrcode 生成二维码</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install "qrcode[pil]"</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import qrcode
+qrcode.make("https://github.com/chenhg5/cc-connect").save("我的二维码.png")
+print("二维码已生成")</code></pre></div>
+<blockquote>🎯 <strong>这三个库的共同点</strong>：装了 → 复制 → 跑 → 看得见结果。<strong>这就是正反馈。</strong></blockquote>
+<hr>
+<h2 id="七-数据处理三件套-预告">七、数据处理三件套（预告）</h2>
+<p>有了成就感，就该学"真正能解决问题"的东西了。下一节我们讲<strong>让数字自己算</strong>：</p>
+<ul><li><code>numpy</code> —— 批量数值计算，<strong>不写循环</strong></li><li><code>pandas</code> —— Python 里的 Excel，筛选/分组/统计</li><li><code>matplotlib</code> —— 把数字画成图</li></ul>
+<p>先给你看一个 <code>pandas</code> 的片段，感受一下：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+
+df = pd.DataFrame({"姓名": ["张三", "李四", "王五"], "分数": [686, 655, 700]})
+print(df[df["分数"] &gt;= 680])      # 按条件筛选
+print("平均分:", round(df["分数"].mean(), 1))</code></pre></div>
+<p><strong>你会看到</strong>（实测）：</p>
+<div class="codeblock"><div class="codebar"><span>text</span><button class="copy" type="button">复制</button></div><pre><code class="lang-text">   姓名   分数
+0  张三  686
+2  王五  700
+平均分: 680.3</code></pre></div>
+<p><strong>就两行代码</strong>，完成了"按条件筛选 + 求平均"。如果手写循环，至少要 8 行。</p>
+<hr>
+<h2 id="附-本文出现过的库-常用工具速查">🧰 附：本文出现过的库 · 常用工具速查</h2>
+<blockquote>小白最缺的不是"知道有这个库"，而是"<strong>打开编辑器不知道敲什么</strong>"。<br>下面这几张表，直接照着抄就能跑。</blockquote>
+<h3 id="pip-装库">📦 pip（装库）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>pip install 库名</code></td>
+<td>装库</td>
+<td><code>pip install requests</code></td>
+</tr>
+<tr>
+<td><code>pip install 库名==版本</code></td>
+<td>装指定版本</td>
+<td><code>pip install pandas==2.2.0</code></td>
+</tr>
+<tr>
+<td><code>pip install -U 库名</code></td>
+<td>升级</td>
+<td><code>pip install -U pip</code></td>
+</tr>
+<tr>
+<td><code>pip list</code></td>
+<td>看装了哪些库</td>
+<td><code>pip list</code>（想只看某个库，配合 <code>findstr 名字</code>）</td>
+</tr>
+<tr>
+<td><code>pip uninstall 库名</code></td>
+<td>卸载</td>
+<td><code>pip uninstall requests</code></td>
+</tr>
+<tr>
+<td><code>pip install -r requirements.txt</code></td>
+<td>按清单装齐</td>
+<td>换电脑时最有用</td>
+</tr>
+<tr>
+<td>镜像加速</td>
+<td>国内下载慢时加</td>
+<td><code>-i https://pypi.tuna.tsinghua.edu.cn/simple</code></td>
+</tr>
+</table></div>
+<h3 id="openpyxl-写-Excel">📊 openpyxl（写 Excel）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>Workbook()</code></td>
+<td>新建工作簿</td>
+<td><code>wb = Workbook()</code></td>
+</tr>
+<tr>
+<td><code>wb.active</code></td>
+<td>拿到当前表</td>
+<td><code>ws = wb.active</code></td>
+</tr>
+<tr>
+<td><code>ws.title = "名字"</code></td>
+<td>给表改名</td>
+<td><code>ws.title = "成绩"</code></td>
+</tr>
+<tr>
+<td><code>ws.append([...])</code></td>
+<td><strong>一行一行写</strong>（最常用）</td>
+<td><code>ws.append(["张三", 686])</code></td>
+</tr>
+<tr>
+<td><code>ws["A1"] = 值</code></td>
+<td>按单元格写</td>
+<td><code>ws["D1"] = "=SUM(B2:B3)"</code></td>
+</tr>
+<tr>
+<td><code>Font(bold=True)</code> / <code>PatternFill()</code></td>
+<td>加粗 / 底色</td>
+<td>表头美化</td>
+</tr>
+<tr>
+<td><code>ws.column_dimensions["A"].width</code></td>
+<td>调列宽</td>
+<td>不然中文挤成一团</td>
+</tr>
+<tr>
+<td><code>ws.freeze_panes = "A2"</code></td>
+<td>冻结首行</td>
+<td>滚动时表头不动</td>
+</tr>
+<tr>
+<td><code>load_workbook()</code></td>
+<td>读回来</td>
+<td><code>ws.iter_rows(values_only=True)</code></td>
+</tr>
+<tr>
+<td><code>wb.save("x.xlsx")</code></td>
+<td>保存</td>
+<td>别忘了这一步</td>
+</tr>
+</table></div>
+<h3 id="Pillow-改图片">🖼 Pillow（改图片）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>Image.open("a.jpg")</code></td>
+<td>打开图片</td>
+<td>支持 jpg/png/webp…</td>
+</tr>
+<tr>
+<td><code>Image.new("RGB", (w,h), 颜色)</code></td>
+<td>新建空白图</td>
+<td>做底图</td>
+</tr>
+<tr>
+<td><code>img.resize((400,300))</code></td>
+<td>改尺寸</td>
+<td><code>img.thumbnail((128,128))</code> 是按比例缩</td>
+</tr>
+<tr>
+<td><code>img.rotate(90, expand=True)</code></td>
+<td>旋转</td>
+<td>expand 防止裁掉</td>
+</tr>
+<tr>
+<td><code>img.convert("L")</code></td>
+<td>转灰度</td>
+<td>还有 "RGB"</td>
+</tr>
+<tr>
+<td><code>ImageDraw.Draw(img).text(...)</code></td>
+<td>加文字</td>
+<td><strong>中文要指定 <code>ImageFont.truetype</code></strong></td>
+</tr>
+<tr>
+<td><code>img.filter(ImageFilter.GaussianBlur(2))</code></td>
+<td>模糊</td>
+<td>马赛克/模糊背景</td>
+</tr>
+<tr>
+<td><code>img.save("b.png")</code></td>
+<td>保存（可换格式）</td>
+<td>jpg → png 直接改后缀</td>
+</tr>
+</table></div>
+<h3 id="qrcode-生成二维码">🔳 qrcode（生成二维码）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>典型写法</th>
+</tr>
+<tr>
+<td><code>qrcode.make(内容)</code></td>
+<td>一行生成</td>
+<td><code>qrcode.make("https://…")</code></td>
+</tr>
+<tr>
+<td><code>.save("x.png")</code></td>
+<td>存成图片</td>
+<td>扫码即可</td>
+</tr>
+<tr>
+<td><code>QRCode(version, box_size, border)</code></td>
+<td>精细控制</td>
+<td>调大小、边距</td>
+</tr>
+<tr>
+<td><code>add_data() + make()</code></td>
+<td>分步生成</td>
+<td>需要改颜色时用</td>
+</tr>
+<tr>
+<td><code>pyzbar.decode(图片)</code></td>
+<td><strong>反向识别</strong>二维码</td>
+<td>读别人图里的码</td>
+</tr>
+</table></div>
+<h2 id="这篇你学到了">📌 这篇你学到了</h2>
+<ul><li>学 Python 卡住的原因：<strong>只学了语法，没学库</strong></li><li>标准库 vs 第三方库，以及怎么判断</li><li><code>pip</code> 装库 + <strong>虚拟环境</strong>（新手必学）</li><li>报错从下往上看 + 6 个最常见报错</li><li><strong>三个立刻能出成果的库</strong>（Excel / 图片 / 二维码）</li></ul>
+<h2 id="留个小作业">🎯 留个小作业</h2>
+<p>用 <code>openpyxl</code> 做一张"我这个月花了多少钱"的表：日期、项目、金额，最后加一行合计。</p>
+<p><strong>不超过 15 行代码</strong>，做完你就理解了"自动化"是什么意思。</p>
+<hr>
+<p><strong>下一篇</strong>：《Python 数据处理三件套：numpy / pandas / matplotlib，让数字自己算》</p>
+<p>👉 如果这篇帮你解开了"学完语法不知道干嘛"的困惑，<strong>点个「赞」和「在看」</strong>，也欢迎转发给同样卡住的朋友。</p>
+<p>👉 <strong>关注我</strong>，这个系列会把 120+ 个常用库一个个讲清楚，每篇都能立刻上手。</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

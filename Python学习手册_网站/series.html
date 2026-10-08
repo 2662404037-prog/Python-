@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公众号系列 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#七篇目录">📚 七篇目录</a>
+<a class="toc-h2" href="#这一套的取舍">🎯 这一套的取舍</a>
+<a class="toc-h2" href="#发完这-7-篇之后-还能发什么">🔁 发完这 7 篇之后，还能发什么</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="公众号连载-导读">公众号连载 · 导读</h1>
+<blockquote><strong>《小白也能上手 Python 库》系列 · 共 7 篇</strong><br>从"学完语法不知道干什么"到"真能用代码解决问题"，每篇都能立刻上手，每篇都带<strong>常用工具速查表</strong>。</blockquote>
+<p><strong>怎么发</strong>：打开对应的 <code>.html</code> → <code>Ctrl+A</code> 全选 → <code>Ctrl+C</code> → 公众号后台「图文消息」里 <code>Ctrl+V</code>（样式会自动带过去）。</p>
+<hr>
+<h2 id="七篇目录">📚 七篇目录</h2>
+<div class="tablewrap"><table>
+<tr>
+<th>#</th>
+<th>标题</th>
+<th>讲什么</th>
+<th>读完你会</th>
+<th>长度</th>
+</tr>
+<tr>
+<td><strong>01</strong></td>
+<td><a href="s01.html">学完 Python 语法就卡住了？你缺的不是知识，是"库"</a></td>
+<td>心法 + 环境</td>
+<td>装库、建虚拟环境、看懂报错、跑通 3 个立刻见效的小库</td>
+<td>5 分钟</td>
+</tr>
+<tr>
+<td><strong>02</strong></td>
+<td><a href="s02.html">Python 数据处理三件套：让数字自己算</a></td>
+<td>numpy / pandas / matplotlib</td>
+<td>把 5000 行 Excel 变成 10 行代码 + 一张图</td>
+<td>8 分钟</td>
+</tr>
+<tr>
+<td><strong>03</strong></td>
+<td><a href="s03.html">Python 自带的 7 件算法神器，能让你的代码快 1 万倍</a></td>
+<td>标准库神器（<strong>不用装</strong>）</td>
+<td>查重从 40 秒变 0.01 秒</td>
+<td>8 分钟</td>
+</tr>
+<tr>
+<td><strong>04</strong></td>
+<td><a href="s04.html">爬虫入门：我是怎么把 40 本书的数据"搬"回家的</a></td>
+<td>requests + BeautifulSoup + sqlite3</td>
+<td>写一个 25 行的完整爬虫，并知道合规红线</td>
+<td>10 分钟</td>
+</tr>
+<tr>
+<td><strong>05</strong></td>
+<td><a href="s05.html">网络安全第一课：先学会保护自己</a></td>
+<td>哈希 / 加密 / bcrypt / 防守</td>
+<td>不再用 MD5 存密码，知道安全该往哪学</td>
+<td>10 分钟</td>
+</tr>
+<tr>
+<td><strong>06</strong></td>
+<td><a href="s06.html">AI 入门：不训练模型，我也能做出 AI 应用</a></td>
+<td>jieba / sklearn / 大模型 API</td>
+<td>10 行代码跑出成果</td>
+<td>10 分钟</td>
+</tr>
+<tr>
+<td><strong>07</strong></td>
+<td><a href="s07.html">完结篇：办公自动化 + 工程化</a></td>
+<td>自动化 + 工程化 + <strong>120 库全景地图</strong></td>
+<td>把重复工作交出去，代码看起来像老手</td>
+<td>15 分钟</td>
+</tr>
+</table></div>
+<hr>
+<h2 id="这一套的取舍">🎯 这一套的取舍</h2>
+<p><strong>为什么是这 7 篇？</strong></p>
+<p>因为新手真正会卡住的，只有这几个坎：</p>
+<ol><li><strong>不知道有库这回事</strong>（01）</li><li><strong>不知道从哪个库开始</strong>（02 / 03）</li><li><strong>不知道怎么把数据弄下来</strong>（04）</li><li><strong>不知道怎么写才不出安全事故</strong>（05）</li><li><strong>以为 AI 门槛很高</strong>（06）</li><li><strong>不知道怎么写才像"会写代码的人"</strong>（07）</li></ol>
+<p><strong>每篇结构统一</strong>：</p>
+<blockquote>🎬 场景代入 → 🧠 一句话人话 → 🏠 生活比喻 → 🔧 <strong>常用工具速查表</strong> → 🚀 上手代码 → 🐛 坑王榜 → 📌 小结 → 🎯 小作业</blockquote>
+<hr>
+<h2 id="发完这-7-篇之后-还能发什么">🔁 发完这 7 篇之后，还能发什么</h2>
+<p>一些可以做成后续单篇的选题：</p>
+<div class="tablewrap"><table>
+<tr>
+<th>选题</th>
+<th>素材来源</th>
+</tr>
+<tr>
+<td>每个方向的<strong>完整实战项目</strong></td>
+<td>爬虫实战（采集→入库→分析→出报告）、自动生成周报</td>
+</tr>
+<tr>
+<td><strong>踩坑合集</strong>：我犯过的 20 个错</td>
+<td>知识点文档的"12 个坑" + 新手 20 问</td>
+</tr>
+<tr>
+<td><strong>一个库一篇</strong>的深挖（requests 全解析、pandas 十大操作）</td>
+<td>速查手册</td>
+</tr>
+<tr>
+<td><strong>30 天上手计划</strong>的打卡记录</td>
+<td>完结篇的计划表</td>
+</tr>
+<tr>
+<td><strong>安全合规</strong>科普（为什么爬虫会坐牢）</td>
+<td>04 篇的合规红线 + 05 篇的法律边界</td>
+</tr>
+</table></div>
+<hr>
+<p>*本系列由 AI 助手协助整理，所有代码示例均以"合法、安全、可运行"为前提。*</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

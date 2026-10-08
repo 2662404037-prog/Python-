@@ -1,0 +1,3118 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>库速查 · Python 学习手册</title>
+<meta name="description" content="Python 学习手册：常用第三方库入门教程、速查、爬虫实战、知识点整理">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="目录">☰</button>
+  <a class="brand" href="index.html">📚 Python 学习手册</a>
+  <nav class="topnav"><a href="tools.html">工具上手课</a><a href="tutorial.html">入门教程</a><a href="reference.html">库速查</a><a href="spider.html">爬虫实战</a><a href="basics.html">知识点</a><a href="wechat.html">长文版</a><a href="series.html">公众号系列</a></nav>
+  <div class="tools">
+    <input id="search" type="search" placeholder="搜索目录…">
+    <button id="themeBtn" type="button" title="切换深色">🌙</button>
+  </div>
+</header>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">本页目录</div>
+    <nav class="toc" id="toc"><a class="toc-h2" href="#总览思维导图">🗺️ 总览思维导图</a>
+<a class="toc-h3" href="#三条主线流程图">三条主线流程图</a>
+<a class="toc-h2" href="#全库用途总表-先看这一页">📌 全库用途总表（先看这一页）</a>
+<a class="toc-h3" href="#数据处理与科学计算">数据处理与科学计算</a>
+<a class="toc-h3" href="#算法与数据结构">算法与数据结构</a>
+<a class="toc-h3" href="#爬虫与网络采集">爬虫与网络采集</a>
+<a class="toc-h3" href="#网络与安全攻防-仅限自有设备-书面授权-靶场">网络与安全攻防 ⚠️（仅限自有设备 / 书面授权 / 靶场）</a>
+<a class="toc-h3" href="#机器学习与-AI">机器学习与 AI</a>
+<a class="toc-h3" href="#Web-后端与接口">Web 后端与接口</a>
+<a class="toc-h3" href="#办公与自动化">办公与自动化</a>
+<a class="toc-h3" href="#图像-音视频-OCR">图像 / 音视频 / OCR</a>
+<a class="toc-h3" href="#数据库与缓存">数据库与缓存</a>
+<a class="toc-h3" href="#测试-调试-工程化">测试 / 调试 / 工程化</a>
+<a class="toc-h3" href="#怎么用好这张表">怎么用好这张表</a>
+<a class="toc-h2" href="#一-安装与工程基础">一、安装与工程基础</a>
+<a class="toc-h3" href="#1-1-pip-包管理器">1.1 pip —— 包管理器</a>
+<a class="toc-h3" href="#1-2-虚拟环境-每个项目一个-非常重要">1.2 虚拟环境 —— 每个项目一个，非常重要</a>
+<a class="toc-h3" href="#1-3-国内镜像源-装包提速">1.3 国内镜像源（装包提速）</a>
+<a class="toc-h3" href="#1-4-requirements-txt-记录依赖">1.4 requirements.txt —— 记录依赖</a>
+<a class="toc-h3" href="#1-5-一分钟判断-该用哪个库">1.5 一分钟判断"该用哪个库"</a>
+<a class="toc-h2" href="#二-数据处理与科学计算">二、数据处理与科学计算</a>
+<a class="toc-h3" href="#numpy-数值计算的地基">numpy —— 数值计算的地基</a>
+<a class="toc-h3" href="#pandas-表格数据分析">pandas —— 表格数据分析</a>
+<a class="toc-h3" href="#matplotlib-画图">matplotlib —— 画图</a>
+<a class="toc-h3" href="#其他数据类库-了解即可">其他数据类库（了解即可）</a>
+<a class="toc-h2" href="#三-算法与数据结构">三、算法与数据结构</a>
+<a class="toc-h3" href="#3-1-标准库里的-神器-不用装-直接-import">3.1 标准库里的"神器"（不用装，直接 import）</a>
+<a class="toc-h3" href="#3-2-第三方算法库">3.2 第三方算法库</a>
+<a class="toc-h2" href="#四-爬虫与网络采集">四、爬虫与网络采集</a>
+<a class="toc-h3" href="#requests-发-HTTP-请求-最常用">requests —— 发 HTTP 请求（最常用）</a>
+<a class="toc-h3" href="#httpx-支持-async-的现代-HTTP-客户端">httpx —— 支持 async 的现代 HTTP 客户端</a>
+<a class="toc-h3" href="#beautifulsoup4-lxml-解析-HTML">beautifulsoup4 + lxml —— 解析 HTML</a>
+<a class="toc-h3" href="#parsel-用-XPath-CSS-提取-Scrapy-同款">parsel —— 用 XPath/CSS 提取（Scrapy 同款）</a>
+<a class="toc-h3" href="#playwright-浏览器自动化-现代首选">playwright —— 浏览器自动化（现代首选）</a>
+<a class="toc-h3" href="#selenium-老牌浏览器自动化">selenium —— 老牌浏览器自动化</a>
+<a class="toc-h3" href="#scrapy-大型爬虫框架">scrapy —— 大型爬虫框架</a>
+<a class="toc-h3" href="#其他采集类小库">其他采集类小库</a>
+<a class="toc-h3" href="#爬虫工程-Checklist">爬虫工程 Checklist</a>
+<a class="toc-h2" href="#五-网络与安全攻防">五、网络与安全攻防</a>
+<a class="toc-h3" href="#5-1-网络基础-socket-标准库">5.1 网络基础：socket（标准库）</a>
+<a class="toc-h3" href="#5-2-网络扫描与探测">5.2 网络扫描与探测</a>
+<a class="toc-h3" href="#5-3-加密与哈希-防御与开发两头都用">5.3 加密与哈希（防御与开发两头都用）</a>
+<a class="toc-h3" href="#5-4-Web-安全测试-授权环境下">5.4 Web 安全测试（授权环境下）</a>
+<a class="toc-h3" href="#5-5-二进制-CTF-逆向-仅限比赛与自有样本">5.5 二进制 / CTF / 逆向（仅限比赛与自有样本）</a>
+<a class="toc-h3" href="#5-6-防守方视角的库-更推荐往这个方向深耕">5.6 防守方视角的库（更推荐往这个方向深耕）</a>
+<a class="toc-h3" href="#5-7-安全方向的正确学习路线">5.7 安全方向的正确学习路线</a>
+<a class="toc-h2" href="#六-机器学习与-AI">六、机器学习与 AI</a>
+<a class="toc-h3" href="#scikit-learn-传统机器学习首选">scikit-learn —— 传统机器学习首选</a>
+<a class="toc-h3" href="#梯度提升树-XGBoost-LightGBM-CatBoost">梯度提升树：XGBoost / LightGBM / CatBoost</a>
+<a class="toc-h3" href="#PyTorch-深度学习主流框架">PyTorch —— 深度学习主流框架</a>
+<a class="toc-h3" href="#Transformer-大模型相关">Transformer / 大模型相关</a>
+<a class="toc-h3" href="#中文-NLP-与可视化">中文 NLP 与可视化</a>
+<a class="toc-h2" href="#七-Web-后端与接口">七、Web 后端与接口</a>
+<a class="toc-h3" href="#Flask-最轻量的-Web-框架">Flask —— 最轻量的 Web 框架</a>
+<a class="toc-h3" href="#FastAPI-现代高性能接口框架-强推">FastAPI —— 现代高性能接口框架（强推）</a>
+<a class="toc-h3" href="#其他-Web-相关">其他 Web 相关</a>
+<a class="toc-h2" href="#八-办公与自动化">八、办公与自动化</a>
+<a class="toc-h3" href="#openpyxl-读写-Excel-xlsx">openpyxl —— 读写 Excel(.xlsx)</a>
+<a class="toc-h3" href="#python-docx-python-pptx-生成-Word-PPT">python-docx / python-pptx —— 生成 Word / PPT</a>
+<a class="toc-h3" href="#PDF-处理">PDF 处理</a>
+<a class="toc-h3" href="#pyautogui-桌面自动化-控制鼠标键盘">pyautogui —— 桌面自动化（控制鼠标键盘）</a>
+<a class="toc-h3" href="#定时与调度">定时与调度</a>
+<a class="toc-h2" href="#九-图像-音视频-OCR">九、图像 / 音视频 / OCR</a>
+<a class="toc-h3" href="#Pillow-图像处理基础库">Pillow —— 图像处理基础库</a>
+<a class="toc-h3" href="#OpenCV-计算机视觉">OpenCV —— 计算机视觉</a>
+<a class="toc-h3" href="#OCR-文字识别">OCR：文字识别</a>
+<a class="toc-h3" href="#音视频">音视频</a>
+<a class="toc-h3" href="#二维码-条码">二维码 / 条码</a>
+<a class="toc-h2" href="#十-数据库与缓存">十、数据库与缓存</a>
+<a class="toc-h3" href="#sqlite3-标准库自带的小型数据库">sqlite3 —— 标准库自带的小型数据库</a>
+<a class="toc-h3" href="#其他数据库">其他数据库</a>
+<a class="toc-h2" href="#十一-测试-调试与工程化">十一、测试、调试与工程化</a>
+<a class="toc-h3" href="#pytest-写测试的标准姿势">pytest —— 写测试的标准姿势</a>
+<a class="toc-h3" href="#代码质量工具链">代码质量工具链</a>
+<a class="toc-h3" href="#日志-调试-进度">日志 / 调试 / 进度</a>
+<a class="toc-h3" href="#命令行工具">命令行工具</a>
+<a class="toc-h3" href="#配置与序列化">配置与序列化</a>
+<a class="toc-h2" href="#十二-快速选型表-学习路线">十二、快速选型表 + 学习路线</a>
+<a class="toc-h3" href="#12-1-按任务查库-一页速查">12.1 按任务查库（一页速查）</a>
+<a class="toc-h3" href="#12-2-学习路线-按兴趣选一条">12.2 学习路线（按兴趣选一条）</a>
+<a class="toc-h3" href="#12-3-常用安装命令合集-可直接复制">12.3 常用安装命令合集（可直接复制）</a>
+<a class="toc-h3" href="#12-4-三条选库心得">12.4 三条选库心得</a></nav>
+  </aside>
+  <main class="content" id="content">
+<h1 id="Python-常用第三方库速查手册-分类-示例">Python 常用第三方库速查手册（分类 + 示例）</h1>
+<blockquote>面向"<strong>想用 Python 做点真东西</strong>"的入门到进阶场景：算法、爬虫、网络与安全、数据、AI、Web、办公自动化、图像音视频、数据库、工程化。<br><strong>怎么读</strong>：先看「一、安装与工程基础」把环境搞对，再按需跳到感兴趣的分类。<br>每个库都给了：<strong>定位 → 安装 → 最小可运行示例 → 备注（坑在哪）</strong>。<br>版本提示：本文写于 2026 年，库的 API 会变，遇到报错先看官方文档的版本说明。</blockquote>
+<h2 id="总览思维导图">🗺️ 总览思维导图</h2>
+<blockquote>下面用 Mermaid 画了整体地图。在 <strong>VS Code</strong> 里装 <code>Markdown Preview Mermaid Support</code> 插件后就能直接看图形；<br>GitHub、Obsidian、Typora 也都原生支持。</blockquote>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">mindmap
+  root((Python 第三方库))
+    一 安装与工程
+      pip
+      venv 虚拟环境
+      镜像源
+      requirements
+    二 数据与科学计算
+      numpy
+      pandas
+      matplotlib
+      scipy
+      sympy
+      polars
+    三 算法与数据结构
+      标准库神器
+        collections
+        heapq
+        bisect
+        itertools
+        lru_cache
+      第三方
+        networkx
+        sortedcontainers
+        more-itertools
+        z3-solver
+    四 爬虫与采集
+      requests
+      beautifulsoup4
+      lxml
+      playwright
+      selenium
+      scrapy
+    五 网络与安全
+      socket 基础
+      scapy 流量
+      python-nmap 扫描
+      cryptography 加密
+      bcrypt 密码
+      mitmproxy 抓包
+      防守 yara bandit pip-audit
+    六 机器学习与 AI
+      scikit-learn
+      xgboost
+      pytorch
+      transformers
+      openai
+      jieba 中文
+    七 Web 后端
+      fastapi
+      flask
+      django
+      sqlalchemy
+    八 办公与自动化
+      openpyxl Excel
+      python-docx Word
+      pdfplumber PDF
+      pyautogui 桌面
+      schedule 定时
+    九 图像音视频
+      Pillow
+      OpenCV
+      pytesseract OCR
+      whisper 语音
+      moviepy 视频
+    十 数据库与缓存
+      sqlite3
+      pymysql
+      pymongo
+      redis
+    十一 工程化
+      pytest
+      ruff
+      mypy
+      loguru
+      rich
+      typer
+    十二 选型与路线
+      按任务查库
+      6 条学习路线
+      安装命令合集</code></pre></div>
+<h3 id="三条主线流程图">三条主线流程图</h3>
+<p><strong>① 爬虫工作流</strong></p>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart LR
+  A[确定目标站点] --&gt; B{有官方 API 吗}
+  B -- 有 --&gt; C[直接调 API]
+  B -- 没有 --&gt; D[看 robots.txt 与条款]
+  D --&gt; E{页面是 JS 渲染吗}
+  E -- 否 --&gt; F[requests 抓 HTML]
+  E -- 是 --&gt; G[playwright 开浏览器]
+  F --&gt; H[bs4 或 lxml 解析]
+  G --&gt; H
+  H --&gt; I[清洗成 dict 或 DataFrame]
+  I --&gt; J[存 CSV / SQLite / JSON]
+  J --&gt; K[限速 + 重试 + 日志]
+  K --&gt; L[分析出图或生成报告]</code></pre></div>
+<p><strong>② 机器学习流程</strong></p>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart LR
+  A[收集数据] --&gt; B[pandas 清洗]
+  B --&gt; C[特征工程]
+  C --&gt; D[train_test_split 切分]
+  D --&gt; E[选择模型]
+  E --&gt; F[fit 训练]
+  F --&gt; G[predict 预测]
+  G --&gt; H[评估 精度 召回 F1]
+  H --&gt; I{够好吗}
+  I -- 不够 --&gt; C
+  I -- 够了 --&gt; J[保存模型 joblib]
+  J --&gt; K[部署成 API fastapi]</code></pre></div>
+<p><strong>③ 网络安全学习路线（仅授权 / 靶场）</strong></p>
+<div class="codeblock"><div class="codebar"><span>mermaid</span><button class="copy" type="button">复制</button></div><pre><code class="lang-mermaid">flowchart TD
+  A[计算机网络 + Linux + HTTP] --&gt; B[编程 socket 与 requests]
+  B --&gt; C[手工测试 Burp ZAP]
+  C --&gt; D[靶场刷题 PortSwigger HTB]
+  D --&gt; E{选方向}
+  E --&gt; F[Web 安全]
+  E --&gt; G[渗透测试]
+  E --&gt; H[二进制逆向 pwntools z3]
+  E --&gt; I[流量分析 scapy pyshark]
+  E --&gt; J[应急响应与取证]
+  E --&gt; K[防守 yara SIEM]</code></pre></div>
+<hr>
+<p><strong>目录</strong></p>
+<ul><li>📌 <strong>全库用途总表（先看这一页）</strong></li><li>一、安装与工程基础（pip / venv / 镜像 / requirements）</li><li>二、数据处理与科学计算（numpy、pandas、matplotlib…）</li><li>三、算法与数据结构（标准库神器 + sortedcontainers、networkx…）</li><li>四、爬虫与网络采集（requests、bs4、scrapy、playwright…）</li><li>五、网络与安全攻防（scapy、pwntools、cryptography…）⚠️ 含合规声明</li><li>六、机器学习与 AI（scikit-learn、pytorch、transformers…）</li><li>七、Web 后端与接口（flask、fastapi、sqlalchemy…）</li><li>八、办公与自动化（openpyxl、python-docx、pyautogui…）</li><li>九、图像 / 音视频 / OCR（Pillow、OpenCV、moviepy…）</li><li>十、数据库与缓存（sqlite3、pymysql、redis…）</li><li>十一、测试、调试与工程化（pytest、ruff、loguru、rich…）</li><li>十二、快速选型表 + 学习路线</li></ul>
+<hr>
+<h2 id="全库用途总表-先看这一页">📌 全库用途总表（先看这一页）</h2>
+<blockquote>「<strong>用途</strong>」= 它能帮你解决什么问题；「<strong>典型场景</strong>」= 什么时候你会想起它。<br>装了之后不会用的，翻回后面看每个库的完整示例。</blockquote>
+<h3 id="数据处理与科学计算">数据处理与科学计算</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>numpy</code></td>
+<td>多维数组 + 向量化运算</td>
+<td>矩阵计算、图像像素、统计；其他库的底座</td>
+</tr>
+<tr>
+<td><code>pandas</code></td>
+<td>表格的读取 / 清洗 / 筛选 / 分组 / 聚合</td>
+<td>Excel、CSV 分析，爬虫数据整理，生成报表</td>
+</tr>
+<tr>
+<td><code>polars</code></td>
+<td>和 pandas 同用途，但更快更省内存</td>
+<td>百万行以上的大表</td>
+</tr>
+<tr>
+<td><code>matplotlib</code></td>
+<td>画静态图</td>
+<td>报告、论文插图</td>
+</tr>
+<tr>
+<td><code>seaborn</code></td>
+<td>统计图美化（基于 matplotlib）</td>
+<td>一行画出分布图、箱线图</td>
+</tr>
+<tr>
+<td><code>scipy</code></td>
+<td>科学计算：优化、积分、插值、信号、统计检验</td>
+<td>数值求解、信号处理</td>
+</tr>
+<tr>
+<td><code>sympy</code></td>
+<td><strong>符号</strong>数学：解方程、求导、积分、化简</td>
+<td>要推导公式而不是算数值</td>
+</tr>
+<tr>
+<td><code>statsmodels</code></td>
+<td>统计建模：回归、假设检验、时间序列</td>
+<td>学术统计、需要 p 值</td>
+</tr>
+<tr>
+<td><code>pyarrow</code></td>
+<td>列式存储与格式转换</td>
+<td>parquet 文件、加速 pandas</td>
+</tr>
+</table></div>
+<h3 id="算法与数据结构">算法与数据结构</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><strong>标准库</strong> <code>collections</code> / <code>heapq</code> / <code>bisect</code> / <code>itertools</code> / <code>functools</code></td>
+<td>队列、计数、堆、二分、排列组合、记忆化</td>
+<td>算法题主力，<strong>不用装</strong></td>
+</tr>
+<tr>
+<td><code>sortedcontainers</code></td>
+<td>一直保持有序的列表 / 字典</td>
+<td>频繁"插入 + 查找"的场景</td>
+</tr>
+<tr>
+<td><code>more-itertools</code></td>
+<td>itertools 的加强版</td>
+<td>滑动窗口、分块、去重</td>
+</tr>
+<tr>
+<td><code>networkx</code></td>
+<td>图论：建图、最短路径、连通分量、拓扑排序</td>
+<td>关系网络、依赖分析、路径规划</td>
+</tr>
+<tr>
+<td><code>python-constraint</code></td>
+<td>约束满足求解</td>
+<td>数独、排班、选课</td>
+</tr>
+<tr>
+<td><code>pulp</code> / <code>ortools</code></td>
+<td>线性规划 / 运筹优化</td>
+<td>资源分配、排班、路径优化</td>
+</tr>
+<tr>
+<td><code>z3-solver</code></td>
+<td>约束求解器</td>
+<td>解方程组、逆向约束、CTF</td>
+</tr>
+</table></div>
+<h3 id="爬虫与网络采集">爬虫与网络采集</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>requests</code></td>
+<td>发 HTTP 请求</td>
+<td>调 API、抓静态页、下载文件</td>
+</tr>
+<tr>
+<td><code>httpx</code></td>
+<td>异步 HTTP 请求</td>
+<td>高并发抓取</td>
+</tr>
+<tr>
+<td><code>beautifulsoup4</code></td>
+<td>HTML 解析（容错好、好上手）</td>
+<td>提取标题 / 价格 / 链接</td>
+</tr>
+<tr>
+<td><code>lxml</code></td>
+<td>高速 HTML / XML 解析</td>
+<td>大页面、给 bs4 当解析器</td>
+</tr>
+<tr>
+<td><code>parsel</code></td>
+<td>XPath / CSS 提取</td>
+<td>Scrapy 内、需要精确定位</td>
+</tr>
+<tr>
+<td><code>playwright</code></td>
+<td>真浏览器自动化</td>
+<td>JS 渲染页面、截图、自动化测试</td>
+</tr>
+<tr>
+<td><code>selenium</code></td>
+<td>真浏览器自动化（老牌）</td>
+<td>老项目、特定驱动</td>
+</tr>
+<tr>
+<td><code>scrapy</code></td>
+<td>爬虫框架</td>
+<td>大规模、工程化抓取</td>
+</tr>
+<tr>
+<td><code>fake-useragent</code></td>
+<td>随机 User-Agent</td>
+<td>降低被拦概率（合规前提下）</td>
+</tr>
+<tr>
+<td><code>tqdm</code></td>
+<td>进度条</td>
+<td>长循环、下载进度</td>
+</tr>
+<tr>
+<td><code>tenacity</code></td>
+<td>自动重试</td>
+<td>网络抖动、限流重试</td>
+</tr>
+<tr>
+<td><code>pyquery</code></td>
+<td>jQuery 风格解析 HTML</td>
+<td>习惯 jQuery 的人</td>
+</tr>
+<tr>
+<td><code>robobrowser</code></td>
+<td>简化表单提交</td>
+<td>老式登录页</td>
+</tr>
+</table></div>
+<h3 id="网络与安全攻防-仅限自有设备-书面授权-靶场">网络与安全攻防 ⚠️（<strong>仅限自有设备 / 书面授权 / 靶场</strong>）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>socket</code>（标准库）</td>
+<td>底层 TCP / UDP 编程</td>
+<td>理解网络原理、写简单服务端</td>
+</tr>
+<tr>
+<td><code>python-nmap</code></td>
+<td>调用 nmap 做端口与服务探测</td>
+<td>资产清点（<strong>只扫自己</strong>）</td>
+</tr>
+<tr>
+<td><code>scapy</code></td>
+<td>构造 / 解析 / 嗅探数据包</td>
+<td>协议学习、流量分析</td>
+</tr>
+<tr>
+<td><code>dnspython</code></td>
+<td>DNS 查询与解析</td>
+<td>域名解析排查</td>
+</tr>
+<tr>
+<td><code>python-whois</code></td>
+<td>域名注册信息</td>
+<td>域名资产梳理</td>
+</tr>
+<tr>
+<td><code>pyshark</code></td>
+<td>解析抓包文件</td>
+<td>流量取证</td>
+</tr>
+<tr>
+<td><code>psutil</code></td>
+<td>系统与网络状态</td>
+<td>进程 / 端口监控</td>
+</tr>
+<tr>
+<td><code>hashlib</code> / <code>hmac</code> / <code>secrets</code>（标准库）</td>
+<td>摘要、签名、安全随机</td>
+<td>文件校验、Token 生成</td>
+</tr>
+<tr>
+<td><code>cryptography</code></td>
+<td>现代加解密、证书</td>
+<td>AES / RSA、HTTPS</td>
+</tr>
+<tr>
+<td><code>pycryptodome</code></td>
+<td>传统加密接口</td>
+<td>老项目、特定算法</td>
+</tr>
+<tr>
+<td><code>bcrypt</code> / <code>argon2-cffi</code></td>
+<td><strong>密码哈希</strong></td>
+<td>用户密码入库（必须用这个）</td>
+</tr>
+<tr>
+<td><code>pyjwt</code></td>
+<td>JWT 签发与校验</td>
+<td>登录态</td>
+</tr>
+<tr>
+<td><code>mitmproxy</code></td>
+<td>中间人代理</td>
+<td>调试手机 / 浏览器流量</td>
+</tr>
+<tr>
+<td><code>faker</code></td>
+<td>生成测试数据</td>
+<td>测试、演示（<strong>别用真实数据</strong>）</td>
+</tr>
+<tr>
+<td><code>bandit</code></td>
+<td>扫描<strong>自己代码</strong>的安全问题</td>
+<td>CI 里自动检查</td>
+</tr>
+<tr>
+<td><code>pip-audit</code></td>
+<td>扫描依赖库的已知漏洞</td>
+<td>上线前检查</td>
+</tr>
+<tr>
+<td><code>yara-python</code></td>
+<td>恶意样本特征匹配</td>
+<td><strong>防守</strong>：写规则扫文件</td>
+</tr>
+<tr>
+<td><code>capstone</code> / <code>unicorn</code> / <code>pyelftools</code> / <code>pefile</code> / <code>angr</code></td>
+<td>反汇编、模拟执行、解析 ELF / PE、符号执行</td>
+<td>逆向分析、CTF</td>
+</tr>
+<tr>
+<td><code>ssdeep</code> / <code>py-tlsh</code></td>
+<td>模糊哈希</td>
+<td>找相似样本</td>
+</tr>
+<tr>
+<td><code>geoip2</code></td>
+<td>IP → 地理位置</td>
+<td>日志分析</td>
+</tr>
+<tr>
+<td><code>elasticsearch</code></td>
+<td>日志检索</td>
+<td>SIEM / 安全分析平台</td>
+</tr>
+</table></div>
+<h3 id="机器学习与-AI">机器学习与 AI</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>scikit-learn</code></td>
+<td>传统机器学习全流程</td>
+<td>表格数据做分类 / 回归 / 聚类</td>
+</tr>
+<tr>
+<td><code>xgboost</code> / <code>lightgbm</code> / <code>catboost</code></td>
+<td>梯度提升树</td>
+<td>结构化数据竞赛、Kaggle</td>
+</tr>
+<tr>
+<td><code>pytorch</code></td>
+<td>深度学习框架</td>
+<td>图像 / 文本模型训练与微调</td>
+</tr>
+<tr>
+<td><code>torchvision</code></td>
+<td>视觉数据集 + 预训练模型</td>
+<td>图像任务</td>
+</tr>
+<tr>
+<td><code>transformers</code></td>
+<td>加载 BERT / GPT 等预训练模型</td>
+<td>文本分类、摘要、翻译、微调</td>
+</tr>
+<tr>
+<td><code>datasets</code></td>
+<td>一行加载公开数据集</td>
+<td>训练数据准备</td>
+</tr>
+<tr>
+<td><code>sentence-transformers</code></td>
+<td>句向量、语义相似度</td>
+<td>检索、去重、聚类</td>
+</tr>
+<tr>
+<td><code>openai</code></td>
+<td>调用大模型 API</td>
+<td>聊天、写作、Agent、RAG</td>
+</tr>
+<tr>
+<td><code>tiktoken</code></td>
+<td>分词与 token 计数</td>
+<td>估算 API 费用</td>
+</tr>
+<tr>
+<td><code>accelerate</code></td>
+<td>多卡 / 混合精度训练</td>
+<td>训练加速</td>
+</tr>
+<tr>
+<td><code>peft</code></td>
+<td>LoRA 等参数高效微调</td>
+<td>低成本微调大模型</td>
+</tr>
+<tr>
+<td><code>langchain</code> / <code>llama-index</code></td>
+<td>编排 RAG 与 Agent</td>
+<td>知识库问答、工具调用</td>
+</tr>
+<tr>
+<td><code>jieba</code></td>
+<td>中文分词</td>
+<td>词频统计、关键词、情感分析</td>
+</tr>
+<tr>
+<td><code>snownlp</code></td>
+<td>中文情感分析</td>
+<td>评论正负面判断</td>
+</tr>
+<tr>
+<td><code>wordcloud</code></td>
+<td>词云图</td>
+<td>可视化报告</td>
+</tr>
+<tr>
+<td><code>pypinyin</code></td>
+<td>汉字转拼音</td>
+<td>排序、检索、注音</td>
+</tr>
+<tr>
+<td><code>hanlp</code> / <code>ltp</code></td>
+<td>专业中文 NLP</td>
+<td>分词、词性、实体识别</td>
+</tr>
+</table></div>
+<h3 id="Web-后端与接口">Web 后端与接口</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>flask</code></td>
+<td>轻量 Web 框架</td>
+<td>小网站、小接口、教学</td>
+</tr>
+<tr>
+<td><code>fastapi</code></td>
+<td>高性能 API + <strong>自动生成文档</strong></td>
+<td>给前端 / App / AI 提供接口</td>
+</tr>
+<tr>
+<td><code>uvicorn</code></td>
+<td>ASGI 服务器</td>
+<td>跑 FastAPI</td>
+</tr>
+<tr>
+<td><code>gunicorn</code></td>
+<td>WSGI 服务器</td>
+<td>Linux 生产部署</td>
+</tr>
+<tr>
+<td><code>pydantic</code></td>
+<td>数据校验与配置</td>
+<td>请求体 / 配置项校验</td>
+</tr>
+<tr>
+<td><code>sqlalchemy</code></td>
+<td>ORM</td>
+<td>用 Python 类操作数据库</td>
+</tr>
+<tr>
+<td><code>django</code></td>
+<td>全家桶框架</td>
+<td>中大型站点（自带后台、用户系统）</td>
+</tr>
+<tr>
+<td><code>starlette</code></td>
+<td>轻量 ASGI 框架</td>
+<td>FastAPI 的底层</td>
+</tr>
+<tr>
+<td><code>jinja2</code></td>
+<td>模板引擎</td>
+<td>渲染 HTML 页面</td>
+</tr>
+<tr>
+<td><code>gradio</code> / <code>streamlit</code></td>
+<td>几行代码做 AI 演示界面</td>
+<td>快速分享 Demo、内部工具</td>
+</tr>
+</table></div>
+<h3 id="办公与自动化">办公与自动化</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>openpyxl</code></td>
+<td>读写 xlsx</td>
+<td>生成带样式的报表</td>
+</tr>
+<tr>
+<td><code>xlrd</code></td>
+<td>读老式 .xls</td>
+<td>兼容旧文件</td>
+</tr>
+<tr>
+<td><code>python-docx</code></td>
+<td>读写 Word</td>
+<td>自动生成报告 / 合同</td>
+</tr>
+<tr>
+<td><code>python-pptx</code></td>
+<td>读写 PPT</td>
+<td>自动生成演示文稿</td>
+</tr>
+<tr>
+<td><code>pypdf</code></td>
+<td>PDF 拆分 / 合并 / 加密</td>
+<td>批量处理 PDF</td>
+</tr>
+<tr>
+<td><code>pdfplumber</code></td>
+<td>提取 PDF 文字与表格</td>
+<td>发票、报表解析</td>
+</tr>
+<tr>
+<td><code>pymupdf</code></td>
+<td>PDF 转图片、快速提取</td>
+<td>扫描件、批量转换</td>
+</tr>
+<tr>
+<td><code>reportlab</code></td>
+<td>生成 PDF</td>
+<td>报告、发票、证书</td>
+</tr>
+<tr>
+<td><code>weasyprint</code></td>
+<td>HTML → PDF</td>
+<td>用网页排版做 PDF</td>
+</tr>
+<tr>
+<td><code>pyautogui</code></td>
+<td>桌面自动化</td>
+<td>重复点击、填表</td>
+</tr>
+<tr>
+<td><code>pywinauto</code></td>
+<td>Windows 应用自动化</td>
+<td>更稳定的桌面自动化</td>
+</tr>
+<tr>
+<td><code>schedule</code></td>
+<td>定时任务（进程内）</td>
+<td>每天自动跑一次</td>
+</tr>
+<tr>
+<td><code>apscheduler</code></td>
+<td>专业调度器</td>
+<td>cron 表达式、持久化任务</td>
+</tr>
+<tr>
+<td><code>python-crontab</code></td>
+<td>管理 Linux crontab</td>
+<td>服务器定时</td>
+</tr>
+<tr>
+<td><code>pyinstaller</code></td>
+<td>打包成 exe</td>
+<td>给不会 Python 的人用</td>
+</tr>
+</table></div>
+<h3 id="图像-音视频-OCR">图像 / 音视频 / OCR</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>pillow</code></td>
+<td>图像基础处理</td>
+<td>批量改尺寸、加水印、转格式</td>
+</tr>
+<tr>
+<td><code>opencv-python</code></td>
+<td>计算机视觉</td>
+<td>人脸检测、目标跟踪、视频处理</td>
+</tr>
+<tr>
+<td><code>pytesseract</code></td>
+<td>OCR（Tesseract 封装）</td>
+<td>简单图片文字识别</td>
+</tr>
+<tr>
+<td><code>easyocr</code> / <code>paddleocr</code> / <code>cnocr</code></td>
+<td>深度学习 OCR</td>
+<td>中文票据、截图识别</td>
+</tr>
+<tr>
+<td><code>moviepy</code></td>
+<td>视频剪辑</td>
+<td>裁剪、拼接、加字幕</td>
+</tr>
+<tr>
+<td><code>ffmpeg-python</code></td>
+<td>组装 ffmpeg 命令</td>
+<td>转码、抽帧、压缩</td>
+</tr>
+<tr>
+<td><code>pydub</code></td>
+<td>音频切片与格式转换</td>
+<td>剪铃声、合并音频</td>
+</tr>
+<tr>
+<td><code>mutagen</code></td>
+<td>读写音频元数据</td>
+<td>批量改 ID3 标签</td>
+</tr>
+<tr>
+<td><code>librosa</code></td>
+<td>音频特征提取</td>
+<td>语音 / 音乐分析</td>
+</tr>
+<tr>
+<td><code>whisper</code></td>
+<td>语音转文字</td>
+<td>字幕、会议记录</td>
+</tr>
+<tr>
+<td><code>qrcode</code></td>
+<td>生成二维码</td>
+<td>链接、名片、支付码演示</td>
+</tr>
+<tr>
+<td><code>pyzbar</code></td>
+<td>识别二维码 / 条形码</td>
+<td>解码图片</td>
+</tr>
+</table></div>
+<h3 id="数据库与缓存">数据库与缓存</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>sqlite3</code>（标准库）</td>
+<td>单文件数据库</td>
+<td>本地存储、爬虫入库</td>
+</tr>
+<tr>
+<td><code>pymysql</code></td>
+<td>连接 MySQL</td>
+<td>传统 Web 应用</td>
+</tr>
+<tr>
+<td><code>psycopg</code></td>
+<td>连接 PostgreSQL</td>
+<td>对一致性要求高的系统</td>
+</tr>
+<tr>
+<td><code>pymongo</code></td>
+<td>连接 MongoDB</td>
+<td>字段不固定的文档数据</td>
+</tr>
+<tr>
+<td><code>redis</code></td>
+<td>内存缓存 / 队列 / 限流</td>
+<td>缓存、计数、任务队列</td>
+</tr>
+<tr>
+<td><code>sqlalchemy</code></td>
+<td>ORM</td>
+<td>不写 SQL 操作数据库</td>
+</tr>
+<tr>
+<td><code>peewee</code> / <code>tortoise-orm</code></td>
+<td>轻量 ORM</td>
+<td>小项目、异步项目</td>
+</tr>
+<tr>
+<td><code>alembic</code></td>
+<td>数据库迁移</td>
+<td>改表结构不丢数据</td>
+</tr>
+<tr>
+<td><code>duckdb</code></td>
+<td>单机分析型数据库</td>
+<td>直接用 SQL 查 CSV / Parquet</td>
+</tr>
+</table></div>
+<h3 id="测试-调试-工程化">测试 / 调试 / 工程化</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>典型场景</th>
+</tr>
+<tr>
+<td><code>pytest</code></td>
+<td>单元测试</td>
+<td>改代码不慌</td>
+</tr>
+<tr>
+<td><code>pytest-cov</code></td>
+<td>测试覆盖率</td>
+<td>看测试够不够全</td>
+</tr>
+<tr>
+<td><code>ruff</code></td>
+<td>代码检查 + 格式化</td>
+<td>一个工具顶 flake8 + isort + black</td>
+</tr>
+<tr>
+<td><code>black</code></td>
+<td>自动格式化</td>
+<td>统一团队风格</td>
+</tr>
+<tr>
+<td><code>mypy</code></td>
+<td>静态类型检查</td>
+<td>提前抓出类型错误</td>
+</tr>
+<tr>
+<td><code>isort</code></td>
+<td>import 排序</td>
+<td>让文件整洁</td>
+</tr>
+<tr>
+<td><code>flake8</code></td>
+<td>风格检查</td>
+<td>老项目</td>
+</tr>
+<tr>
+<td><code>pre-commit</code></td>
+<td>提交前自动检查</td>
+<td>防低级错误进仓库</td>
+</tr>
+<tr>
+<td><code>loguru</code></td>
+<td>日志</td>
+<td>落盘、分级、自动带堆栈</td>
+</tr>
+<tr>
+<td><code>icecream</code></td>
+<td>调试打印</td>
+<td>自动显示变量名和值</td>
+</tr>
+<tr>
+<td><code>tqdm</code></td>
+<td>进度条</td>
+<td>长任务可视</td>
+</tr>
+<tr>
+<td><code>rich</code></td>
+<td>终端美化、表格、进度</td>
+<td>CLI 输出好看</td>
+</tr>
+<tr>
+<td><code>click</code> / <code>typer</code></td>
+<td>命令行框架</td>
+<td>写专业的 CLI 工具</td>
+</tr>
+<tr>
+<td><code>python-dotenv</code></td>
+<td>读取 .env</td>
+<td>管理 API Key</td>
+</tr>
+<tr>
+<td><code>pyyaml</code></td>
+<td>读写 YAML</td>
+<td>配置文件</td>
+</tr>
+<tr>
+<td><code>orjson</code></td>
+<td>更快的 JSON</td>
+<td>大数据量序列化</td>
+</tr>
+<tr>
+<td><code>ipython</code></td>
+<td>交互式解释器</td>
+<td>边写边试</td>
+</tr>
+</table></div>
+<h3 id="怎么用好这张表">怎么用好这张表</h3>
+<ol><li><strong>不要全装</strong>。先想清楚要做什么 → 从这张表里挑 1~2 个 → 装了就用起来。</li><li><strong>一个方向先精一个</strong>。爬虫先 <code>requests</code> + <code>beautifulsoup4</code>，分析先 <code>pandas</code> + <code>matplotlib</code>，别一上来开五个坑。</li><li><strong>能标准库就别装库</strong>。<code>collections</code> / <code>itertools</code> / <code>sqlite3</code> / <code>json</code> / <code>pathlib</code> / <code>argparse</code> 已经能干很多事，而且零依赖。</li><li><strong>装完先跑一遍文档里的最小示例</strong>，确认环境没问题再写自己的代码。</li></ol>
+<hr>
+<h2 id="一-安装与工程基础">一、安装与工程基础</h2>
+<h3 id="1-1-pip-包管理器">1.1 pip —— 包管理器</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install requests                # 安装
+pip install requests==2.32.3        # 装指定版本
+pip install "requests&gt;=2.30"        # 装某个范围
+pip install -U requests             # 升级
+pip uninstall requests              # 卸载
+pip list                            # 看装了什么
+pip show requests                   # 看某个包的详情</code></pre></div>
+<h3 id="1-2-虚拟环境-每个项目一个-非常重要">1.2 虚拟环境 —— <strong>每个项目一个，非常重要</strong></h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">python -m venv .venv                        # 创建
+.venv\Scripts\activate                       # Windows 激活
+source .venv/bin/activate                   # macOS / Linux
+deactivate                                  # 退出</code></pre></div>
+<blockquote>⚠️ <strong>为什么要用</strong>：不同项目依赖的版本可能冲突（A 项目要 numpy 1.x，B 项目要 2.x）。<br>全局装会互相打架，虚拟环境让每个项目各玩各的。<br>VS Code 里按 <code>Ctrl+Shift+P</code> → <code>Python: Select Interpreter</code> → 选 <code>.venv</code>。</blockquote>
+<h3 id="1-3-国内镜像源-装包提速">1.3 国内镜像源（装包提速）</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 永久设置
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</code></pre></div>
+<p>常用镜像：清华 TUNA、阿里云（<code>https://mirrors.aliyun.com/pypi/simple/</code>）、腾讯云、中科大。</p>
+<h3 id="1-4-requirements-txt-记录依赖">1.4 requirements.txt —— 记录依赖</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pip freeze &gt; requirements.txt      # 导出当前环境
+pip install -r requirements.txt    # 照单安装</code></pre></div>
+<h3 id="1-5-一分钟判断-该用哪个库">1.5 一分钟判断"该用哪个库"</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>想干什么</th>
+<th>直接上</th>
+</tr>
+<tr>
+<td>发 HTTP 请求 / 调接口</td>
+<td><code>requests</code> / <code>httpx</code></td>
+</tr>
+<tr>
+<td>解析网页</td>
+<td><code>beautifulsoup4</code> + <code>lxml</code></td>
+</tr>
+<tr>
+<td>大规模爬虫</td>
+<td><code>scrapy</code></td>
+</tr>
+<tr>
+<td>要执行 JS 的网页</td>
+<td><code>playwright</code> / <code>selenium</code></td>
+</tr>
+<tr>
+<td>表格数据分析</td>
+<td><code>pandas</code></td>
+</tr>
+<tr>
+<td>数值矩阵计算</td>
+<td><code>numpy</code></td>
+</tr>
+<tr>
+<td>画图</td>
+<td><code>matplotlib</code></td>
+</tr>
+<tr>
+<td>机器学习</td>
+<td><code>scikit-learn</code></td>
+</tr>
+<tr>
+<td>深度学习</td>
+<td><code>pytorch</code></td>
+</tr>
+<tr>
+<td>Excel 读写</td>
+<td><code>openpyxl</code> / <code>pandas</code></td>
+</tr>
+<tr>
+<td>Word 读写</td>
+<td><code>python-docx</code></td>
+</tr>
+<tr>
+<td>PDF 提取文字</td>
+<td><code>pdfplumber</code></td>
+</tr>
+<tr>
+<td>图像处理</td>
+<td><code>Pillow</code> / <code>opencv-python</code></td>
+</tr>
+<tr>
+<td>网页自动化</td>
+<td><code>playwright</code></td>
+</tr>
+<tr>
+<td>桌面自动化</td>
+<td><code>pyautogui</code></td>
+</tr>
+<tr>
+<td>写 Web 接口</td>
+<td><code>fastapi</code></td>
+</tr>
+<tr>
+<td>写网站</td>
+<td><code>django</code> / <code>flask</code></td>
+</tr>
+<tr>
+<td>写命令行工具</td>
+<td><code>click</code> / <code>typer</code> + <code>rich</code></td>
+</tr>
+<tr>
+<td>加密 / 哈希</td>
+<td><code>cryptography</code> / 内置 <code>hashlib</code></td>
+</tr>
+<tr>
+<td>写测试</td>
+<td><code>pytest</code></td>
+</tr>
+<tr>
+<td>打日志</td>
+<td><code>loguru</code></td>
+</tr>
+</table></div>
+<hr>
+<h2 id="二-数据处理与科学计算">二、数据处理与科学计算</h2>
+<h3 id="numpy-数值计算的地基">numpy —— 数值计算的地基</h3>
+<p><strong>定位</strong>：多维数组 + 向量化运算。几乎所有数据/科学库都建在它上面。</p>
+<p><strong>用途</strong>：批量数值计算（<strong>不写循环</strong>做整体运算）：矩阵运算、统计、图像像素处理；它还是 pandas / OpenCV / PyTorch 等一大票库的底座</p>
+<p><strong>用途</strong>：把项目用到的库和精确版本记成一张清单；换电脑、交给同学、部署服务器时一条 <code>pip install -r</code> 装齐</p>
+<p><strong>用途</strong>：给每个项目一套<strong>独立的库目录</strong>，避免 A 项目要 numpy 1.x、B 项目要 2.x 时互相打架；不要了直接删掉整个文件夹</p>
+<p><strong>用途</strong>：安装 / 升级 / 卸载第三方库，锁定版本，导出依赖清单 —— <strong>用别人造好的轮子，不用从零写</strong></p>
+<p><strong>安装</strong>：<code>pip install numpy</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import numpy as np
+
+a = np.array([1, 2, 3, 4])
+print(a * 2)              # [2 4 6 8]      整体运算，不用写循环
+print(a.mean(), a.sum(), a.max())
+
+m = np.arange(12).reshape(3, 4)      # 3 行 4 列
+print(m.shape, m.dtype)              # (3, 4) int64
+print(m[1, 2])                       # 第 2 行第 3 列
+print(m[:, 1])                       # 第 2 列
+print(m @ m.T)                       # 矩阵乘法
+print(np.linspace(0, 1, 5))          # [0. 0.25 0.5 0.75 1.]</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ <strong>别用 for 循环遍历 numpy 数组</strong>——它真正快在"整体运算"（向量化）</li><li>⚠️ <code>a * b</code> 是<strong>逐元素相乘</strong>，矩阵乘法要写 <code>a @ b</code></li><li>⚠️ 切片返回的是<strong>视图</strong>（改子数组会改原数组），要副本用 <code>.copy()</code></li><li>⚠️ 整数数组除以整数会得到浮点（真除法），整除用 <code>//</code></li></ul>
+<h3 id="pandas-表格数据分析">pandas —— 表格数据分析</h3>
+<p><strong>定位</strong>：像"Python 里的 Excel"，处理带列名的二维表。</p>
+<p><strong>用途</strong>：把 CSV / Excel / SQL 读成带列名的表，做筛选、分组、聚合、合并、透视 —— <strong>数据分析的日常主力</strong></p>
+<p><strong>安装</strong>：<code>pip install pandas</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pandas as pd
+
+df = pd.DataFrame({
+    "姓名": ["张三", "李四", "王五"],
+    "分数": [686, 655, 700],
+    "城市": ["杭州", "武汉", "北京"],
+})
+
+print(df.head())                          # 前 5 行
+print(df["分数"].mean())                   # 平均分
+print(df[df["分数"] &gt;= 686])               # 按条件筛选
+print(df.sort_values("分数", ascending=False))
+df["是否上线"] = df["分数"] &gt;= 660          # 新增一列
+print(df.groupby("城市")["分数"].mean())    # 分组统计
+
+df.to_csv("out.csv", index=False, encoding="utf-8-sig")
+df2 = pd.read_csv("out.csv")
+df3 = pd.read_excel("data.xlsx", sheet_name="Sheet1")</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ 导出 CSV 给 Excel 看时用 <code>encoding="utf-8-sig"</code>（否则中文乱码）</li><li>⚠️ 链式赋值 <code>df[df.a&gt;0]["b"]=1</code> 会警告，用 <code>.loc[条件, "列"] = 值</code></li><li>⚠️ 处理大文件用 <code>chunksize=</code> 分块读</li><li>✅ 读 Excel 需要 <code>openpyxl</code> 支持：<code>pip install openpyxl</code></li></ul>
+<h3 id="matplotlib-画图">matplotlib —— 画图</h3>
+<p><strong>定位</strong>：最经典的绘图库，论文/报告必备。</p>
+<p><strong>用途</strong>：把数据画成折线 / 柱状 / 散点 / 直方图，导出 PNG / PDF 放进报告或论文</p>
+<p><strong>安装</strong>：<code>pip install matplotlib</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei"]   # 让中文不乱码
+plt.rcParams["axes.unicode_minus"] = False
+
+plt.plot(x, y, marker="o", label="平方曲线")
+plt.bar(x, y, alpha=0.3, label="柱状")
+plt.title("示例图")
+plt.xlabel("x"); plt.ylabel("y")
+plt.legend(); plt.grid(True)
+plt.savefig("plot.png", dpi=150, bbox_inches="tight")
+plt.show()</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>⚠️ <strong>中文显示成方框</strong>：必须设置 <code>font.sans-serif</code>（Windows 用 <code>Microsoft YaHei</code> / <code>SimHei</code>）</li><li>✅ 保存图片要在 <code>plt.show()</code> <strong>之前</strong>（show 之后画布会清空）</li><li>⚠️ 没有图形界面（服务器）时用 <code>matplotlib.use("Agg")</code></li></ul>
+<h3 id="其他数据类库-了解即可">其他数据类库（了解即可）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+<th>什么场景选它</th>
+</tr>
+<tr>
+<td><code>scipy</code></td>
+<td>科学计算（积分、优化、信号、统计）</td>
+<td><code>pip install scipy</code></td>
+<td>需要 <code>scipy.optimize</code> / <code>signal</code> / <code>stats</code></td>
+</tr>
+<tr>
+<td><code>sympy</code></td>
+<td><strong>符号</strong>数学（解方程、求导、化简）</td>
+<td><code>pip install sympy</code></td>
+<td>要公式推导而不是数值</td>
+</tr>
+<tr>
+<td><code>polars</code></td>
+<td>新一代 DataFrame，比 pandas 快</td>
+<td><code>pip install polars</code></td>
+<td>数据量大（百万行以上）</td>
+</tr>
+<tr>
+<td><code>pyarrow</code></td>
+<td>列式存储 / 格式转换</td>
+<td><code>pip install pyarrow</code></td>
+<td>parquet 文件、加速 pandas</td>
+</tr>
+<tr>
+<td><code>statsmodels</code></td>
+<td>统计建模（回归、检验）</td>
+<td><code>pip install statsmodels</code></td>
+<td>学术统计而不是预测</td>
+</tr>
+<tr>
+<td><code>seaborn</code></td>
+<td>基于 matplotlib 的漂亮统计图</td>
+<td><code>pip install seaborn</code></td>
+<td>想少写代码出好看的图</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># sympy 符号计算示例
+import sympy as sp
+x = sp.symbols("x")
+print(sp.solve(x**2 - 4, x))        # [-2, 2]
+print(sp.diff(sp.sin(x), x))        # cos(x)
+print(sp.integrate(x**2, (x, 0, 1)))  # 1/3</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># seaborn 一行出图
+import seaborn as sns, matplotlib.pyplot as plt
+sns.set_theme()                     # 一键换好看的主题
+sns.barplot(x=["A","B"], y=[1,2]); plt.show()</code></pre></div>
+<hr>
+<h2 id="三-算法与数据结构">三、算法与数据结构</h2>
+<h3 id="3-1-标准库里的-神器-不用装-直接-import">3.1 标准库里的"神器"（不用装，直接 import）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>模块</th>
+<th>类/函数</th>
+<th>干什么</th>
+<th>复杂度</th>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><code>deque</code></td>
+<td><strong>双端队列</strong>，两端 O(1) 增删</td>
+<td>比 list 做队列快得多</td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><code>Counter</code></td>
+<td>计数（本作业挑战 3 的升级版）</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><code>defaultdict</code></td>
+<td>缺键自动给默认值</td>
+<td>省掉 <code>if k in d</code></td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><code>OrderedDict</code></td>
+<td>有序字典（3.7+ 普通 dict 也有序了）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>heapq</code></td>
+<td><code>heappush/heappop</code></td>
+<td><strong>最小堆 / 优先队列</strong></td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><code>bisect</code></td>
+<td><code>bisect_left/insort</code></td>
+<td><strong>二分查找 / 有序插入</strong></td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><code>itertools</code></td>
+<td><code>product/permutations/combinations</code></td>
+<td>全排列、组合、笛卡尔积</td>
+<td>竞赛必备</td>
+</tr>
+<tr>
+<td><code>functools</code></td>
+<td><code>lru_cache</code></td>
+<td><strong>记忆化</strong>（缓存函数结果）</td>
+<td>递归优化神器</td>
+</tr>
+<tr>
+<td><code>functools</code></td>
+<td><code>reduce</code></td>
+<td>累积计算</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>math</code></td>
+<td><code>gcd/isqrt/comb/perm/factorial</code></td>
+<td>数论常用</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td><code>randint/choice/shuffle/sample</code></td>
+<td>随机</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>copy</code></td>
+<td><code>deepcopy</code></td>
+<td>深拷贝</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>sys</code></td>
+<td><code>setrecursionlimit</code></td>
+<td>调大递归深度</td>
+<td>深递归必用</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from collections import Counter, defaultdict, deque
+from heapq import heappush, heappop
+from bisect import bisect_left, insort
+from itertools import permutations, combinations, product
+from functools import lru_cache
+import math
+
+# ---- 计数 ----
+print(Counter("abracadabra").most_common(2))     # [('a', 5), ('b', 2)]
+
+# ---- 缺键自动初始化 ----
+graph = defaultdict(list)
+graph["A"].append("B")                            # 不用先判断 A 在不在
+
+# ---- 队列 ----
+q = deque([1, 2, 3]); q.appendleft(0); print(q.popleft())   # 0
+
+# ---- 优先队列（最小堆） ----
+h = []; heappush(h, 5); heappush(h, 1); print(heappop(h))   # 1
+# 最大堆技巧：存负数
+
+# ---- 二分 ----
+arr = [1, 3, 5, 7]
+print(bisect_left(arr, 5))                        # 2
+insort(arr, 4); print(arr)                        # [1,3,4,5,7]
+
+# ---- 组合 / 排列 ----
+print(list(combinations([1,2,3], 2)))             # [(1,2),(1,3),(2,3)]
+print(list(permutations([1,2,3], 2))[:2])         # [(1,2),(1,3)]
+
+# ---- 记忆化递归（斐波那契） ----
+@lru_cache(maxsize=None)
+def fib(n): return n if n &lt; 2 else fib(n-1) + fib(n-2)
+print(fib(100))                                   # 秒出
+
+print(math.gcd(12, 18), math.isqrt(17), math.comb(5, 2))</code></pre></div>
+<blockquote>💡 <strong>算法题的心法</strong>：先想清楚"<strong>数据规模</strong>"决定复杂度。<br>n ≤ 20 可以指数级暴搜；n ≤ 5000 用 O(n²)；n ≤ 10⁵~10⁶ 必须 O(n log n) 或 O(n)。<br>本作业里的"查重"用 set 就是 O(n)，如果用双重循环就是 O(n²)——这就是选对容器的价值。</blockquote>
+<h3 id="3-2-第三方算法库">3.2 第三方算法库</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>sortedcontainers</code></td>
+<td>有序列表/字典/集合（<code>SortedList</code> <strong>增删查都是 O(log n)</strong>）</td>
+<td><code>pip install sortedcontainers</code></td>
+</tr>
+<tr>
+<td><code>more-itertools</code></td>
+<td>itertools 的加强版（<code>chunked</code>、<code>windowed</code>、<code>unique_everseen</code>…）</td>
+<td><code>pip install more-itertools</code></td>
+</tr>
+<tr>
+<td><code>networkx</code></td>
+<td>图论：最短路径、连通分量、拓扑排序</td>
+<td><code>pip install networkx</code></td>
+</tr>
+<tr>
+<td><code>numpy</code> / <code>scipy</code></td>
+<td>数值算法（矩阵、优化、插值、图算法）</td>
+<td>见上一节</td>
+</tr>
+<tr>
+<td><code>python-constraint</code></td>
+<td>约束求解（数独、排班）</td>
+<td><code>pip install python-constraint</code></td>
+</tr>
+<tr>
+<td><code>pulp</code> / <code>ortools</code></td>
+<td>线性规划 / 运筹优化</td>
+<td><code>pip install pulp</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- networkx：图算法 ----
+import networkx as nx
+G = nx.Graph()
+G.add_weighted_edges_from([("A","B",1), ("B","C",2), ("A","C",10)])
+print(nx.shortest_path(G, "A", "C", weight="weight"))   # ['A', 'B', 'C']
+print(list(nx.connected_components(G)))
+print(list(nx.topological_sort(nx.DiGraph([("A","B"),("B","C")]))))</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- more-itertools：滑动窗口 / 分块 ----
+import more_itertools as mit
+print(list(mit.windowed([1,2,3,4], 2)))       # [(1,2),(2,3),(3,4)]
+print(list(mit.chunked([1,2,3,4,5], 2)))      # [[1,2],[3,4],[5]]</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- sortedcontainers：需要"一直保持有序"时用它 ----
+from sortedcontainers import SortedList
+sl = SortedList([5, 1, 3])
+sl.add(2); print(sl)                          # SortedList([1,2,3,5])
+print(sl.bisect_left(3))                      # 2</code></pre></div>
+<hr>
+<h2 id="四-爬虫与网络采集">四、爬虫与网络采集</h2>
+<blockquote>⚠️ <strong>先看合规</strong>：只爬<strong>公开且允许爬取</strong>的数据；遵守目标站点的 <code>robots.txt</code> 与服务条款；<br>控制频率（别把人家站点打挂）；不爬个人隐私、不绕过付费墙/登录墙、不破解验证码。<br>学习和练习请用专门的教学站点（如 <code>books.toscrape.com</code>、<code>httpbin.org</code>、<code>quotes.toscrape.com</code>）。</blockquote>
+<h3 id="requests-发-HTTP-请求-最常用">requests —— 发 HTTP 请求（最常用）</h3>
+<p><strong>定位</strong>：人类友好的 HTTP 客户端，调接口、抓静态页面都用它。</p>
+<p><strong>用途</strong>：调 REST API、抓网页、下载文件、提交表单 / 登录、上传附件 —— <strong>只要和 HTTP 打交道就先用它</strong></p>
+<p><strong>安装</strong>：<code>pip install requests</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests
+
+# ---- GET ----
+r = requests.get("https://httpbin.org/get",
+                 params={"q": "python", "page": 1},
+                 headers={"User-Agent": "Mozilla/5.0"},
+                 timeout=10)
+print(r.status_code)          # 200
+print(r.url)                  # 自动拼好的完整 URL
+print(r.text[:200])           # 文本
+# print(r.json())             # 如果是 JSON 接口，直接转字典
+
+# ---- POST ----
+r = requests.post("https://httpbin.org/post",
+                  json={"name": "张三"},
+                  headers={"Authorization": "Bearer xxx"},
+                  timeout=10)
+
+# ---- 下载文件（流式，适合大文件）----
+with requests.get("https://httpbin.org/image/png", stream=True, timeout=10) as r:
+    r.raise_for_status()
+    with open("img.png", "wb") as f:
+        for chunk in r.iter_content(8192):
+            f.write(chunk)
+
+# ---- 会话：自动保持 Cookie / 复用连接 ----
+s = requests.Session()
+s.headers.update({"User-Agent": "Mozilla/5.0"})
+s.get("https://httpbin.org/cookies/set?a=1", timeout=10)
+print(s.get("https://httpbin.org/cookies", timeout=10).json())</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ <strong>永远加 <code>timeout=</code></strong>，否则可能永久卡住</li><li>✅ 用 <code>r.raise_for_status()</code> 把 4xx/5xx 变成异常</li><li>⚠️ 中文乱码：<code>r.encoding = r.apparent_encoding</code> 或直接用 <code>r.content.decode("utf-8")</code></li><li>⚠️ <code>r.text</code> 是解码后的文本，<code>r.content</code> 是原始字节</li><li>✅ 批量请求一定要 <code>time.sleep()</code> 限速；并发用 <code>concurrent.futures</code></li><li>⚠️ 网上抄的 <code>headers</code> 别带 <code>Content-Length</code> / <code>Host</code>，会出错</li></ul>
+<h3 id="httpx-支持-async-的现代-HTTP-客户端">httpx —— 支持 async 的现代 HTTP 客户端</h3>
+<p><strong>定位</strong>：requests 的升级版，<strong>原生支持 async/await</strong>，也支持 HTTP/2。</p>
+<p><strong>用途</strong>：需要<strong>同时发成百上千个请求</strong>时用它（async 并发比多线程省资源），也支持 HTTP/2</p>
+<p><strong>安装</strong>：<code>pip install httpx</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import httpx, asyncio
+
+print(httpx.get("https://httpbin.org/get", timeout=10).status_code)
+
+async def main():
+    async with httpx.AsyncClient(timeout=10) as client:
+        tasks = [client.get("https://httpbin.org/delay/1") for _ in range(5)]
+        res = await asyncio.gather(*tasks)      # 5 个请求几乎同时完成
+        print([r.status_code for r in res])
+
+asyncio.run(main())</code></pre></div>
+<p><strong>备注</strong>：需要"同时发几百个请求"时，async 版比多线程更省资源。</p>
+<h3 id="beautifulsoup4-lxml-解析-HTML">beautifulsoup4 + lxml —— 解析 HTML</h3>
+<p><strong>定位</strong>：把 HTML 变成可"按标签找"的对象。<strong>bs4 负责好用，lxml 负责快</strong>。</p>
+<p><strong>用途</strong>：从网页 HTML 里按标签 / class / 属性提取文字、链接、数据；配合 requests 就是最经典的爬虫组合</p>
+<p><strong>安装</strong>：<code>pip install beautifulsoup4 lxml</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import requests
+from bs4 import BeautifulSoup
+
+html = requests.get("https://books.toscrape.com/", timeout=10).text
+soup = BeautifulSoup(html, "lxml")            # 用 lxml 解析（比 html.parser 快）
+
+for book in soup.select("article.product_pod")[:3]:     # CSS 选择器
+    title = book.select_one("h3 a")["title"]
+    price = book.select_one("p.price_color").get_text(strip=True)
+    link  = book.select_one("h3 a")["href"]
+    print(title, price, link)
+
+print(soup.title.string)
+print(soup.find("h1").get_text(strip=True))</code></pre></div>
+<p><strong>选择器速查</strong></p>
+<div class="tablewrap"><table>
+<tr>
+<th>写法</th>
+<th>含义</th>
+</tr>
+<tr>
+<td><code>soup.select("div.item")</code></td>
+<td>class 为 item 的 div（返回列表）</td>
+</tr>
+<tr>
+<td><code>soup.select_one("div.item")</code></td>
+<td>只要第一个</td>
+</tr>
+<tr>
+<td><code>soup.select("#main")</code></td>
+<td>id 为 main</td>
+</tr>
+<tr>
+<td><code>soup.select("a[href]")</code></td>
+<td>带 href 属性的 a</td>
+</tr>
+<tr>
+<td><code>soup.select("ul &gt; li")</code></td>
+<td>直接子元素</td>
+</tr>
+<tr>
+<td><code>tag.get_text(strip=True)</code></td>
+<td>取纯文本并去空白</td>
+</tr>
+<tr>
+<td><code>tag["href"]</code></td>
+<td>取属性</td>
+</tr>
+</table></div>
+<p><strong>备注</strong>：<code>lxml</code> 在 Windows 上如果装不上，可以先用内置的 <code>"html.parser"</code>（慢一点但零依赖）。</p>
+<h3 id="parsel-用-XPath-CSS-提取-Scrapy-同款">parsel —— 用 XPath/CSS 提取（Scrapy 同款）</h3>
+<p><strong>用途</strong>：在 Scrapy 里、或需要 XPath 精确定位时做 HTML / XML 数据提取</p>
+<p><strong>安装</strong>：<code>pip install parsel</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from parsel import Selector
+sel = Selector(text="&lt;div&gt;&lt;a href='/x'&gt;标题&lt;/a&gt;&lt;/div&gt;")
+print(sel.css("a::attr(href)").get())      # /x
+print(sel.xpath("//a/text()").get())       # 标题</code></pre></div>
+<h3 id="playwright-浏览器自动化-现代首选">playwright —— 浏览器自动化（现代首选）</h3>
+<p><strong>定位</strong>：真·浏览器驱动，能执行 JS、点按钮、截图、导出 PDF。<strong>比 selenium 更好用</strong>。</p>
+<p><strong>用途</strong>：抓 <strong>JS 渲染</strong>的动态页面；也能模拟点击 / 填表 / 滚动 / 截图，顺便还能自动化测试和导出 PDF</p>
+<p><strong>安装</strong>：<code>pip install playwright</code> 然后 <code>playwright install chromium</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)     # headless=False 可以看过程
+    page = browser.new_page()
+    page.goto("https://quotes.toscrape.com/js/", wait_until="networkidle")
+
+    # 等元素出现再取（对 JS 渲染的页面很关键）
+    page.wait_for_selector(".quote")
+    quotes = page.locator(".quote .text").all_inner_texts()
+    print(quotes[:3])
+
+    page.fill("input[name=q]", "python")           # 填表单
+    page.click("button[type=submit]")              # 点击
+    page.screenshot(path="shot.png", full_page=True)
+    browser.close()</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ 先 <code>wait_for_selector</code> / <code>expect</code> 等元素，别急着取</li><li>⚠️ 首次要跑 <code>playwright install chromium</code> 下载浏览器（约 100+ MB）</li><li>✅ 异步版：<code>from playwright.async_api import async_playwright</code></li><li>⚠️ 别拿它做刷单、抢票等违反网站规则的事</li></ul>
+<h3 id="selenium-老牌浏览器自动化">selenium —— 老牌浏览器自动化</h3>
+<p><strong>用途</strong>：用途和 playwright 相同（驱动真实浏览器），生态更老、资料更多；维护老项目时会遇到它</p>
+<p><strong>安装</strong>：<code>pip install selenium</code>（新版自带驱动管理）</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()                 # 需要 Chrome
+driver.get("https://quotes.toscrape.com/js/")
+driver.implicitly_wait(5)
+print([e.text for e in driver.find_elements(By.CSS_SELECTOR, ".text")][:3])
+driver.quit()</code></pre></div>
+<p><strong>备注</strong>：生态老、资料多；新项目更推荐 playwright。</p>
+<h3 id="scrapy-大型爬虫框架">scrapy —— 大型爬虫框架</h3>
+<p><strong>定位</strong>：工程化爬虫：自动调度、去重、并发、pipelines、断点续爬。</p>
+<p><strong>用途</strong>：抓<strong>几万到几十万页</strong>时用：自带调度器、去重、并发、重试、中间件、数据管道和断点续爬</p>
+<p><strong>安装</strong>：<code>pip install scrapy</code></p>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">scrapy startproject myspider
+cd myspider
+scrapy genspider books books.toscrape.com
+scrapy crawl books -o books.json</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># myspider/spiders/books.py
+import scrapy
+
+class BooksSpider(scrapy.Spider):
+    name = "books"
+    start_urls = ["https://books.toscrape.com/"]
+
+    def parse(self, response):
+        for book in response.css("article.product_pod"):
+            yield {
+                "title": book.css("h3 a::attr(title)").get(),
+                "price": book.css("p.price_color::text").get(),
+            }
+        nxt = response.css("li.next a::attr(href)").get()
+        if nxt:
+            yield response.follow(nxt, self.parse)     # 翻页</code></pre></div>
+<p><strong>备注</strong>：Scrapy 里<strong>不要</strong>自己写 requests；它有自己的下载器和中间件体系。</p>
+<h3 id="其他采集类小库">其他采集类小库</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>干什么</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>fake-useragent</code></td>
+<td>随机生成 User-Agent</td>
+<td><code>pip install fake-useragent</code></td>
+</tr>
+<tr>
+<td><code>tqdm</code></td>
+<td>给循环加进度条</td>
+<td><code>pip install tqdm</code></td>
+</tr>
+<tr>
+<td><code>tenacity</code></td>
+<td>自动重试（网络抖动必备）</td>
+<td><code>pip install tenacity</code></td>
+</tr>
+<tr>
+<td><code>pyquery</code></td>
+<td>用 jQuery 语法解析 HTML</td>
+<td><code>pip install pyquery</code></td>
+</tr>
+<tr>
+<td><code>robobrowser</code></td>
+<td>简化表单提交</td>
+<td><code>pip install robobrowser</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from tqdm import tqdm
+from tenacity import retry, stop_after_attempt, wait_fixed
+import time
+
+for i in tqdm(range(100)):
+    time.sleep(0.01)                     # 一行就有进度条
+
+@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+def fetch():
+    import requests
+    return requests.get("https://httpbin.org/get", timeout=5).status_code
+
+print(fetch())                           # 失败自动重试 3 次</code></pre></div>
+<h3 id="爬虫工程-Checklist">爬虫工程 Checklist</h3>
+<ul><li>☐ 看 <code>robots.txt</code>、看服务条款、看是否有官方 API（<strong>有 API 就别爬</strong>）</li><li>☐ 设置 <code>User-Agent</code>（表明身份，别伪装成恶意流量）</li><li>☐ <code>timeout</code> + <code>重试</code> + <code>限速</code>（<code>time.sleep</code> 或 <code>tenacity</code>）</li><li>☐ 只取需要的字段，不整站 dump</li><li>☐ 数据落盘（CSV/SQLite/JSON），别只 print</li><li>☐ 出错有日志，中断能续跑</li></ul>
+<hr>
+<h2 id="五-网络与安全攻防">五、网络与安全攻防</h2>
+<blockquote>### ⚠️ 合规声明（请务必读完再往下看）<br>这一节的库都属于"<strong>双刃剑</strong>"。合法使用的前提是<strong>其中至少一条成立</strong>：<br>1. <strong>你自己的设备 / 你自己的网络</strong>（比如扫描 <code>127.0.0.1</code>、自己的云主机）<br>2. <strong>你拿到了书面授权</strong>（公司内部渗透测试、SRC 授权测试、靶场、CTF 比赛）<br>3. <strong>纯学习，且只在自己搭的靶场里练</strong>（推荐 <code>DVWA</code>、<code>OWASP Juice Shop</code>、<code>VulnHub</code>、<code>Hack The Box</code>、<code>TryHackMe</code>、<code>PicoCTF</code>）<br><strong>不要</strong>扫描/攻击未授权的任何主机或网络 —— 在中国可能触犯《刑法》285/286 条、<br>《网络安全法》，在境外同样是重罪。<strong>"我只是试试" 不是理由。</strong><br>下面所有示例都写成了"只打本机 / 只在自己程序内部"的形式。</blockquote>
+<h3 id="5-1-网络基础-socket-标准库">5.1 网络基础：socket（标准库）</h3>
+<p><strong>定位</strong>：最底层的网络编程接口，TCP/UDP 都靠它。理解它是理解一切网络库的前提。</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import socket
+
+# ---- 端口连通性检查（只查自己的服务）----
+def check(host, port, timeout=2):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        return s.connect_ex((host, port)) == 0
+
+print(check("127.0.0.1", 80))
+
+# ---- 一个只监听本机的迷你 TCP 服务端 ----
+# server.py
+import socket
+srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+srv.bind(("127.0.0.1", 9999)); srv.listen(5)
+print("listening on 127.0.0.1:9999")
+while True:
+    conn, addr = srv.accept()
+    with conn:
+        print("来自", addr, ":", conn.recv(1024).decode(errors="ignore"))
+        conn.sendall(b"hello from server")</code></pre></div>
+<p><strong>备注</strong>：<code>socket</code> 是阻塞的；要高并发用 <code>asyncio</code>、<code>selectors</code> 或第三方框架。</p>
+<h3 id="5-2-网络扫描与探测">5.2 网络扫描与探测</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>python-nmap</code></td>
+<td>调用 nmap 做端口/服务探测</td>
+<td><code>pip install python-nmap</code>（还要装 nmap 本体）</td>
+</tr>
+<tr>
+<td><code>scapy</code></td>
+<td><strong>构造/解析/嗅探任意网络包</strong></td>
+<td><code>pip install scapy</code></td>
+</tr>
+<tr>
+<td><code>dnspython</code></td>
+<td>DNS 查询与解析</td>
+<td><code>pip install dnspython</code></td>
+</tr>
+<tr>
+<td><code>whois</code></td>
+<td>域名注册信息</td>
+<td><code>pip install python-whois</code></td>
+</tr>
+<tr>
+<td><code>pyshark</code></td>
+<td>Python 包 tshark，抓包分析</td>
+<td><code>pip install pyshark</code></td>
+</tr>
+<tr>
+<td><code>netifaces</code> / <code>psutil</code></td>
+<td>看本机网卡 / 网络连接</td>
+<td><code>pip install psutil</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- python-nmap：只扫本机（学习用法）----
+import nmap
+nm = nmap.PortScanner()
+nm.scan("127.0.0.1", "22-443")
+for host in nm.all_hosts():
+    print(host, nm[host].state())
+    for proto in nm[host].all_protocols():
+        for port, info in nm[host][proto].items():
+            print("  ", port, info["state"], info.get("name"))</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- scapy：看本机网卡信息 / 解析一个包（只读，无攻击性）----
+from scapy.all import get_if_list, IP, TCP, Ether
+print(get_if_list())                     # 本机网卡列表
+
+pkt = Ether()/IP(dst="127.0.0.1")/TCP(dport=80)   # 构造一个包对象
+print(pkt.summary())                                # 看结构
+print(pkt.show(dump=True)[:400])
+# 抓包（需要管理员权限；只抓本机流量）
+# pkts = sniff(count=5, filter="tcp port 80")</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- dnspython：正常 DNS 查询 ----
+import dns.resolver
+for rtype in ("A", "MX", "TXT"):
+    try:
+        print(rtype, [str(r) for r in dns.resolver.resolve("example.com", rtype)])
+    except Exception as e:
+        print(rtype, "查询失败:", e)</code></pre></div>
+<p><strong>备注</strong>：<code>scapy</code> 抓包/发原始包在 Windows 上需要 <strong>管理员权限 + Npcap</strong>；Linux 上要 <code>sudo</code>。</p>
+<h3 id="5-3-加密与哈希-防御与开发两头都用">5.3 加密与哈希（防御与开发两头都用）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>hashlib</code>（标准库）</td>
+<td>MD5/SHA1/SHA256 摘要</td>
+<td>内置</td>
+</tr>
+<tr>
+<td><code>hmac</code>（标准库）</td>
+<td>带密钥的摘要（防篡改）</td>
+<td>内置</td>
+</tr>
+<tr>
+<td><code>secrets</code>（标准库）</td>
+<td><strong>生成安全随机数 / Token</strong></td>
+<td>内置</td>
+</tr>
+<tr>
+<td><code>cryptography</code></td>
+<td>现代对称/非对称加密、证书</td>
+<td><code>pip install cryptography</code></td>
+</tr>
+<tr>
+<td><code>pycryptodome</code></td>
+<td>AES/RSA 等，接口更传统</td>
+<td><code>pip install pycryptodome</code></td>
+</tr>
+<tr>
+<td><code>bcrypt</code> / <code>argon2-cffi</code></td>
+<td><strong>密码哈希（存数据库专用）</strong></td>
+<td><code>pip install bcrypt argon2-cffi</code></td>
+</tr>
+<tr>
+<td><code>pyjwt</code></td>
+<td>JWT 签发与校验</td>
+<td><code>pip install pyjwt</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import hashlib, hmac, secrets
+
+# ---- 摘要：文件校验 ----
+print(hashlib.sha256(b"hello").hexdigest())
+def file_sha256(path, chunk=8192):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while (b := f.read(chunk)):
+            h.update(b)
+    return h.hexdigest()
+
+# ---- HMAC：验证消息没被改过 ----
+key = b"my-secret"
+sig = hmac.new(key, b"important data", hashlib.sha256).hexdigest()
+print(hmac.compare_digest(sig, hmac.new(key, b"important data", hashlib.sha256).hexdigest()))
+
+# ---- 安全随机 ----
+print(secrets.token_urlsafe(24))     # 生成登录 Token / 邀请码
+print(secrets.randbelow(100))</code></pre></div>
+<p><strong>⚠️ 重要常识</strong></p>
+<ul><li><strong>别用 MD5/SHA1 存密码</strong>（可被撞库/彩虹表）。存密码用 <code>bcrypt</code> / <code>argon2</code>，它们自带"慢"和"加盐"</li><li><strong>别用 <code>random</code> 生成密码/Token</strong>，要用 <code>secrets</code>（<code>random</code> 是可预测的）</li><li>哈希 ≠ 加密：哈希<strong>不可逆</strong>，加密<strong>可解密</strong>，用途完全不同</li></ul>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- cryptography：AES 对称加密 + RSA 非对称 ----
+from cryptography.fernet import Fernet
+key = Fernet.generate_key()                  # 保存好这把钥匙！
+fernet = Fernet(key)
+token = fernet.encrypt(b"secret message")
+print(fernet.decrypt(token))                 # b'secret message'
+
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import hashes
+priv = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+pub = priv.public_key()
+ct = pub.encrypt(b"hi", padding.OAEP(mgf=padding.MGF1(hashes.SHA256()),
+                                     algorithm=hashes.SHA256(), label=None))
+print(priv.decrypt(ct, padding.OAEP(mgf=padding.MGF1(hashes.SHA256()),
+                                    algorithm=hashes.SHA256(), label=None)))</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- bcrypt：正确存密码的方式 ----
+import bcrypt
+hashed = bcrypt.hashpw(b"user-password", bcrypt.gensalt())   # 存这个到数据库
+print(bcrypt.checkpw(b"user-password", hashed))              # True
+print(bcrypt.checkpw(b"wrong", hashed))                      # False</code></pre></div>
+<h3 id="5-4-Web-安全测试-授权环境下">5.4 Web 安全测试（授权环境下）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>requests</code> / <code>httpx</code></td>
+<td>手工测试接口（改参数看响应）</td>
+<td>见爬虫节</td>
+</tr>
+<tr>
+<td><code>mitmproxy</code></td>
+<td><strong>中间人代理</strong>：抓改手机/浏览器流量，调试和测试神器</td>
+<td><code>pip install mitmproxy</code></td>
+</tr>
+<tr>
+<td><code>Faker</code></td>
+<td>生成测试数据（别用真实数据）</td>
+<td><code>pip install faker</code></td>
+</tr>
+<tr>
+<td><code>jwt</code> / <code>pyjwt</code></td>
+<td>分析 JWT（看算法、过期、篡改检测）</td>
+<td><code>pip install pyjwt</code></td>
+</tr>
+<tr>
+<td><code>bandit</code></td>
+<td><strong>静态扫描自己代码里的安全漏洞</strong></td>
+<td><code>pip install bandit</code></td>
+</tr>
+<tr>
+<td><code>safety</code> / <code>pip-audit</code></td>
+<td>扫描依赖库的已知 CVE</td>
+<td><code>pip install pip-audit</code></td>
+</tr>
+<tr>
+<td><code>OWASP ZAP</code></td>
+<td>专业 Web 扫描（有 Python API）</td>
+<td>官网下载</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- pyjwt：解析（不校验）与校验 ----
+import jwt, time
+payload = {"sub": "user1", "exp": time.time() + 3600}
+token = jwt.encode(payload, "secret", algorithm="HS256")
+print(token)
+print(jwt.decode(token, "secret", algorithms=["HS256"]))     # 校验签名
+# ✅ 关键：校验时**必须指定 algorithms 列表**，否则可能被算法混淆攻击绕过
+
+# ---- Faker：造测试数据 ----
+from faker import Faker
+fk = Faker("zh_CN")
+print(fk.name(), fk.address(), fk.phone_number(), fk.email())</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash"># ---- bandit：扫自己代码的安全问题（CI 里常用）----
+bandit -r ./myproject
+pip-audit                     # 检查依赖有没有已知漏洞</code></pre></div>
+<h3 id="5-5-二进制-CTF-逆向-仅限比赛与自有样本">5.5 二进制 / CTF / 逆向（仅限比赛与自有样本）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>pwntools</code></td>
+<td>CTF 神器：打包/解包、连接、ROP</td>
+<td><code>pip install pwntools</code>（<strong>仅 Linux/macOS</strong>）</td>
+</tr>
+<tr>
+<td><code>capstone</code></td>
+<td>反汇编引擎</td>
+<td><code>pip install capstone</code></td>
+</tr>
+<tr>
+<td><code>unicorn</code></td>
+<td>CPU 模拟执行</td>
+<td><code>pip install unicorn</code></td>
+</tr>
+<tr>
+<td><code>pyelftools</code></td>
+<td>解析 ELF 文件</td>
+<td><code>pip install pyelftools</code></td>
+</tr>
+<tr>
+<td><code>angr</code></td>
+<td>符号执行（自动找路径）</td>
+<td><code>pip install angr</code></td>
+</tr>
+<tr>
+<td><code>z3-solver</code></td>
+<td><strong>约束求解</strong>（解方程/逆向约束）</td>
+<td><code>pip install z3-solver</code></td>
+</tr>
+<tr>
+<td><code>pefile</code></td>
+<td>解析 Windows PE 文件</td>
+<td><code>pip install pefile</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- pwntools 常用片段（CTF 里连远程题目）----
+# from pwn import *
+# p = remote("challenge.ctf.example", 1337)
+# p.recvuntil(b"name:")
+# p.sendline(b"admin")
+# print(p.recvline())
+# payload = b"A"*40 + p64(0xdeadbeef)      # p64/p32 打包整数</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- z3：解约束（数独/逆向题常考）----
+from z3 import Ints, Solver, sat
+x, y = Ints("x y")
+s = Solver()
+s.add(x + y == 10, x - y == 4)
+print(s.check(), s.model())            # sat [x = 7, y = 3]</code></pre></div>
+<p><strong>备注</strong>：<code>pwntools</code> 在 Windows 上装不上（要 Linux/WSL），这是它唯一的大门槛。</p>
+<h3 id="5-6-防守方视角的库-更推荐往这个方向深耕">5.6 防守方视角的库（更推荐往这个方向深耕）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>干什么</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>yara-python</code></td>
+<td><strong>恶意样本特征匹配</strong>（写规则查文件）</td>
+<td><code>pip install yara-python</code></td>
+</tr>
+<tr>
+<td><code>pyelftools</code> / <code>pefile</code></td>
+<td>分析可执行文件结构</td>
+<td>见上</td>
+</tr>
+<tr>
+<td><code>ssdeep</code> / <code>py-tlsh</code></td>
+<td>模糊哈希（找相似样本）</td>
+<td><code>pip install ssdeep</code></td>
+</tr>
+<tr>
+<td><code>scapy</code></td>
+<td>流量分析与异常检测</td>
+<td>见上</td>
+</tr>
+<tr>
+<td><code>geoip2</code></td>
+<td>IP → 地理位置（做日志分析）</td>
+<td><code>pip install geoip2</code></td>
+</tr>
+<tr>
+<td><code>falconpy</code>（CrowdStrike）/ <code>pytenable</code></td>
+<td>商用安全平台 API</td>
+<td><code>pip install falconpy</code></td>
+</tr>
+<tr>
+<td><code>elasticsearch</code></td>
+<td>日志检索（SIEM 常用）</td>
+<td><code>pip install elasticsearch</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- yara：写一条规则，扫描目录里的文件 ----
+import yara
+rule = yara.compile(source=r'''
+rule SuspiciousDownloader {
+    strings:
+        $a = "powershell" nocase
+        $b = "DownloadString" nocase
+    condition:
+        all of them
+}
+''')
+for path in ["sample.exe"]:                 # 只在你有权分析的文件上跑
+    try:
+        print(path, rule.match(path))
+    except FileNotFoundError:
+        pass</code></pre></div>
+<h3 id="5-7-安全方向的正确学习路线">5.7 安全方向的正确学习路线</h3>
+<ol><li><strong>基础</strong>：计算机网络（TCP/IP）、Linux 命令、HTTP 协议 —— 这些比工具重要 10 倍</li><li><strong>编程</strong>：Python（本手册） + 一门系统语言（C/Go）</li><li><strong>靶场</strong>：PortSwigger Web Security Academy（免费）、OWASP Juice Shop、Hack The Box</li><li><strong>体系</strong>：OWASP Top 10、CWE Top 25</li><li><strong>方向选择</strong>：Web 安全 / 渗透测试 / 二进制逆向 / 流量分析 / 安全开发 / 应急响应</li><li><strong>底线</strong>：只打靶场、只测授权目标、漏洞先报告不公开利用细节</li></ol>
+<hr>
+<h2 id="六-机器学习与-AI">六、机器学习与 AI</h2>
+<h3 id="scikit-learn-传统机器学习首选">scikit-learn —— 传统机器学习首选</h3>
+<p><strong>定位</strong>：分类、回归、聚类、降维、模型评估，API 高度统一。</p>
+<p><strong>用途</strong>：分类、回归、聚类、降维、特征工程、模型评估 —— <strong>表格数据做预测的起点</strong></p>
+<p><strong>安装</strong>：<code>pip install scikit-learn</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
+
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+scaler = StandardScaler()                       # 特征标准化
+X_train = scaler.fit_transform(X_train)
+X_test  = scaler.transform(X_test)              # 注意：测试集用 transform，不 fit
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+
+print("准确率:", accuracy_score(y_test, pred))
+print(classification_report(y_test, pred))
+print(model.predict_proba(X_test[:1]))          # 各类概率</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ <strong>统一套路</strong>：<code>fit()</code> 训练 → <code>predict()</code> 预测 → <code>score()</code> 评估，换模型只改一行</li><li>⚠️ 数据泄漏：<code>fit_transform</code> 只能用在训练集，测试集必须用 <code>transform</code></li><li>✅ 切分数据要 <code>random_state</code> 固定，否则结果每次都不一样</li><li>✅ 类别不均衡看 <strong>f1 / 召回率</strong>，别只看准确率</li></ul>
+<h3 id="梯度提升树-XGBoost-LightGBM-CatBoost">梯度提升树：XGBoost / LightGBM / CatBoost</h3>
+<p><strong>定位</strong>：<strong>表格数据比赛的常胜将军</strong>，比随机森林更强。</p>
+<p><strong>安装</strong>：<code>pip install xgboost lightgbm</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import xgboost as xgb
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_auc_score
+
+X, y = load_breast_cancer(return_X_y=True)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, random_state=0)
+
+model = xgb.XGBClassifier(
+    n_estimators=300, learning_rate=0.05, max_depth=5,
+    subsample=0.8, colsample_bytree=0.8,
+    eval_metric="auc", early_stopping_rounds=30, random_state=0,
+)
+model.fit(Xtr, ytr, eval_set=[(Xte, yte)], verbose=False)
+print("AUC:", roc_auc_score(yte, model.predict_proba(Xte)[:, 1]))</code></pre></div>
+<p><strong>备注</strong>：<code>early_stopping_rounds</code> 能在验证集不提升时自动停，省时间还防过拟合。</p>
+<h3 id="PyTorch-深度学习主流框架">PyTorch —— 深度学习主流框架</h3>
+<p><strong>定位</strong>：学术界最流行的深度学习框架，动态图、调试友好。</p>
+<p><strong>用途</strong>：搭建和训练神经网络：图像分类、目标检测、文本模型、<strong>微调大模型</strong>；支持 GPU 加速</p>
+<p><strong>安装</strong>：<code>pip install torch torchvision</code>（官网可按 CUDA 版本生成命令）</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# ---- 张量 ----
+x = torch.randn(3, 4)
+print(x.shape, x.device)                # torch.Size([3, 4]) cpu
+print((x @ x.T).shape)
+if torch.cuda.is_available():
+    x = x.to("cuda")                    # 有显卡就搬到 GPU
+print(torch.cuda.is_available())
+
+# ---- 一个最小神经网络（手写数字分类）----
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+tf = transforms.ToTensor()
+train_ds = datasets.MNIST("./data", train=True, download=True, transform=tf)
+train_dl = DataLoader(train_ds, batch_size=64, shuffle=True)
+
+net = nn.Sequential(nn.Flatten(), nn.Linear(28*28, 128), nn.ReLU(), nn.Linear(128, 10))
+loss_fn = nn.CrossEntropyLoss()
+opt = optim.Adam(net.parameters(), lr=1e-3)
+
+net.train()
+for epoch in range(1):
+    for xb, yb in train_dl:
+        opt.zero_grad()                  # ① 清梯度
+        loss = loss_fn(net(xb), yb)      # ② 前向 + 算损失
+        loss.backward()                  # ③ 反向传播
+        opt.step()                       # ④ 更新参数
+    print("epoch", epoch, "loss", loss.item())</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ 训练循环死记四步：<code>zero_grad → 前向+loss → backward → step</code></li><li>⚠️ 忘了 <code>zero_grad()</code>，梯度会累加，模型学不对</li><li>⚠️ 训练时 <code>net.train()</code>，推理时 <code>net.eval()</code> + <code>with torch.no_grad():</code></li><li>✅ 有 NVIDIA 显卡装 CUDA 版才快（<code>pip install torch --index-url https://download.pytorch.org/whl/cu121</code>）</li></ul>
+<h3 id="Transformer-大模型相关">Transformer / 大模型相关</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>transformers</code></td>
+<td>加载 BERT/GPT 等预训练模型（HuggingFace）</td>
+<td><code>pip install transformers</code></td>
+</tr>
+<tr>
+<td><code>datasets</code></td>
+<td>一行加载公开数据集</td>
+<td><code>pip install datasets</code></td>
+</tr>
+<tr>
+<td><code>sentence-transformers</code></td>
+<td>句向量、语义相似度、文本检索</td>
+<td><code>pip install sentence-transformers</code></td>
+</tr>
+<tr>
+<td><code>openai</code></td>
+<td>调 OpenAI 接口（ChatGPT）</td>
+<td><code>pip install openai</code></td>
+</tr>
+<tr>
+<td><code>tiktoken</code></td>
+<td>分词 / 估算 token 数（算钱用）</td>
+<td><code>pip install tiktoken</code></td>
+</tr>
+<tr>
+<td><code>accelerate</code></td>
+<td>多卡/混合精度训练加速</td>
+<td><code>pip install accelerate</code></td>
+</tr>
+<tr>
+<td><code>peft</code></td>
+<td>参数高效微调（LoRA）</td>
+<td><code>pip install peft</code></td>
+</tr>
+<tr>
+<td><code>langchain</code> / <code>llama-index</code></td>
+<td>搭 RAG、Agent 编排</td>
+<td><code>pip install langchain</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- transformers：情感分类（第一次运行会自动下载模型）----
+from transformers import pipeline
+clf = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+print(clf("I love Python!"))
+print(clf("This is terrible."))</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- sentence-transformers：算两句话有多像 ----
+from sentence_transformers import SentenceTransformer
+from sentence_transformers.util import cos_sim
+m = SentenceTransformer("all-MiniLM-L6-v2")
+v = m.encode(["我爱编程", "我喜歡寫程式", "今天天气不错"])
+print(cos_sim(v[0], v[1]).item())     # 接近 1（很像）
+print(cos_sim(v[0], v[2]).item())     # 较小（不像）</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- openai：调大模型接口（需要 API Key）----
+import os
+from openai import OpenAI
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+resp = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "用一句话解释什么是元组"}],
+)
+print(resp.choices[0].message.content)</code></pre></div>
+<p><strong>⚠️ 安全提示</strong>：API Key <strong>绝不写进代码</strong>，用环境变量或 <code>.env</code>（<code>python-dotenv</code>），也别提交到 Git。</p>
+<h3 id="中文-NLP-与可视化">中文 NLP 与可视化</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>jieba</code></td>
+<td>中文分词</td>
+<td><code>pip install jieba</code></td>
+</tr>
+<tr>
+<td><code>wordcloud</code></td>
+<td>词云图</td>
+<td><code>pip install wordcloud</code></td>
+</tr>
+<tr>
+<td><code>snownlp</code></td>
+<td>中文情感分析（轻量）</td>
+<td><code>pip install snownlp</code></td>
+</tr>
+<tr>
+<td><code>hanlp</code> / <code>ltp</code></td>
+<td>更专业的中文 NLP 工具包</td>
+<td><code>pip install hanlp</code></td>
+</tr>
+<tr>
+<td><code>pypinyin</code></td>
+<td>汉字转拼音</td>
+<td><code>pip install pypinyin</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import jieba
+text = "高考志愿填报需要综合考虑分数、城市和专业"
+print("/".join(jieba.cut(text)))
+print(jieba.lcut_for_search(text))
+
+from pypinyin import lazy_pinyin
+print(lazy_pinyin("志愿填报"))          # ['zhi', 'yuan', 'tian', 'bao']
+
+from snownlp import SnowNLP
+print(SnowNLP("这门课太棒了").sentiments)   # 接近 1 = 正面</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- wordcloud：生成词云（需要中文字体）----
+from wordcloud import WordCloud
+wc = WordCloud(font_path="C:/Windows/Fonts/msyh.ttc", width=800, height=400,
+               background_color="white").generate("高分 志愿 专业 城市 未来 努力")
+wc.to_file("词云.png")</code></pre></div>
+<hr>
+<h2 id="七-Web-后端与接口">七、Web 后端与接口</h2>
+<h3 id="Flask-最轻量的-Web-框架">Flask —— 最轻量的 Web 框架</h3>
+<p><strong>定位</strong>：几行就能起一个网站/接口，适合小工具和教学。</p>
+<p><strong>用途</strong>：几行代码起一个网站或接口；适合小工具、教学、给脚本加个网页界面</p>
+<p><strong>安装</strong>：<code>pip install flask</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from flask import Flask, request, jsonify, render_template_string
+
+app = Flask(__name__)
+
+@app.get("/")
+def index():
+    return render_template_string("&lt;h1&gt;你好，{{name}}&lt;/h1&gt;", name="世界")
+
+@app.get("/api/hello")
+def hello():
+    name = request.args.get("name", "匿名")
+    return jsonify({"code": 0, "msg": f"你好, {name}"})
+
+@app.post("/api/add")
+def add():
+    data = request.get_json(force=True)
+    return jsonify({"result": data["a"] + data["b"]})
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000, debug=True)</code></pre></div>
+<p><strong>备注</strong>：<code>debug=True</code> 会自动重载、显示详细报错，但<strong>绝不能用在生产环境</strong>（有任意代码执行风险）。</p>
+<h3 id="FastAPI-现代高性能接口框架-强推">FastAPI —— 现代高性能接口框架（强推）</h3>
+<p><strong>定位</strong>：基于类型注解，<strong>自动生成接口文档</strong>，原生 async，性能接近 Go。</p>
+<p><strong>用途</strong>：写后端 API：参数自动校验、<strong>自动生成可点击的接口文档</strong>、原生 async；给前端 / App / 大模型做服务</p>
+<p><strong>安装</strong>：<code>pip install "fastapi[standard]"</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+
+app = FastAPI(title="志愿填报 API")
+
+class Student(BaseModel):                       # 用类型声明请求体，自动校验
+    姓名: str = Field(min_length=1, max_length=20)
+    高考分数: int = Field(ge=0, le=750)
+
+@app.get("/")
+def root():
+    return {"msg": "ok"}
+
+@app.post("/analyze")
+def analyze(stu: Student):
+    if stu.高考分数 &gt;= 700:
+        level = "顶尖"
+    elif stu.高考分数 &gt;= 660:
+        level = "优秀"
+    else:
+        level = "普通"
+    return {"姓名": stu.姓名, "等级": level}
+
+# 运行： uvicorn main:app --reload
+# 文档： http://127.0.0.1:8000/docs   ← 自动生成，可以直接点着测试</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># 调用自己写的接口
+import requests
+r = requests.post("http://127.0.0.1:8000/analyze",
+                  json={"姓名": "张三", "高考分数": 686}, timeout=5)
+print(r.json())        # {'姓名': '张三', '等级': '优秀'}</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>✅ <strong>自动文档</strong>是它最大的优势（<code>/docs</code> Swagger）</li><li>✅ 参数写错类型会被自动拒绝并返回清晰错误</li><li>⚠️ 启动用 <code>uvicorn main:app --reload</code>，不是 <code>python main.py</code></li></ul>
+<h3 id="其他-Web-相关">其他 Web 相关</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>django</code></td>
+<td>全家桶框架（自带 ORM/后台/用户系统）</td>
+<td><code>pip install django</code></td>
+</tr>
+<tr>
+<td><code>uvicorn</code></td>
+<td>ASGI 服务器（跑 FastAPI）</td>
+<td><code>pip install uvicorn</code></td>
+</tr>
+<tr>
+<td><code>gunicorn</code></td>
+<td>WSGI 服务器（Linux 生产用）</td>
+<td><code>pip install gunicorn</code></td>
+</tr>
+<tr>
+<td><code>pydantic</code></td>
+<td>数据校验与配置（FastAPI 的基石）</td>
+<td><code>pip install pydantic</code></td>
+</tr>
+<tr>
+<td><code>sqlalchemy</code></td>
+<td>Python 最流行的 ORM</td>
+<td><code>pip install sqlalchemy</code></td>
+</tr>
+<tr>
+<td><code>starlette</code></td>
+<td>轻量 ASGI 框架（FastAPI 底层）</td>
+<td><code>pip install starlette</code></td>
+</tr>
+<tr>
+<td><code>jinja2</code></td>
+<td>模板引擎（渲染 HTML）</td>
+<td><code>pip install jinja2</code></td>
+</tr>
+<tr>
+<td><code>gradio</code> / <code>streamlit</code></td>
+<td><strong>几行代码做 AI 演示界面</strong></td>
+<td><code>pip install streamlit</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">django-admin startproject mysite
+cd mysite &amp;&amp; python manage.py runserver
+streamlit run app.py            # 秒变网页应用</code></pre></div>
+<hr>
+<h2 id="八-办公与自动化">八、办公与自动化</h2>
+<h3 id="openpyxl-读写-Excel-xlsx">openpyxl —— 读写 Excel(.xlsx)</h3>
+<p><strong>定位</strong>：精确操作单元格、样式、公式。</p>
+<p><strong>用途</strong>：生成带样式 / 公式 / 图表 / 多 sheet 的 Excel 报表；也用来读取别人给的表格做批量处理</p>
+<p><strong>安装</strong>：<code>pip install openpyxl</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+
+wb = Workbook(); ws = wb.active; ws.title = "成绩表"
+ws.append(["姓名", "分数", "评价"])                 # 写一行
+
+for name, score in [("张三", 686), ("李四", 655)]:
+    ws.append([name, score, "优秀" if score &gt;= 660 else "良好"])
+
+ws["A1"].font = Font(bold=True, color="FFFFFF")     # 样式
+ws["A1"].fill = PatternFill("solid", fgColor="4F81BD")
+ws.column_dimensions["A"].width = 14
+ws.freeze_panes = "A2"                              # 冻结首行
+ws["C4"] = "=SUM(B2:B3)"                            # 写公式
+wb.save("成绩表.xlsx")
+
+wb2 = load_workbook("成绩表.xlsx")
+for row in wb2["成绩表"].iter_rows(min_row=2, values_only=True):
+    print(row)</code></pre></div>
+<p><strong>备注</strong>：<code>.xlsx</code> 用 openpyxl；<code>.xls</code>（老格式）要用 <code>xlrd</code>；只做数据分析直接用 pandas 更省事。</p>
+<h3 id="python-docx-python-pptx-生成-Word-PPT">python-docx / python-pptx —— 生成 Word / PPT</h3>
+<p><strong>用途</strong>：自动生成报告、合同、周报（Word）和演示文稿（PPT）—— <strong>把重复排版工作交给代码</strong></p>
+<p><strong>安装</strong>：<code>pip install python-docx python-pptx</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from docx import Document
+from docx.shared import Pt
+
+doc = Document()
+doc.add_heading("高考志愿分析报告", level=1)
+doc.add_paragraph("姓名：张三")
+p = doc.add_paragraph("这一行是加粗的")
+p.runs[0].bold = True
+doc.add_paragraph("第一条建议", style="List Bullet")
+
+t = doc.add_table(rows=1, cols=2)
+t.style = "Table Grid"
+hdr = t.rows[0].cells; hdr[0].text = "大学"; hdr[1].text = "分数线"
+for name, line in [("清华大学", 700), ("浙江大学", 680)]:
+    row = t.add_row().cells
+    row[0].text = name; row[1].text = str(line)
+
+doc.save("报告.docx")
+
+from pptx import Presentation
+from pptx.util import Inches
+prs = Presentation()
+slide = prs.slides.add_slide(prs.slide_layouts[0])
+slide.shapes.title.text = "志愿填报方案"
+slide.placeholders[1].text = "张三 · 2026"
+prs.save("演示.pptx")</code></pre></div>
+<h3 id="PDF-处理">PDF 处理</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>pypdf</code></td>
+<td>拆分/合并/旋转/加密 PDF</td>
+<td><code>pip install pypdf</code></td>
+</tr>
+<tr>
+<td><code>pdfplumber</code></td>
+<td><strong>提取文字和表格</strong>（最好用）</td>
+<td><code>pip install pdfplumber</code></td>
+</tr>
+<tr>
+<td><code>PyMuPDF</code>(fitz)</td>
+<td>转图片、提取文本，速度极快</td>
+<td><code>pip install pymupdf</code></td>
+</tr>
+<tr>
+<td><code>reportlab</code></td>
+<td><strong>生成</strong> PDF</td>
+<td><code>pip install reportlab</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pdfplumber
+with pdfplumber.open("input.pdf") as pdf:
+    print("总页数:", len(pdf.pages))
+    page = pdf.pages[0]
+    print(page.extract_text()[:200])
+    for table in page.extract_tables():
+        print(table[:2])
+
+# 合并两个 PDF
+from pypdf import PdfWriter, PdfReader
+w = PdfWriter()
+for f in ["a.pdf", "b.pdf"]:
+    for page in PdfReader(f).pages:
+        w.add_page(page)
+w.write("merged.pdf")</code></pre></div>
+<p><strong>备注</strong>：<strong>扫描件</strong>（图片型 PDF）提不出文字，要配 OCR（见下一节 <code>pytesseract</code>）。</p>
+<h3 id="pyautogui-桌面自动化-控制鼠标键盘">pyautogui —— 桌面自动化（控制鼠标键盘）</h3>
+<p><strong>定位</strong>：模拟人操作鼠标键盘、找图点击。适合重复的桌面流程。</p>
+<p><strong>用途</strong>：模拟人操作鼠标键盘、找图点击 —— <strong>给没有 API 的桌面软件做自动化</strong>（记得 FAILSAFE 紧急中止）</p>
+<p><strong>安装</strong>：<code>pip install pyautogui</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import pyautogui, time
+
+print(pyautogui.size())                     # 屏幕分辨率
+time.sleep(2)                               # 给自己留时间切窗口
+pyautogui.moveTo(400, 300, duration=0.5)
+pyautogui.click()
+pyautogui.write("hello world", interval=0.05)
+pyautogui.hotkey("ctrl", "s")               # 组合键
+print(pyautogui.position())                 # 当前鼠标位置
+
+# 找图点击（先截一小块图存成 btn.png）
+# loc = pyautogui.locateCenterOnScreen("btn.png", confidence=0.9)
+# pyautogui.click(loc)</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>⚠️ 运行前把鼠标移到屏幕角落可<strong>紧急中止</strong>（<code>pyautogui.FAILSAFE</code> 默认开启）</li><li>⚠️ 屏幕缩放比例会影响坐标，尽量用"找图"而不是写死坐标</li><li>✅ 更稳定的替代：浏览器用 <code>playwright</code>，Windows 应用可用 <code>pywinauto</code></li></ul>
+<h3 id="定时与调度">定时与调度</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>schedule</code></td>
+<td>最易读的定时任务（进程内）</td>
+<td><code>pip install schedule</code></td>
+</tr>
+<tr>
+<td><code>APScheduler</code></td>
+<td>功能完整的调度器（cron 表达式）</td>
+<td><code>pip install apscheduler</code></td>
+</tr>
+<tr>
+<td><code>python-crontab</code></td>
+<td>管理 Linux crontab</td>
+<td><code>pip install python-crontab</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import schedule, time
+def job(): print("该交作业了！")
+schedule.every().day.at("20:00").do(job)
+schedule.every(10).minutes.do(job)
+while True:                                  # 需要程序一直挂着
+    schedule.run_pending(); time.sleep(1)</code></pre></div>
+<p><strong>备注</strong>：Windows 上想"开机自动跑"，最省事是用<strong>任务计划程序</strong>或把脚本放进「启动」文件夹。</p>
+<hr>
+<h2 id="九-图像-音视频-OCR">九、图像 / 音视频 / OCR</h2>
+<h3 id="Pillow-图像处理基础库">Pillow —— 图像处理基础库</h3>
+<p><strong>用途</strong>：打开 / 裁剪 / 缩放 / 旋转 / 滤镜 / 加文字水印 / 转格式 / 生成缩略图 —— 批量处理图片的第一选择</p>
+<p><strong>安装</strong>：<code>pip install pillow</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+img = Image.open("input.jpg")
+print(img.size, img.mode)
+img = img.resize((400, 300))
+img = img.rotate(90, expand=True)
+img = img.convert("L")                       # 转灰度
+img.filter(ImageFilter.GaussianBlur(2)).save("blur.png")
+
+# 加文字水印
+img2 = Image.open("input.jpg").convert("RGB")
+d = ImageDraw.Draw(img2)
+font = ImageFont.truetype("C:/Windows/Fonts/msyh.ttc", 36)
+d.text((20, 20), "小助手", font=font, fill=(255, 0, 0))
+img2.save("watermark.jpg")
+
+# 生成缩略图
+img.thumbnail((128, 128)); img.save("thumb.png")</code></pre></div>
+<p><strong>备注</strong>：Pillow 是"单张图简单处理"；要做计算机视觉（识别、检测）用 OpenCV。</p>
+<h3 id="OpenCV-计算机视觉">OpenCV —— 计算机视觉</h3>
+<p><strong>用途</strong>：图像与视频的进阶处理：边缘检测、人脸识别、目标跟踪、摄像头实时分析</p>
+<p><strong>安装</strong>：<code>pip install opencv-python</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import cv2
+
+img = cv2.imread("input.jpg")                # 注意：BGR 顺序，不是 RGB！
+print(img.shape)                             # (高, 宽, 通道)
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+edges = cv2.Canny(gray, 100, 200)            # 边缘检测
+cv2.imwrite("edges.png", edges)
+
+# 人脸检测（用 OpenCV 自带模型）
+cascade = cv2.CascadeClassifier(
+    cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+faces = cascade.detectMultiScale(gray, 1.1, 4)
+for (x, y, w, h) in faces:
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+cv2.imwrite("faces.jpg", img)
+print("检测到", len(faces), "张脸")</code></pre></div>
+<p><strong>备注</strong></p>
+<ul><li>⚠️ <strong>OpenCV 默认是 BGR</strong>，matplotlib/PIL 是 RGB，混用颜色会反 → <code>cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</code></li><li>⚠️ 中文路径读图可能失败，用 <code>cv2.imdecode(np.fromfile(path, np.uint8), cv2.IMREAD_COLOR)</code></li><li>✅ 视频分析也是它：<code>cap = cv2.VideoCapture("v.mp4")</code> 循环 <code>cap.read()</code></li></ul>
+<h3 id="OCR-文字识别">OCR：文字识别</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>pytesseract</code></td>
+<td>Tesseract 的 Python 封装（需另装 Tesseract 程序）</td>
+<td><code>pip install pytesseract</code></td>
+</tr>
+<tr>
+<td><code>easyocr</code></td>
+<td>基于深度学习，中文效果更好</td>
+<td><code>pip install easyocr</code></td>
+</tr>
+<tr>
+<td><code>paddleocr</code></td>
+<td>百度开源，中文识别很强</td>
+<td><code>pip install paddleocr</code></td>
+</tr>
+<tr>
+<td><code>cnocr</code></td>
+<td>专攻中文 OCR</td>
+<td><code>pip install cnocr</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- pytesseract ----
+import pytesseract
+from PIL import Image
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+text = pytesseract.image_to_string(Image.open("shot.png"), lang="chi_sim+eng")
+print(text)
+
+# ---- easyocr（首次会下载模型，约 100MB）----
+import easyocr
+reader = easyocr.Reader(["ch_sim", "en"])
+for box, txt, conf in reader.readtext("shot.png"):
+    print(round(conf, 2), txt)</code></pre></div>
+<h3 id="音视频">音视频</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>moviepy</code></td>
+<td>视频剪辑（裁切、拼接、加字幕）</td>
+<td><code>pip install moviepy</code></td>
+</tr>
+<tr>
+<td><code>ffmpeg-python</code></td>
+<td>用 Python 组装 ffmpeg 命令</td>
+<td><code>pip install ffmpeg-python</code>（需装 ffmpeg）</td>
+</tr>
+<tr>
+<td><code>pydub</code></td>
+<td>音频切片、格式转换、音量</td>
+<td><code>pip install pydub</code>（需 ffmpeg）</td>
+</tr>
+<tr>
+<td><code>mutagen</code></td>
+<td>读写音频元数据（ID3 标签）</td>
+<td><code>pip install mutagen</code></td>
+</tr>
+<tr>
+<td><code>librosa</code></td>
+<td>音频特征提取（语音/音乐分析）</td>
+<td><code>pip install librosa</code></td>
+</tr>
+<tr>
+<td><code>whisper</code></td>
+<td><strong>语音转文字</strong>（OpenAI 开源）</td>
+<td><code>pip install openai-whisper</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- moviepy：裁剪 + 提取音频 ----
+from moviepy import VideoFileClip
+clip = VideoFileClip("in.mp4").subclipped(10, 20)      # 取 10~20 秒
+clip.write_videofile("out.mp4")
+clip.audio.write_audiofile("audio.mp3")
+
+# ---- pydub：切音频 ----
+from pydub import AudioSegment
+song = AudioSegment.from_mp3("song.mp3")
+song[:30_000].export("first30s.mp3", format="mp3")
+print(len(song) / 1000, "秒")</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- whisper：语音转文字（首次下载模型）----
+import whisper
+model = whisper.load_model("base")
+print(model.transcribe("audio.mp3", language="zh")["text"][:200])</code></pre></div>
+<h3 id="二维码-条码">二维码 / 条码</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import qrcode                                     # pip install qrcode[pil]
+img = qrcode.make("https://github.com/chenhg5/cc-connect")
+img.save("qr.png")
+
+from PIL import Image
+from pyzbar.pyzbar import decode                   # pip install pyzbar
+print(decode(Image.open("qr.png")))                # 解码回来</code></pre></div>
+<hr>
+<h2 id="十-数据库与缓存">十、数据库与缓存</h2>
+<h3 id="sqlite3-标准库自带的小型数据库">sqlite3 —— 标准库自带的小型数据库</h3>
+<p><strong>定位</strong>：单文件数据库，零安装、零配置，脚本和小项目首选。</p>
+<p><strong>用途</strong>：一个文件就是一个数据库：<strong>持久化保存爬到的数据</strong>、做本地工具 / 原型的存储（零安装零配置）</p>
+<p><strong>安装</strong>：内置，<code>import sqlite3</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">import sqlite3
+
+conn = sqlite3.connect("school.db")
+cur = conn.cursor()
+cur.execute("""CREATE TABLE IF NOT EXISTS student(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL, score INTEGER)""")
+
+# ⚠️ 一定要用占位符 ?，不要用 f-string 拼 SQL（会被 SQL 注入）
+cur.executemany("INSERT INTO student(name, score) VALUES (?, ?)",
+                [("张三", 686), ("李四", 655), ("王五", 700)])
+conn.commit()
+
+cur.execute("SELECT name, score FROM student WHERE score &gt;= ? ORDER BY score DESC", (660,))
+for row in cur.fetchall():
+    print(row)
+
+cur.execute("SELECT AVG(score) FROM student")
+print("平均分:", cur.fetchone()[0])
+
+cur.execute("UPDATE student SET score = ? WHERE name = ?", (690, "李四"))
+conn.commit()
+conn.close()</code></pre></div>
+<p><strong>推荐上下文写法</strong>：</p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">with sqlite3.connect("school.db") as conn:      # 自动提交/回滚
+    conn.row_factory = sqlite3.Row             # 让结果能按列名取
+    row = conn.execute("SELECT * FROM student LIMIT 1").fetchone()
+    print(dict(row))</code></pre></div>
+<p><strong>⚠️ 数据库安全铁律</strong></p>
+<ul><li><strong>永远用参数化查询</strong>（<code>?</code> 或 <code>%(name)s</code>），<strong>永远不要</strong> f-string 拼 SQL</li><li>密码存 <strong>bcrypt 哈希</strong>，不存明文</li></ul>
+<h3 id="其他数据库">其他数据库</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>数据库</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>pymysql</code></td>
+<td>MySQL / MariaDB</td>
+<td><code>pip install pymysql</code></td>
+</tr>
+<tr>
+<td><code>psycopg[binary]</code></td>
+<td>PostgreSQL</td>
+<td><code>pip install "psycopg[binary]"</code></td>
+</tr>
+<tr>
+<td><code>pymongo</code></td>
+<td>MongoDB（文档型）</td>
+<td><code>pip install pymongo</code></td>
+</tr>
+<tr>
+<td><code>redis</code></td>
+<td>Redis（缓存/队列）</td>
+<td><code>pip install redis</code></td>
+</tr>
+<tr>
+<td><code>sqlalchemy</code></td>
+<td><strong>ORM</strong>：用 Python 类操作各种数据库</td>
+<td><code>pip install sqlalchemy</code></td>
+</tr>
+<tr>
+<td><code>peewee</code> / <code>tortoise-orm</code></td>
+<td>更轻量的 ORM</td>
+<td><code>pip install peewee</code></td>
+</tr>
+<tr>
+<td><code>alembic</code></td>
+<td>数据库迁移（配合 SQLAlchemy）</td>
+<td><code>pip install alembic</code></td>
+</tr>
+<tr>
+<td><code>duckdb</code></td>
+<td>单机分析型数据库（直接查 CSV/Parquet）</td>
+<td><code>pip install duckdb</code></td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- SQLAlchemy ORM：用类代替 SQL ----
+from sqlalchemy import create_engine, Integer, String, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
+
+class Base(DeclarativeBase): pass
+
+class Student(Base):
+    __tablename__ = "student"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(20))
+    score: Mapped[int] = mapped_column(Integer)
+
+engine = create_engine("sqlite:///school2.db")
+Base.metadata.create_all(engine)
+
+with Session(engine) as s:
+    s.add_all([Student(name="张三", score=686), Student(name="李四", score=655)])
+    s.commit()
+    for stu in s.scalars(select(Student).where(Student.score &gt; 660)):
+        print(stu.name, stu.score)</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- redis：缓存 / 计数器 / 限流 ----
+import redis
+r = redis.Redis(host="127.0.0.1", port=6379, decode_responses=True)
+r.set("user:1:name", "张三", ex=60)             # 60 秒后过期
+print(r.get("user:1:name"))
+r.incr("page:views")                            # 访问计数
+r.lpush("task_queue", "job1")                   # 当队列用</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- duckdb：不用装数据库，直接 SQL 查 CSV ----
+import duckdb
+print(duckdb.sql("SELECT * FROM 'out.csv' LIMIT 3").df())</code></pre></div>
+<hr>
+<h2 id="十一-测试-调试与工程化">十一、测试、调试与工程化</h2>
+<h3 id="pytest-写测试的标准姿势">pytest —— 写测试的标准姿势</h3>
+<p><strong>用途</strong>：给函数写自动化测试，改完代码一键确认「有没有把别的地方改坏」</p>
+<p><strong>安装</strong>：<code>pip install pytest</code></p>
+<p><strong>用法</strong>：文件名 <code>test_*.py</code>，函数名 <code>test_*</code>，然后命令行敲 <code>pytest</code></p>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># test_score.py
+import pytest
+from score import analyze          # 假设这是你要测试的函数
+
+def test_safe():
+    assert analyze(686, 680) == "稳妥"
+
+def test_challenge():
+    assert analyze(686, 690) == "冲刺"
+
+@pytest.mark.parametrize("score,line,expect", [
+    (700, 700, "稳妥"),
+    (695, 700, "冲刺"),
+    (680, 700, "暂不推荐"),
+])
+def test_levels(score, line, expect):
+    assert analyze(score, line) == expect
+
+def test_invalid():
+    with pytest.raises(ValueError):        # 断言"这里应该报错"
+        analyze(-1, 600)</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash">pytest -v                    # 详细输出
+pytest -k safe               # 只跑名字含 safe 的
+pytest --cov=. --cov-report=term-missing   # 覆盖率（需 pytest-cov）</code></pre></div>
+<h3 id="代码质量工具链">代码质量工具链</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>工具</th>
+<th>干什么</th>
+<th>安装</th>
+<th>用法</th>
+</tr>
+<tr>
+<td><code>ruff</code></td>
+<td><strong>极快的检查 + 自动格式化</strong>（替代 flake8+isort+black）</td>
+<td><code>pip install ruff</code></td>
+<td><code>ruff check . --fix</code></td>
+</tr>
+<tr>
+<td><code>black</code></td>
+<td>代码自动格式化</td>
+<td><code>pip install black</code></td>
+<td><code>black .</code></td>
+</tr>
+<tr>
+<td><code>mypy</code></td>
+<td><strong>静态类型检查</strong></td>
+<td><code>pip install mypy</code></td>
+<td><code>mypy main.py</code></td>
+</tr>
+<tr>
+<td><code>isort</code></td>
+<td>自动整理 import 顺序</td>
+<td><code>pip install isort</code></td>
+<td><code>isort .</code></td>
+</tr>
+<tr>
+<td><code>flake8</code></td>
+<td>经典风格检查</td>
+<td><code>pip install flake8</code></td>
+<td><code>flake8 .</code></td>
+</tr>
+<tr>
+<td><code>pre-commit</code></td>
+<td>提交前自动跑检查</td>
+<td><code>pip install pre-commit</code></td>
+<td><code>pre-commit install</code></td>
+</tr>
+</table></div>
+<p><strong>备注</strong>：个人项目用 <code>ruff</code> 一个就够了（它把好几个工具合了）。<strong>类型注解 + mypy</strong> 能提前抓出"传错类型"的 bug。</p>
+<h3 id="日志-调试-进度">日志 / 调试 / 进度</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>loguru</code></td>
+<td><strong>一行搞定漂亮的日志</strong>（比内置 logging 好用太多）</td>
+<td><code>pip install loguru</code></td>
+</tr>
+<tr>
+<td><code>icecream</code></td>
+<td>调试打印（自动显示变量名和值）</td>
+<td><code>pip install icecream</code></td>
+</tr>
+<tr>
+<td><code>pdb</code> / <code>ipdb</code></td>
+<td>断点调试（标准库 pdb 就够了）</td>
+<td>内置 / <code>pip install ipdb</code></td>
+</tr>
+<tr>
+<td><code>tqdm</code></td>
+<td>进度条</td>
+<td><code>pip install tqdm</code></td>
+</tr>
+<tr>
+<td><code>rich</code></td>
+<td>终端里输出表格/颜色/进度/树</td>
+<td><code>pip install rich</code></td>
+</tr>
+<tr>
+<td><code>pprint</code></td>
+<td>漂亮的打印嵌套结构</td>
+<td>内置</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from loguru import logger
+logger.add("run.log", rotation="10 MB", encoding="utf-8")   # 自动切割
+logger.info("程序启动")
+logger.warning("分数超出范围")
+try:
+    1 / 0
+except ZeroDivisionError:
+    logger.exception("出错了")           # 自动带完整堆栈
+
+from icecream import ic
+x = {"a": 1}
+ic(x)                                     # 输出 ic| x: {'a': 1}  ← 带变量名</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python">from rich.console import Console
+from rich.table import Table
+c = Console()
+t = Table(title="志愿表")
+t.add_column("大学"); t.add_column("分数线", justify="right")
+t.add_row("清华大学", "700"); t.add_row("浙江大学", "680")
+c.print(t)
+c.print("[bold green]分析完成！[/bold green]")</code></pre></div>
+<h3 id="命令行工具">命令行工具</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>库</th>
+<th>定位</th>
+<th>安装</th>
+</tr>
+<tr>
+<td><code>argparse</code></td>
+<td>标准库，够用</td>
+<td>内置</td>
+</tr>
+<tr>
+<td><code>click</code></td>
+<td>更优雅的命令行框架</td>
+<td><code>pip install click</code></td>
+</tr>
+<tr>
+<td><code>typer</code></td>
+<td>基于类型注解，<strong>写命令行最快</strong></td>
+<td><code>pip install typer</code></td>
+</tr>
+<tr>
+<td><code>rich</code></td>
+<td>好看的终端输出</td>
+<td>见上</td>
+</tr>
+</table></div>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- typer：几行就是一个专业 CLI ----
+import typer
+app = typer.Typer()
+
+@app.command()
+def analyze(score: int, city: str = "杭州", verbose: bool = False):
+    """根据分数给出建议"""
+    if verbose:
+        typer.echo(f"参数: score={score}, city={city}")
+    typer.echo("稳妥" if score &gt;= 680 else "冲刺")
+
+if __name__ == "__main__":
+    app()
+# 运行： python cli.py analyze 686 --city 杭州 --verbose</code></pre></div>
+<h3 id="配置与序列化">配置与序列化</h3>
+<div class="codeblock"><div class="codebar"><span>python</span><button class="copy" type="button">复制</button></div><pre><code class="lang-python"># ---- python-dotenv：把密钥放 .env，别写进代码 ----
+import os
+from dotenv import load_dotenv          # pip install python-dotenv
+load_dotenv()                           # 读取同目录 .env
+key = os.getenv("API_KEY")
+
+# ---- PyYAML：读配置文件 ----
+import yaml                             # pip install pyyaml
+cfg = yaml.safe_load("""
+name: 小助手
+score: 686
+tags: [计算机, AI]
+""")
+print(cfg)
+print(yaml.safe_dump(cfg, allow_unicode=True))
+
+# ---- orjson：比内置 json 更快的 JSON ----
+import orjson                           # pip install orjson
+data = orjson.loads(b'{"a": 1}')
+print(orjson.dumps(data))</code></pre></div>
+<p><strong>⚠️ 安全</strong>：<code>.env</code>、<code>config.yaml</code> 里可能有密钥，<strong>必须加进 .gitignore</strong>，别提交到 GitHub。</p>
+<hr>
+<h2 id="十二-快速选型表-学习路线">十二、快速选型表 + 学习路线</h2>
+<h3 id="12-1-按任务查库-一页速查">12.1 按任务查库（一页速查）</h3>
+<div class="tablewrap"><table>
+<tr>
+<th>任务</th>
+<th>首选</th>
+<th>备选</th>
+</tr>
+<tr>
+<td>HTTP 请求</td>
+<td><code>requests</code></td>
+<td><code>httpx</code>（异步）</td>
+</tr>
+<tr>
+<td>解析 HTML</td>
+<td><code>beautifulsoup4</code> + <code>lxml</code></td>
+<td><code>parsel</code>、<code>pyquery</code></td>
+</tr>
+<tr>
+<td>大爬虫</td>
+<td><code>scrapy</code></td>
+<td>自己写 + <code>httpx</code></td>
+</tr>
+<tr>
+<td>JS 渲染页面</td>
+<td><code>playwright</code></td>
+<td><code>selenium</code></td>
+</tr>
+<tr>
+<td>表格数据</td>
+<td><code>pandas</code></td>
+<td><code>polars</code>（大数据）</td>
+</tr>
+<tr>
+<td>数值计算</td>
+<td><code>numpy</code></td>
+<td><code>scipy</code></td>
+</tr>
+<tr>
+<td>画图</td>
+<td><code>matplotlib</code></td>
+<td><code>seaborn</code>、<code>plotly</code></td>
+</tr>
+<tr>
+<td>机器学习</td>
+<td><code>scikit-learn</code></td>
+<td><code>xgboost</code>、<code>lightgbm</code></td>
+</tr>
+<tr>
+<td>深度学习</td>
+<td><code>pytorch</code></td>
+<td><code>tensorflow</code></td>
+</tr>
+<tr>
+<td>大模型调用</td>
+<td><code>openai</code></td>
+<td><code>transformers</code>（本地）</td>
+</tr>
+<tr>
+<td>中文分词</td>
+<td><code>jieba</code></td>
+<td><code>hanlp</code></td>
+</tr>
+<tr>
+<td>Web 接口</td>
+<td><code>fastapi</code> + <code>uvicorn</code></td>
+<td><code>flask</code></td>
+</tr>
+<tr>
+<td>网站（带后台）</td>
+<td><code>django</code></td>
+<td><code>flask</code></td>
+</tr>
+<tr>
+<td>Excel</td>
+<td><code>openpyxl</code> / <code>pandas</code></td>
+<td><code>xlsxwriter</code></td>
+</tr>
+<tr>
+<td>Word / PPT</td>
+<td><code>python-docx</code> / <code>python-pptx</code></td>
+<td>用 <code>win32com</code> 调 Office</td>
+</tr>
+<tr>
+<td>PDF 提取</td>
+<td><code>pdfplumber</code></td>
+<td><code>PyMuPDF</code></td>
+</tr>
+<tr>
+<td>PDF 生成</td>
+<td><code>reportlab</code></td>
+<td><code>weasyprint</code>（HTML→PDF）</td>
+</tr>
+<tr>
+<td>图像处理</td>
+<td><code>Pillow</code></td>
+<td><code>opencv-python</code></td>
+</tr>
+<tr>
+<td>视频剪辑</td>
+<td><code>moviepy</code></td>
+<td><code>ffmpeg-python</code></td>
+</tr>
+<tr>
+<td>语音转文字</td>
+<td><code>whisper</code></td>
+<td>云厂商 ASR API</td>
+</tr>
+<tr>
+<td>OCR</td>
+<td><code>paddleocr</code> / <code>easyocr</code></td>
+<td><code>pytesseract</code></td>
+</tr>
+<tr>
+<td>数据库</td>
+<td><code>sqlite3</code>（小） / <code>sqlalchemy</code>（通用）</td>
+<td><code>pymysql</code>、<code>pymongo</code></td>
+</tr>
+<tr>
+<td>缓存</td>
+<td><code>redis</code></td>
+<td><code>functools.lru_cache</code>（单机）</td>
+</tr>
+<tr>
+<td>测试</td>
+<td><code>pytest</code></td>
+<td><code>unittest</code></td>
+</tr>
+<tr>
+<td>代码质量</td>
+<td><code>ruff</code></td>
+<td><code>black</code> + <code>flake8</code></td>
+</tr>
+<tr>
+<td>日志</td>
+<td><code>loguru</code></td>
+<td><code>logging</code></td>
+</tr>
+<tr>
+<td>命令行</td>
+<td><code>typer</code></td>
+<td><code>click</code>、<code>argparse</code></td>
+</tr>
+<tr>
+<td>桌面自动化</td>
+<td><code>pyautogui</code></td>
+<td><code>pywinauto</code></td>
+</tr>
+<tr>
+<td>定时任务</td>
+<td><code>schedule</code> / <code>APScheduler</code></td>
+<td>系统自带计划任务</td>
+</tr>
+<tr>
+<td>密码哈希</td>
+<td><code>bcrypt</code> / <code>argon2-cffi</code></td>
+<td>❌ 别用 md5</td>
+</tr>
+<tr>
+<td>加密</td>
+<td><code>cryptography</code></td>
+<td><code>pycryptodome</code></td>
+</tr>
+<tr>
+<td>网络安全测试</td>
+<td><code>scapy</code>、<code>python-nmap</code>、<code>mitmproxy</code></td>
+<td>见第五章合规声明</td>
+</tr>
+</table></div>
+<h3 id="12-2-学习路线-按兴趣选一条">12.2 学习路线（按兴趣选一条）</h3>
+<p><strong>① 数据分析 / AI 方向</strong></p>
+<p><code>numpy</code> → <code>pandas</code> → <code>matplotlib</code> → <code>scikit-learn</code> → <code>pytorch</code> → <code>transformers</code></p>
+<p><strong>② 爬虫 / 数据采集方向</strong></p>
+<p><code>requests</code> → <code>beautifulsoup4</code> → <code>pandas</code> 存数据 → <code>playwright</code>（JS 页面）→ <code>scrapy</code>（工程化）→ 反爬与限速</p>
+<p><strong>③ Web 开发方向</strong></p>
+<p><code>flask</code>（入门）→ <code>fastapi</code>（接口）→ <code>sqlalchemy</code>（数据库）→ <code>django</code>（大项目）→ 部署（Docker + Nginx）</p>
+<p><strong>④ 网络安全方向（务必读第五章合规声明）</strong></p>
+<p>计算机网络 + Linux → <code>socket</code>/<code>requests</code> → Burp/ZAP 手工测试 → <code>scapy</code> 流量分析 → <code>yara</code>/<code>capstone</code> 样本分析 → 靶场刷题（HTB / PortSwigger）</p>
+<p><strong>⑤ 自动化 / 效率方向</strong></p>
+<p><code>openpyxl</code>、<code>python-docx</code> 处理文档 → <code>playwright</code> 网页自动化 → <code>pyautogui</code> 桌面自动化 → <code>schedule</code> 定时 → 打包成 exe（<code>pyinstaller</code>）</p>
+<p><strong>⑥ 通用基本功（所有人都该会）</strong></p>
+<p><code>pytest</code> 写测试 · <code>ruff</code> 保持整洁 · <code>loguru</code> 打日志 · <code>python-dotenv</code> 管密钥 · <code>git</code> 管版本 · <code>venv</code> 隔离环境</p>
+<h3 id="12-3-常用安装命令合集-可直接复制">12.3 常用安装命令合集（可直接复制）</h3>
+<div class="codeblock"><div class="codebar"><span>bash</span><button class="copy" type="button">复制</button></div><pre><code class="lang-bash"># 数据
+pip install numpy pandas matplotlib scipy sympy seaborn polars openpyxl
+
+# 爬虫
+pip install requests httpx beautifulsoup4 lxml parsel scrapy playwright tqdm tenacity
+
+# 网络与安全（仅授权/靶场使用）
+pip install scapy python-nmap dnspython cryptography pycryptodome bcrypt pyjwt mitmproxy faker pip-audit bandit
+
+# AI / 机器学习
+pip install scikit-learn xgboost lightgbm transformers datasets sentence-transformers openai jieba wordcloud
+
+# Web
+pip install "fastapi[standard]" flask django uvicorn sqlalchemy pydantic
+
+# 办公自动化
+pip install python-docx python-pptx pdfplumber pypdf reportlab pyautogui schedule
+
+# 图像 / 音视频 / OCR
+pip install pillow opencv-python moviepy pydub mutagen qrcode pyzbar
+
+# 数据库
+pip install pymysql pymongo redis duckdb peewee
+
+# 工程化
+pip install pytest ruff mypy loguru rich typer click python-dotenv pyyaml orjson ipython
+
+# 国内加速（加在命令末尾）
+#   -i https://pypi.tuna.tsinghua.edu.cn/simple</code></pre></div>
+<h3 id="12-4-三条选库心得">12.4 三条选库心得</h3>
+<p><strong>1. 能用标准库就别装第三方。</strong></p>
+<p><code>collections</code>、<code>itertools</code>、<code>functools</code>、<code>sqlite3</code>、<code>json</code>、<code>pathlib</code>、<code>argparse</code> 已经能解决大量问题，而且零依赖、不会被版本坑。</p>
+<p><strong>2. 一个方向只精一个库。</strong></p>
+<p>比如爬虫别同时学 requests / httpx / aiohttp / scrapy 四个；先 <code>requests</code> 打牢，再按需要扩展。</p>
+<p><strong>3. 先读官方文档的 Quickstart（15 分钟），再写自己的例子。</strong></p>
+<p>本手册的作用是"<strong>告诉你有什么</strong>"，具体 API 永远以官方文档为准（搜 <code>库名 + 官方文档</code> 或去 GitHub README）。</p>
+<hr>
+<p>*（本文件由 AI 助手整理，供学习参考；示例以"合法、安全、可运行"为前提。第三方库 API 会随版本变化，请以官方文档为准。）*</p>
+  </main>
+</div>
+<footer class="foot">
+  <span>Python 学习手册 · 共 14 篇</span>
+  <span>最后更新：2026-10-08</span>
+  <span>内容仅供学习参考</span>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
